@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ArticleView, articleMetadata } from "@/components/ArticleView";
+import { articleMetadata } from "@/components/ArticleView";
+import { ResearchFeedView } from "@/components/ResearchFeedView";
 
 export const revalidate = 3600;
 
@@ -12,5 +13,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  return <ArticleView segment="research-feeds" slug={slug} />;
+  return <ResearchFeedView slug={slug} />;
 }
