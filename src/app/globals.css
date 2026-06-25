@@ -15,12 +15,12 @@
    so set these explicitly): blue, no underline, underline on hover. */
 .entry-content a:not(.btn):not(.research-hero__center-tag),
 .article a:not(.btn) {
-  color: #183fab;
-  text-decoration: none;
+  color: #183fab !important;
+  text-decoration: none !important;
 }
 .entry-content a:not(.btn):not(.research-hero__center-tag):hover,
 .article a:not(.btn):hover {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 /* Hover tooltips render smaller than the article body text. */
