@@ -3,6 +3,7 @@ import "./globals.css";
 import "@/styles/theme-wp.css";
 import { HEADER_HTML, FOOTER_HTML } from "@/theme/themeHtml";
 import { Feedback } from "@/components/Feedback";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   title: {
@@ -45,6 +46,7 @@ export default function RootLayout({
         {children}
         <div dangerouslySetInnerHTML={{ __html: footerHtml }} />
         <Feedback />
+        <ScrollToTop />
       </body>
     </html>
   );

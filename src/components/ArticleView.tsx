@@ -9,6 +9,7 @@ import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
 import { PageSnapshot } from "@/components/PageSnapshot";
+import { RightRail } from "@/components/RightRail";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -75,10 +76,11 @@ function injectFaqs(html: string, title: string): string {
     [/risk/i, `What are the risk factors for ${title}?`],
   ];
   const faqs: { q: string; a: string }[] = [];
-  const re = /<h2\b[^>]*>([\s\S]*?)<\/h2>([\s\S]*?)(?=<h2\b|$)/gi;
+  const re = /<h([23])\b[^>]*>([\s\S]*?)<\/h\1>([\s\S]*?)(?=<h[23]\b|$)/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(html))) {
-    const heading = m[1].replace(/<[^>]+>/g, "").trim();
+    if (faqs.length >= 3) break;
+    const heading = m[2].replace(/<[^>]+>/g, "").trim();
     if (!heading) continue;
     let q = "";
     for (const [rx, qq] of qmap) { if (rx.test(heading)) { q = qq; break; } }
@@ -86,7 +88,7 @@ function injectFaqs(html: string, title: string): string {
     let a = "";
     const pre = /<p[^>]*>([\s\S]*?)<\/p>/gi;
     let pm: RegExpExecArray | null;
-    while ((pm = pre.exec(m[2]))) {
+    while ((pm = pre.exec(m[3]))) {
       const t = pm[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
       if (t.length >= 40) { a = t; break; }
     }
@@ -137,25 +139,7 @@ function buildNavGroups(toc: Heading[], hasSignature: boolean): NavGroup[] {
 }
 
 function RightSidebar() {
-  return (
-    <div className="research-content__right js-research-sidebar">
-      <div className="research-content__left-menu">
-        <div className="research-content__right-actions">
-          <button type="button" className="btn btn--full btn--outline js-feedback">Send feedback</button>
-          <div className="research-content__right-banner">
-            <strong>Join the Roundtable</strong>
-            <p className="p1">
-              Contribute to published consensus reports, connect with top clinicians and researchers, and receive
-              exclusive invitations to roundtable conferences.
-            </p>
-            <div className="research-content__right-banner-note">
-              <p>Yes, I want to <a href="/auth/signup/">help shape the future of microbiome medicine.</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <RightRail />;
 }
 
 export async function ArticleView({ segment, slug }: { segment: string; slug: string }) {

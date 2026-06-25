@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sectionBySegment, getItem } from "@/lib/content";
-import { StudyActions } from "@/components/StudyActions";
 import { Tooltips } from "@/components/Tooltips";
+import { RightRail } from "@/components/RightRail";
+import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
+import { AUTHOR_BIOS } from "@/theme/authorsBios";
 
-type Author = { name: string };
+type Author = { name: string; orcid?: string | null; avatar?: string | null };
 type Feed = {
   location?: string[];
   sample_site?: string[];
@@ -17,7 +19,7 @@ function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// The taxonomy-driven metadata block at the top of a feed's content.
+// Taxonomy metadata block (signature studies only).
 function graphsHtml(feed: Feed): string {
   const fields: [string, string[] | undefined][] = [
     ["Location", feed.location],
@@ -41,9 +43,6 @@ function graphsHtml(feed: Feed): string {
   );
 }
 
-// Research-feed pages ("microbiome signature studies") use a distinct template:
-// fullwidth hero, an "Original paper" DOI link, related-condition pills, the
-// Location/Sample Site/Species graph block, and a back-to-feeds sidebar.
 export async function ResearchFeedView({ slug }: { slug: string }) {
   const section = sectionBySegment("research-feeds");
   if (!section) notFound();
@@ -53,46 +52,104 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const meta = (item.meta || {}) as Record<string, unknown>;
   const feed = (meta.feed || {}) as Feed;
   const authors: Author[] = Array.isArray(meta.authors) ? (meta.authors as Author[]) : [];
+  const avatars = authors.filter((a) => a.avatar);
+  const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];
   const contentHtml = graphsHtml(feed) + (item.content_html || "");
-  const year = item.modified_at ? item.modified_at.slice(0, 4) : undefined;
+  const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
 
   return (
     <div className="site-content flex">
       <main className="main">
-        <div className="research-hero">
+        <div className="research-hero ">
           <div className="research-hero__wrapper">
             <div className="research-hero__center">
+              <p className="rgbc-breadcrumbs">
+                <Link href="/">Home</Link> <Link href="/research-feeds">Research Feeds</Link> <span>{item.title}</span>
+              </p>
               <div className="research-hero__center-content research-hero__center-content--fullwidth">
-                <p className="rgbc-breadcrumbs">
-                  <Link href="/">Home</Link> <Link href="/research-feeds">Research Feeds</Link> <span>{item.title}</span>
-                </p>
                 <h1 className="research-hero__center-title">
                   {item.title}
                   {feed.paper_url && (
                     <a className="research-hero__external-link" href={feed.paper_url} target="_blank" rel="noreferrer">
                       Original paper
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 4, verticalAlign: "middle" }}>
-                        <path d="M7 17 17 7M9 7h8v8" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" x2="21" y1="14" y2="3" />
                       </svg>
                     </a>
                   )}
                 </h1>
-                {Array.isArray(feed.conditions) && feed.conditions.length > 0 && (
-                  <div className="research-hero__center-tags">
-                    {feed.conditions.map((c, i) => (
-                      <a key={i} className="btn btn--rounded" href={c.href}>{c.label}</a>
-                    ))}
+              </div>
+
+              {conditions.length > 0 && (
+                <div className="research-hero__categories">
+                  <div className="rgbc-content__details-categories">
+                    <ul>
+                      {conditions.map((c, i) => (
+                        <li key={i}>
+                          <a href={c.href}>{c.label}</a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                )}
-                <StudyActions
-                  itemId={item.id}
-                  title={item.title}
-                  authors={authors.map((a) => a.name)}
-                  year={year}
-                  url={`https://microbiomemedicine.com/research-feeds/${slug}/`}
-                />
+                </div>
+              )}
+
+              <div className="research-hero__center-tags">
+                <FavoriteStudyButton itemId={item.id} />
               </div>
             </div>
+
+            {authors.length > 0 && (
+              <div className="research-hero__right">
+                {avatars.length > 0 && (
+                  <div className="research-hero__right-users">
+                    <ul className="research-hero__tooltips-list research-hero__tooltips-list--an-image-as-link">
+                      {avatars.map((a, i) => {
+                        const ai = authors.indexOf(a);
+                        return (
+                          <li key={i}>
+                            <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${ai}` : undefined}>
+                              <img alt={a.name} src={a.avatar as string} className="avatar avatar-96 photo" height={96} width={96} />
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+                <div className="research-hero__right-meta">
+                  <div className="research-hero__right-meta-item">
+                    <p><span>Researched by:</span></p>
+                    <div className="research-hero__right-meta-user">
+                      <ul className="research-hero__tooltips-list ">
+                        {authors.map((a, i) => (
+                          <li key={i}>
+                            <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${i}` : undefined}>{a.name}</span>
+                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  {updated && (<div className="research-hero__right-meta-item"><p>Last Updated: {updated}</p></div>)}
+                </div>
+                {authors.map((a, i) => {
+                  const b = AUTHOR_BIOS[a.name];
+                  return b ? (
+                    <div key={i} className={`tooltip author-bio-${i}`}>
+                      <div className="tooltip__header">{a.name}</div>
+                      <div className="tooltip__content">
+                        {b.avatar && <img src={b.avatar} alt={a.name} className="avatar avatar-96 photo" />}
+                        <p>{b.bio}</p>
+                        {b.profile && <a href={b.profile}>Read More</a>}
+                      </div>
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            )}
           </div>
         </div>
 
@@ -106,7 +163,12 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
                   <div className="post-content__item post-content__item--h2">
                     <span className="post-content__title">
                       <a className="post-content__link" href="/research-feeds">
-                        <img src="/wp-content/themes/rgbcode/static_media/feed.webp" alt="" width={20} height={20} />Research Feeds
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                          <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                          <path d="M12 11h4" /><path d="M12 16h4" /><path d="M8 11h.01" /><path d="M8 16h.01" />
+                        </svg>
+                        Dashboard
                       </a>
                     </span>
                   </div>
@@ -115,6 +177,8 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
             </div>
 
             <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+
+            <RightRail />
           </div>
         </div>
       </main>
