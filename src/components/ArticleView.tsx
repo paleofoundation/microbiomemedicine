@@ -6,6 +6,7 @@ import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { StudyActions } from "@/components/StudyActions";
+import { FollowButton } from "@/components/FollowButton";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -129,10 +130,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                       <img src="/wp-content/themes/rgbcode/static_media/researchfeed_white.webp" alt="" width={18} height={18} /> Research feed
                     </a>
                   )}
+                  {showResearchFeed && <FollowButton itemId={item.id} />}
                 </div>
               )}
               {showStudyActions && (
                 <StudyActions
+                  itemId={item.id}
                   title={item.title}
                   authors={authors.map((a) => a.name)}
                   year={updated ? updated.slice(0, 4) : undefined}

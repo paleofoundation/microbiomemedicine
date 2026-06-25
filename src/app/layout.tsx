@@ -12,8 +12,12 @@ export const metadata: Metadata = {
     "A research-grounded reference on the human microbiome — microbes, conditions, interventions, and the evidence connecting them.",
 };
 
-// Point the header search form at our search route.
-const headerHtml = HEADER_HTML.replace(/action="\/"/g, 'action="/search"');
+// Point the header search form at our search route, and the account/membership
+// links at the member dashboard.
+const headerHtml = HEADER_HTML
+  .replace(/action="\/"/g, 'action="/search"')
+  .replace(/href="\/auth\/login\/"/g, 'href="/dashboard"')
+  .replace(/href="\/membership-2\/"/g, 'href="/dashboard/subscription"');
 
 // Wire the footer newsletter forms to our subscribe endpoint.
 const footerHtml = FOOTER_HTML
