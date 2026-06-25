@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "A research-grounded reference on the human microbiome — microbes, conditions, interventions, and the evidence connecting them.",
 };
 
+// Point the header search form at our search route.
+const headerHtml = HEADER_HTML.replace(/action="\/"/g, 'action="/search"');
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,10 +31,8 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {/* Original rgbcode theme header (mega-menu + logo) */}
-        <div dangerouslySetInnerHTML={{ __html: HEADER_HTML }} />
+        <div dangerouslySetInnerHTML={{ __html: headerHtml }} />
         {children}
-        {/* Original rgbcode theme footer */}
         <div dangerouslySetInnerHTML={{ __html: FOOTER_HTML }} />
       </body>
     </html>
