@@ -2,9 +2,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { sectionBySegment, getItem, stripHost } from "@/lib/content";
+import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
+type SigItem = { name: string; value: number; has_info?: boolean };
 
 function tableOfContents(html: string): Heading[] {
   const out: Heading[] = [];
@@ -64,6 +66,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
   const authors: Author[] = Array.isArray(meta.authors) ? (meta.authors as Author[]) : [];
   const didYouKnow = typeof meta.did_you_know === "string" ? meta.did_you_know.replace(/^Did you know\??\s*/i, "") : null;
+  const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
   const img = stripHost(item.featured_image_url);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
@@ -76,9 +79,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
             <div className="research-hero__left">
               <div className="research-hero__left-content">
                 {img && <img src={img} alt={item.title} className="img-autosize" />}
-                {didYouKnow && (
-                  <p><strong>Did you know?</strong><br />{didYouKnow}</p>
-                )}
+                {didYouKnow && (<p><strong>Did you know?</strong><br />{didYouKnow}</p>)}
               </div>
             </div>
 
@@ -137,18 +138,14 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                         {authors.map((a, i) => (
                           <li key={i}>
                             <span className="rgbc-tooltip">{a.name}</span>
-                            {a.orcid && (
-                              <a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>
-                            )}
+                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
                 )}
-                {updated && (
-                  <div className="research-hero__right-meta-item"><p>Last Updated: {updated}</p></div>
-                )}
+                {updated && (<div className="research-hero__right-meta-item"><p>Last Updated: {updated}</p></div>)}
               </div>
               {(refs > 0 || mmas) && (
                 <div className="research-hero__right-snapshot">
@@ -160,6 +157,15 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
             </div>
           </div>
         </div>
+
+        {signature?.levels && (
+          <section id="rgbc-database" style={{ padding: "2.5rem 1.5rem", borderTop: "1px solid #eee", maxWidth: 1100, margin: "0 auto" }}>
+            <h2 className="rgbc-archive__title" style={{ marginBottom: "1.25rem" }}>
+              Microbiome Signature: {item.title}
+            </h2>
+            <MicrobiomeSignature slug={slug} levels={signature.levels} />
+          </section>
+        )}
 
         <div className="research-content">
           <div className="research-content__wrapper">
