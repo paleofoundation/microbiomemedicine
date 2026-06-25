@@ -67,6 +67,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const authors: Author[] = Array.isArray(meta.authors) ? (meta.authors as Author[]) : [];
   const didYouKnow = typeof meta.did_you_know === "string" ? meta.did_you_know.replace(/^Did you know\??\s*/i, "") : null;
   const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
+  const hasSignature = !!signature?.levels;
   const img = stripHost(item.featured_image_url);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
@@ -103,9 +104,11 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
               <div className="research-hero__categories"></div>
 
               <div className="research-hero__center-tags">
-                <a className="research-hero__center-tag" href="#rgbc-database">
-                  <img src="/wp-content/themes/rgbcode/static_media/examinedatabase_white.webp" alt="" width={18} height={18} /> Microbiome Signature
-                </a>
+                {hasSignature && (
+                  <button type="button" data-modal-id="research-diagram-modal" className="research-hero__center-tag" style={{ cursor: "pointer", border: "none", font: "inherit" }}>
+                    <img src="/wp-content/themes/rgbcode/static_media/examinedatabase_white.webp" alt="" width={18} height={18} /> Microbiome Signature
+                  </button>
+                )}
                 <a className="research-hero__center-tag" href="#h-interventions">
                   <img src="/wp-content/themes/rgbcode/static_media/research.webp" alt="" width={18} height={18} /> Interventions
                 </a>
@@ -158,13 +161,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
           </div>
         </div>
 
-        {signature?.levels && (
-          <section id="rgbc-database" style={{ padding: "2.5rem 1.5rem", borderTop: "1px solid #eee", maxWidth: 1100, margin: "0 auto" }}>
-            <h2 className="rgbc-archive__title" style={{ marginBottom: "1.25rem" }}>
-              Microbiome Signature: {item.title}
-            </h2>
-            <MicrobiomeSignature slug={slug} levels={signature.levels} />
-          </section>
+        {hasSignature && (
+          <MicrobiomeSignature slug={slug} title={item.title} levels={signature!.levels!} />
         )}
 
         <div className="research-content">
