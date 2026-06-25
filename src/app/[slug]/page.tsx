@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getRootBySlug } from "@/lib/content";
+import { getRootBySlug, stripHost } from "@/lib/content";
 import { ArticleView } from "@/components/ArticleView";
+import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -11,10 +12,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const item = await getRootBySlug(slug);
   if (!item) return {};
-  return {
-    title: item.seo_title || item.title,
-    description: item.seo_description || undefined,
-  };
+  const meta = (item.meta || {}) as Record<string, unknown>;
+  const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
+  const image = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
+  return buildMetadata(item, { path: `/${slug}`, type: item.type, authors, image });
 }
 
 export default async function RootContentPage({ params }: Props) {

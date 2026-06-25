@@ -6,10 +6,13 @@ import { Feedback } from "@/components/Feedback";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://microbiomemedicine.com"),
   title: {
     default: "Microbiome Signatures",
     template: "%s — Microbiome Signatures",
   },
+  openGraph: { siteName: "Microbiome Signatures", type: "website" },
+  twitter: { card: "summary_large_image" },
   description:
     "A research-grounded reference on the human microbiome — microbes, conditions, interventions, and the evidence connecting them.",
 };

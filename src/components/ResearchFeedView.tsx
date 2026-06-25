@@ -5,6 +5,8 @@ import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
+import { JsonLd } from "@/components/JsonLd";
+import { buildJsonLd } from "@/lib/seo";
 
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
 type Feed = {
@@ -56,9 +58,22 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];
   const contentHtml = graphsHtml(feed) + (item.content_html || "");
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
+  const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];
+  const jsonLd = buildJsonLd(item, {
+    path: `/research-feeds/${slug}`,
+    type: "research-feed",
+    authors,
+    doi,
+    breadcrumbs: [
+      { name: "Home", url: "/" },
+      { name: "Research Feeds", url: "/research-feeds" },
+      { name: item.title, url: `/research-feeds/${slug}` },
+    ],
+  });
 
   return (
     <div className="site-content flex">
+      <JsonLd data={jsonLd} />
       <main className="main">
         <div className="research-hero ">
           <div className="research-hero__wrapper">

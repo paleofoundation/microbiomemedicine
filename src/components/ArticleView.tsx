@@ -10,6 +10,8 @@ import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
 import { PageSnapshot } from "@/components/PageSnapshot";
 import { RightRail } from "@/components/RightRail";
+import { JsonLd } from "@/components/JsonLd";
+import { buildMetadata, buildJsonLd } from "@/lib/seo";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -63,8 +65,8 @@ function escapeHtml(s: string): string {
 
 // The original FAQ section was generated at runtime (never stored). Rebuild it
 // from the page's own sections so the FAQs heading isn't empty.
-function injectFaqs(html: string, title: string): string {
-  if (!/id="h-faqs"/.test(html)) return html;
+function getFaqs(html: string, title: string): { q: string; a: string }[] {
+  if (!/id="h-faqs"/.test(html)) return [];
   const qmap: [RegExp, string][] = [
     [/overview/i, `What is ${title}?`],
     [/associated conditions/i, `What conditions are associated with ${title}?`],
@@ -96,7 +98,11 @@ function injectFaqs(html: string, title: string): string {
     if (a.length > 700) a = a.slice(0, 700).replace(/\s+\S*$/, "") + "…";
     faqs.push({ q, a });
   }
-  if (!faqs.length) return html;
+  return faqs;
+}
+
+function injectFaqs(html: string, faqs: { q: string; a: string }[]): string {
+  if (!faqs.length || !/id="h-faqs"/.test(html)) return html;
   const acc =
     `<div class="rgbc-faq-block">` +
     faqs.map((f) => `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${escapeHtml(f.q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${escapeHtml(f.a)}</div></details>`).join("") +
@@ -149,7 +155,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
-  const contentHtml = injectFaqs(html, item.title);
+  const faqs = getFaqs(html, item.title);
+  const contentHtml = injectFaqs(html, faqs);
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
@@ -166,9 +173,23 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const img = heroImg || stripHost(item.featured_image_url);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
+  const selfPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+  const jsonLd = buildJsonLd(item, {
+    path: selfPath,
+    type: section.type,
+    authors,
+    image: img,
+    faqs,
+    breadcrumbs: [
+      { name: "Home", url: "/" },
+      { name: section.label, url: section.type === "post" ? "/" : `/${segment}` },
+      { name: item.title, url: selfPath },
+    ],
+  });
 
   return (
     <div className="site-content flex">
+      <JsonLd data={jsonLd} />
       <main className="main">
         <div className="research-hero ">
           <div className="research-hero__wrapper">
@@ -304,12 +325,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 }
 
 export async function articleMetadata(segment: string, slug: string): Promise<Metadata> {
-  const section = sectionBySegment(segment);
-  if (!section) return {};
+  const section = sectionBySegment(segment) ?? { segment: "", type: "post", label: "Blog", nav: "Blog", blurb: "" };
   const item = await getItem(section.type, slug);
   if (!item) return {};
-  return {
-    title: item.seo_title || item.title,
-    description: item.seo_description || undefined,
-  };
+  const meta = (item.meta || {}) as Record<string, unknown>;
+  const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
+  const image = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
+  const path = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+  return buildMetadata(item, { path, type: section.type, authors, image });
 }
