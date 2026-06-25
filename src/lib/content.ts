@@ -37,6 +37,9 @@ export const SECTIONS: Section[] = [
 export const sectionBySegment = (segment: string): Section | undefined =>
   SECTIONS.find((s) => s.segment === segment);
 
+export const segmentForType = (type: string): string =>
+  SECTIONS.find((s) => s.type === type)?.segment ?? type;
+
 // Internal-link/image URLs were already made root-relative on import; this also
 // covers any absolute featured-image URLs still pointing at the old host.
 export const stripHost = (url: string | null | undefined): string | null =>

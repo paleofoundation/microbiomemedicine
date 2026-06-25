@@ -1,4 +1,5 @@
 import { createSupabaseServer } from "@/lib/supabase/server";
+import { segmentForType } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -7,18 +8,18 @@ function fmtDate(d?: string | null) {
   return new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 }
 
-type CI = { title: string; slug: string; segment: string; modified_at: string | null };
+type CI = { title: string; slug: string; type: string; modified_at: string | null };
 
 export default async function DashboardHome() {
   const supabase = await createSupabaseServer();
   const { data } = await supabase
     .from("favorites")
-    .select("created_at, content_items(title, slug, segment, modified_at)")
+    .select("created_at, content_items(title, slug, type, modified_at)")
     .order("created_at", { ascending: false });
 
   const rows = (data ?? []).map((r) => {
     const ci = (Array.isArray(r.content_items) ? r.content_items[0] : r.content_items) as CI | undefined;
-    return ci ? { title: ci.title, href: `/${ci.segment}/${ci.slug}`, updated: ci.modified_at } : null;
+    return ci ? { title: ci.title, href: `/${segmentForType(ci.type)}/${ci.slug}`, updated: ci.modified_at } : null;
   }).filter(Boolean) as { title: string; href: string; updated: string | null }[];
 
   return (
