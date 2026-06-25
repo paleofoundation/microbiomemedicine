@@ -49,7 +49,7 @@ function extractStudies(html: string): { title: string; url: string }[] {
     if (!title || seen.has(title)) continue;
     seen.add(title);
     const reviewM = /rgbc-reference-tooltip__btn[^>]*href="([^"]+)"/.exec(block);
-    out.push({ title, url: reviewM ? stripHost(reviewM[1]) : titleM[1] });
+    out.push({ title, url: reviewM ? (stripHost(reviewM[1]) || reviewM[1]) : titleM[1] });
   }
   return out;
 }
