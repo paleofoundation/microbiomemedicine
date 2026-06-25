@@ -143,8 +143,7 @@ function RightSidebar() {
 }
 
 export async function ArticleView({ segment, slug }: { segment: string; slug: string }) {
-  const section = sectionBySegment(segment);
-  if (!section) notFound();
+  const section = sectionBySegment(segment) ?? { segment: "", type: "post", label: "Blog", nav: "Blog", blurb: "" };
   const item = await getItem(section.type, slug);
   if (!item) notFound();
 
@@ -186,8 +185,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
               <nav className="breadcrumb">
                 <ol className="breadcrumb__wrapper">
                   <li className="breadcrumb__item"><Link className="breadcrumb__link" href="/">Home</Link></li>
-                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={`/${segment}`}>{section.label}</Link></li>
-                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={`/${segment}/${slug}`}>{item.title}</Link></li>
+                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={section.type === "post" ? "/" : `/${segment}`}>{section.label}</Link></li>
+                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={section.type === "post" ? `/${slug}` : `/${segment}/${slug}`}>{item.title}</Link></li>
                   <li className="breadcrumb__item"><span className="breadcrumb_last"><span className="badge">✓ Evidence based</span></span></li>
                 </ol>
               </nav>
