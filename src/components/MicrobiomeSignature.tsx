@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 
 type Item = { name: string; value: number; has_info?: boolean };
 const LEVEL_ORDER = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"];
+const SIGNATURE_DEF =
+  "A microbiome signature is defined through a comprehensive approach that integrates differential abundance analysis across multiple datasets, followed by interpretation for biological relevance. This rigorous process ensures that the identified signature is both statistically robust and biologically meaningful. Associations that do not meet statistical significance or lack mechanistic relevance are excluded from the final signature.";
 
 function colorFor(value: number, hasInfo?: boolean): string {
   if (value > 0) return hasInfo ? "#f04c4c" : "#efbdbd";
@@ -27,6 +29,7 @@ export function MicrobiomeSignature({
   const [active, setActive] = useState<string | null>(null);
   const [detail, setDetail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   // The hero "Microbiome Signature" button carries data-modal-id="research-diagram-modal".
   useEffect(() => {
@@ -68,7 +71,7 @@ export function MicrobiomeSignature({
       onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
       style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
     >
-      <div style={{ background: "#fff", borderRadius: 12, maxWidth: 1080, width: "100%", maxHeight: "92vh", overflow: "auto", display: "flex", flexWrap: "wrap", position: "relative" }}>
+      <div role="dialog" aria-label={`Microbiome signature for ${title}`} style={{ background: "#fff", borderRadius: 12, maxWidth: 1080, width: "100%", maxHeight: "92vh", overflow: "auto", display: "flex", flexWrap: "wrap", position: "relative" }}>
         <button
           onClick={() => setOpen(false)}
           aria-label="Close"
@@ -77,16 +80,24 @@ export function MicrobiomeSignature({
           ✕
         </button>
 
-        <div style={{ flex: "1 1 480px", minWidth: 0, padding: "1.5rem" }}>
-          <h3 style={{ fontFamily: "var(--font-serif)", color: "#cc3333", fontSize: "1.2rem", marginBottom: ".9rem" }}>
-            Microbiome Signature: {title}
-          </h3>
-          <div style={{ display: "flex", gap: ".35rem", flexWrap: "wrap", marginBottom: ".5rem" }}>
-            {available.map((l) => (
-              <button key={l} onClick={() => setLevel(l)} style={{ padding: ".25rem .65rem", borderRadius: 6, border: "1px solid #e5e7eb", background: l === level ? "#cc3333" : "#fff", color: l === level ? "#fff" : "#333", fontSize: ".78rem", cursor: "pointer" }}>{l}</button>
-            ))}
+        <div style={{ flex: "1 1 480px", minWidth: 0, padding: 0 }}>
+          <div style={{ position: "relative" }}>
+            <div style={{ background: "#cc3333", color: "#fff", padding: ".7rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem", fontFamily: "var(--font-serif)", fontWeight: 600, fontSize: "1.1rem", borderRadius: "12px 0 0 0" }}>
+              <span
+                onMouseEnter={() => setShowInfo(true)}
+                onMouseLeave={() => setShowInfo(false)}
+                aria-label="What is a microbiome signature?"
+                style={{ cursor: "help", border: "1.5px solid #fff", borderRadius: "50%", width: 18, height: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: ".72rem", fontStyle: "italic", flexShrink: 0, fontFamily: "var(--font-sans)" }}
+              >i</span>
+              Relative Abundance ({level})
+            </div>
+            {showInfo && (
+              <div style={{ position: "absolute", top: "calc(100% - 4px)", left: 16, zIndex: 5, background: "#fff", color: "#222", padding: "1.1rem 1.35rem", borderRadius: 8, boxShadow: "0 14px 34px rgba(0,0,0,.24)", maxWidth: 400, fontSize: ".88rem", lineHeight: 1.55 }}>
+                {SIGNATURE_DEF}
+              </div>
+            )}
           </div>
-          <p style={{ textAlign: "center", fontWeight: 600, margin: ".25rem 0" }}>Relative Abundance ({level})</p>
+          <div style={{ padding: "1.25rem 1.5rem" }}>
           <svg viewBox={`0 0 ${size} ${size}`} style={{ width: "100%", maxWidth: size, height: "auto" }}>
             {items.map((it, i) => {
               const ang = (i / n) * 2 * Math.PI - Math.PI / 2;
@@ -103,11 +114,17 @@ export function MicrobiomeSignature({
               );
             })}
           </svg>
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", fontSize: ".72rem", marginTop: ".4rem", color: "#444" }}>
+          <div style={{ display: "flex", gap: ".35rem", flexWrap: "wrap", justifyContent: "center", marginTop: ".85rem" }}>
+            {available.map((l) => (
+              <button key={l} onClick={() => setLevel(l)} style={{ padding: ".3rem .7rem", borderRadius: 6, border: "1px solid #e5e7eb", background: l === level ? "#cc3333" : "#fff", color: l === level ? "#fff" : "#333", fontSize: ".78rem", cursor: "pointer" }}>{l}</button>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", fontSize: ".72rem", marginTop: ".75rem", color: "#444" }}>
             <span style={{ color: "#f04c4c" }}>● Increased (info)</span>
             <span style={{ color: "#efbdbd" }}>● Increased</span>
             <span style={{ color: "#183fab" }}>● Decreased (info)</span>
             <span style={{ color: "#b5b9d2" }}>● Decreased</span>
+          </div>
           </div>
         </div>
 

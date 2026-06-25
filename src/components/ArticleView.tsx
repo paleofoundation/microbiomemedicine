@@ -169,13 +169,16 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
               {avatars.length > 0 && (
                 <div className="research-hero__right-users">
                   <ul className="research-hero__tooltips-list research-hero__tooltips-list--an-image-as-link">
-                    {avatars.map((a, i) => (
-                      <li key={i}>
-                        <span className="rgbc-tooltip">
-                          <img alt={a.name} src={a.avatar as string} className="avatar avatar-96 photo" height={96} width={96} />
-                        </span>
-                      </li>
-                    ))}
+                    {avatars.map((a, i) => {
+                      const ai = authors.indexOf(a);
+                      return (
+                        <li key={i}>
+                          <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${ai}` : undefined}>
+                            <img alt={a.name} src={a.avatar as string} className="avatar avatar-96 photo" height={96} width={96} />
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -187,7 +190,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                       <ul className="research-hero__tooltips-list ">
                         {authors.map((a, i) => (
                           <li key={i}>
-                            <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${i}` : undefined}>{a.name}</span>
+                            <span>{a.name}</span>
                             {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
                           </li>
                         ))}

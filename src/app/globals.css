@@ -29,6 +29,9 @@
 .tooltip__header {
   font-size: 0.8rem;
   line-height: 1.45;
+  color: #222;
 }
-.tooltip__header { font-weight: 600; }
+.tooltip__header { font-weight: 600; color: #111; }
+.tooltip__content { color: #333; }
 .tooltip__content p { margin: 0 0 0.4rem; }
+.tooltip__content a { color: #183fab; font-weight: 600; }
