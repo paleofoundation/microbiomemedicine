@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Brand design system — recreated from the original Microbiome Signatures
+ * WordPress theme ("rgbcode"). Fonts: Lora (serif headings) + Inter (sans body).
+ */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #111111;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Primary crimson + variants */
+  --color-primary: #cc3333;
+  --color-primary-dark: #a02727;
+  --color-primary-100: #f7e6e6;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Accents */
+  --color-accent: #562e69;
+  --color-navy: #020261;
+
+  /* Microbiome association-data colors (known/unknown × positive/negative) */
+  --color-known-positive: #f04c4c;
+  --color-unknown-positive: #efbdbd;
+  --color-known-negative: #183fab;
+  --color-unknown-negative: #b5b9d2;
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: var(--font-lora), Georgia, "Times New Roman", serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 600;
 }
