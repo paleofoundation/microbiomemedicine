@@ -35,3 +35,12 @@
 .tooltip__content { color: #333; }
 .tooltip__content p { margin: 0 0 0.4rem; }
 .tooltip__content a { color: #183fab; font-weight: 600; }
+
+/* Auto-generated FAQ accordion under the FAQs heading. */
+.rgbc-faq-accordion { margin: 1rem 0 1.5rem; }
+.rgbc-faq { border-bottom: 1px dashed #d4d4d8; padding: 0.85rem 0; }
+.rgbc-faq summary { cursor: pointer; font-weight: 600; color: var(--color-primary); list-style: none; font-size: 1.05rem; }
+.rgbc-faq summary::-webkit-details-marker { display: none; }
+.rgbc-faq summary::before { content: "+ "; font-weight: 700; }
+.rgbc-faq[open] summary::before { content: "\2013 "; }
+.rgbc-faq__a { padding-top: 0.5rem; color: #333; line-height: 1.6; }

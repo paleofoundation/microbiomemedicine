@@ -54,6 +54,52 @@ function extractStudies(html: string): { title: string; url: string }[] {
   return out;
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// The original FAQ section was generated at runtime (never stored). Rebuild it
+// from the page's own sections so the FAQs heading isn't empty.
+function injectFaqs(html: string, title: string): string {
+  if (!/id="h-faqs"/.test(html)) return html;
+  const qmap: [RegExp, string][] = [
+    [/overview/i, `What is ${title}?`],
+    [/associated conditions/i, `What conditions are associated with ${title}?`],
+    [/causes/i, `What causes ${title}?`],
+    [/symptoms/i, `What are the symptoms of ${title}?`],
+    [/diagnos/i, `How is ${title} diagnosed?`],
+    [/treatment|intervention/i, `What helps treat ${title}?`],
+    [/prevent/i, `Can ${title} be prevented?`],
+    [/risk/i, `What are the risk factors for ${title}?`],
+  ];
+  const faqs: { q: string; a: string }[] = [];
+  const re = /<h2\b[^>]*>([\s\S]*?)<\/h2>([\s\S]*?)(?=<h2\b|$)/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    const heading = m[1].replace(/<[^>]+>/g, "").trim();
+    if (!heading) continue;
+    let q = "";
+    for (const [rx, qq] of qmap) { if (rx.test(heading)) { q = qq; break; } }
+    if (!q || faqs.some((f) => f.q === q)) continue;
+    let a = "";
+    const pre = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+    let pm: RegExpExecArray | null;
+    while ((pm = pre.exec(m[2]))) {
+      const t = pm[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (t.length >= 40) { a = t; break; }
+    }
+    if (!a) continue;
+    if (a.length > 700) a = a.slice(0, 700).replace(/\s+\S*$/, "") + "…";
+    faqs.push({ q, a });
+  }
+  if (!faqs.length) return html;
+  const acc =
+    `<div class="rgbc-faq-accordion">` +
+    faqs.map((f) => `<details class="rgbc-faq"><summary>${escapeHtml(f.q)}</summary><div class="rgbc-faq__a"><p>${escapeHtml(f.a)}</p></div></details>`).join("") +
+    `</div>`;
+  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>[\s\S]*?<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1${acc}`);
+}
+
 function RightSidebar() {
   return (
     <div className="research-content__right js-research-sidebar">
@@ -84,6 +130,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
+  const contentHtml = injectFaqs(html, item.title);
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
@@ -245,7 +292,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
               </div>
             </div>
 
-            <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: html }} />
+            <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
 
             <RightSidebar />
           </div>
