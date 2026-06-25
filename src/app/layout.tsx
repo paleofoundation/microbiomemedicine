@@ -1,20 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Lora } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const lora = Lora({
-  variable: "--font-lora",
-  subsets: ["latin"],
-  display: "swap",
-});
+import "@/styles/theme-wp.css";
+import { HEADER_HTML, FOOTER_HTML } from "@/theme/themeHtml";
 
 export const metadata: Metadata = {
   title: {
@@ -31,14 +18,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${lora.variable} h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col">
-        <SiteHeader />
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
+        {/* Original rgbcode theme header (mega-menu + logo) */}
+        <div dangerouslySetInnerHTML={{ __html: HEADER_HTML }} />
+        {children}
+        {/* Original rgbcode theme footer */}
+        <div dangerouslySetInnerHTML={{ __html: FOOTER_HTML }} />
       </body>
     </html>
   );
