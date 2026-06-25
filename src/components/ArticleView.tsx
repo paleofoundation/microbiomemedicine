@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { sectionBySegment, getItem, stripHost } from "@/lib/content";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
+import { AUTHOR_BIOS } from "@/theme/authorsBios";
+import { StudyActions } from "@/components/StudyActions";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -72,6 +74,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   // Per-type hero features (from auditing each post type's real page).
   const showInterventions = section.type === "condition";
   const showResearchFeed = ["condition", "microbe", "intervention", "definition", "metal", "guide", "post"].includes(section.type);
+  const showStudyActions = ["theory", "research-feed"].includes(section.type);
   // Dedicated left-panel illustration (separate from the featured image).
   const heroImg = typeof meta.hero_image === "string" ? meta.hero_image : null;
   const img = heroImg || stripHost(item.featured_image_url);
@@ -128,6 +131,14 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                   )}
                 </div>
               )}
+              {showStudyActions && (
+                <StudyActions
+                  title={item.title}
+                  authors={authors.map((a) => a.name)}
+                  year={updated ? updated.slice(0, 4) : undefined}
+                  url={`https://microbiomemedicine.com/${segment}/${slug}/`}
+                />
+              )}
             </div>
 
             <div className="research-hero__right">
@@ -152,7 +163,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                       <ul className="research-hero__tooltips-list ">
                         {authors.map((a, i) => (
                           <li key={i}>
-                            <span className="rgbc-tooltip">{a.name}</span>
+                            <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${i}` : undefined}>{a.name}</span>
                             {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
                           </li>
                         ))}
@@ -169,6 +180,19 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                   {mmas ? <p>{mmas} Identified MMAs</p> : null}
                 </div>
               )}
+              {authors.map((a, i) => {
+                const b = AUTHOR_BIOS[a.name];
+                return b ? (
+                  <div key={i} className={`tooltip author-bio-${i}`}>
+                    <div className="tooltip__header">{a.name}</div>
+                    <div className="tooltip__content">
+                      {b.avatar && <img src={b.avatar} alt={a.name} className="avatar avatar-96 photo" />}
+                      <p>{b.bio}</p>
+                      {b.profile && <a href={b.profile}>Read More</a>}
+                    </div>
+                  </div>
+                ) : null;
+              })}
             </div>
           </div>
         </div>
