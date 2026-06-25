@@ -49,3 +49,18 @@
 .rgbc-faq-item[open] .rgbc-faq-icon { transform: rotate(180deg); }
 .rgbc-faq-a { margin: 0.85rem 0 0 2.6rem; padding-left: 1.1rem; border-left: 3px solid #e3b9b9; color: #333; line-height: 1.65; }
 .rgbc-faq-a strong { display: block; color: var(--color-primary); margin-bottom: 0.35rem; }
+
+/* References list: white number on a red circle (overrides the generic ol counter). */
+.entry-content ol.rgbc-references,
+.entry-content .rgbc-references { counter-reset: ref; list-style: none; padding-left: 0; }
+.entry-content .rgbc-references__item { counter-increment: ref; position: relative; padding-left: 3rem; margin-bottom: 1rem; list-style: none; }
+.entry-content .rgbc-references__item::before {
+  content: counter(ref);
+  position: absolute; left: 0; top: 0.1em;
+  width: 1.9rem; height: 1.9rem;
+  display: flex; align-items: center; justify-content: center;
+  background-color: var(--color-primary);
+  color: #fff !important;
+  font-size: 0.85rem; font-weight: 600; line-height: 1;
+  border-radius: 50%;
+}

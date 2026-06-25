@@ -7,6 +7,7 @@ import { Tooltips } from "@/components/Tooltips";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
+import { SectionNav, type NavGroup } from "@/components/SectionNav";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -98,6 +99,40 @@ function injectFaqs(html: string, title: string): string {
     faqs.map((f) => `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${escapeHtml(f.q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${escapeHtml(f.a)}</div></details>`).join("") +
     `</div>`;
   return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1Frequently Asked Questions$2${acc}`);
+}
+
+const SECTION_ICONS: Record<string, string> = {
+  "h-overview": "overview.webp",
+  "h-interventions": "research.webp",
+  "h-faqs": "faq.webp",
+  "rgbc-research-feed": "feed.webp",
+  "rgbc-update-history": "updates.webp",
+  "h-references": "references.webp",
+  "rgbc-database": "database.webp",
+};
+function sectionIcon(id: string, text: string): string {
+  if (SECTION_ICONS[id]) return SECTION_ICONS[id];
+  const t = (id + " " + text).toLowerCase();
+  if (/overview/.test(t)) return "overview.webp";
+  if (/interven/.test(t)) return "research.webp";
+  if (/faq/.test(t)) return "faq.webp";
+  if (/research|feed/.test(t)) return "feed.webp";
+  if (/update|history/.test(t)) return "updates.webp";
+  if (/reference/.test(t)) return "references.webp";
+  if (/signature|database|abundance/.test(t)) return "database.webp";
+  return "overview.webp";
+}
+function buildNavGroups(toc: Heading[], hasSignature: boolean): NavGroup[] {
+  const groups: NavGroup[] = [];
+  for (const h of toc) {
+    if (h.level === 2) groups.push({ id: h.id, text: h.text, icon: sectionIcon(h.id, h.text), children: [] });
+    else if (groups.length) groups[groups.length - 1].children.push({ id: h.id, text: h.text });
+  }
+  if (hasSignature && !groups.some((g) => g.id === "rgbc-database")) {
+    const sig: NavGroup = { id: "rgbc-database", text: "Microbiome Signature", icon: "database.webp", children: [], isSignature: true };
+    groups.splice(groups.length > 1 ? 1 : groups.length, 0, sig);
+  }
+  return groups;
 }
 
 function RightSidebar() {
@@ -278,19 +313,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 
         <div className="research-content">
           <div className="research-content__wrapper">
-            <div className="research-content__left js-research-sidebar">
-              <div className="research-content__left-menu">
-                <div className="post-content__list post-sidebar">
-                  {toc.map((h, i) => (
-                    <div key={i} className={`post-content__item post-content__item--h${h.level}`}>
-                      <span className="post-content__title">
-                        <a className="post-content__link" href={`#${h.id}`}>{h.text}</a>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <SectionNav groups={buildNavGroups(toc, hasSignature)} />
 
             <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
 
