@@ -68,6 +68,9 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const didYouKnow = typeof meta.did_you_know === "string" ? meta.did_you_know.replace(/^Did you know\??\s*/i, "") : null;
   const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
   const hasSignature = !!signature?.levels;
+  // Per-type hero features (from auditing each post type's real page).
+  const showInterventions = section.type === "condition";
+  const showResearchFeed = ["condition", "microbe", "intervention", "definition", "metal", "guide", "post"].includes(section.type);
   const img = stripHost(item.featured_image_url);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
@@ -103,19 +106,25 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 
               <div className="research-hero__categories"></div>
 
-              <div className="research-hero__center-tags">
-                {hasSignature && (
-                  <button type="button" data-modal-id="research-diagram-modal" className="research-hero__center-tag" style={{ cursor: "pointer", border: "none", font: "inherit" }}>
-                    <img src="/wp-content/themes/rgbcode/static_media/examinedatabase_white.webp" alt="" width={18} height={18} /> Microbiome Signature
-                  </button>
-                )}
-                <a className="research-hero__center-tag" href="#h-interventions">
-                  <img src="/wp-content/themes/rgbcode/static_media/research.webp" alt="" width={18} height={18} /> Interventions
-                </a>
-                <a className="research-hero__center-tag" href="#rgbc-research-feed">
-                  <img src="/wp-content/themes/rgbcode/static_media/researchfeed_white.webp" alt="" width={18} height={18} /> Research feed
-                </a>
-              </div>
+              {(hasSignature || showInterventions || showResearchFeed) && (
+                <div className="research-hero__center-tags">
+                  {hasSignature && (
+                    <button type="button" data-modal-id="research-diagram-modal" className="research-hero__center-tag" style={{ cursor: "pointer", border: "none", font: "inherit" }}>
+                      <img src="/wp-content/themes/rgbcode/static_media/examinedatabase_white.webp" alt="" width={18} height={18} /> Microbiome Signature
+                    </button>
+                  )}
+                  {showInterventions && (
+                    <a className="research-hero__center-tag" href="#h-interventions">
+                      <img src="/wp-content/themes/rgbcode/static_media/research.webp" alt="" width={18} height={18} /> Interventions
+                    </a>
+                  )}
+                  {showResearchFeed && (
+                    <a className="research-hero__center-tag" href="/research-feeds">
+                      <img src="/wp-content/themes/rgbcode/static_media/researchfeed_white.webp" alt="" width={18} height={18} /> Research feed
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="research-hero__right">
