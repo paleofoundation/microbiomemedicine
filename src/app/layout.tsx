@@ -15,6 +15,11 @@ export const metadata: Metadata = {
 // Point the header search form at our search route.
 const headerHtml = HEADER_HTML.replace(/action="\/"/g, 'action="/search"');
 
+// Wire the footer newsletter forms to our subscribe endpoint.
+const footerHtml = FOOTER_HTML
+  .replace(/<form class="subscribe[^"]*js-subscribe-form"/g, '$& action="/api/subscribe" method="post"')
+  .replace(/<input type="email" class="subscribe__input"/g, '<input type="email" name="email" class="subscribe__input"');
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +38,7 @@ export default function RootLayout({
       <body>
         <div dangerouslySetInnerHTML={{ __html: headerHtml }} />
         {children}
-        <div dangerouslySetInnerHTML={{ __html: FOOTER_HTML }} />
+        <div dangerouslySetInnerHTML={{ __html: footerHtml }} />
       </body>
     </html>
   );
