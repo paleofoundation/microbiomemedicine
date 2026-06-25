@@ -59,6 +59,25 @@ export const listByType = cache(
   }
 );
 
+export type FeedItem = { slug: string; title: string; excerpt_html: string | null; modified_at: string | null };
+
+// All research-feed items (for the category-grouped view); pages past the 1000-row cap.
+export const listAllResearchFeeds = cache(async (): Promise<FeedItem[]> => {
+  const out: FeedItem[] = [];
+  for (let from = 0; from < 4000; from += 1000) {
+    const { data } = await supabase
+      .from("content_items")
+      .select("slug,title,excerpt_html,modified_at")
+      .eq("type", "research-feed")
+      .eq("status", "publish")
+      .range(from, from + 999);
+    if (!data || data.length === 0) break;
+    out.push(...(data as FeedItem[]));
+    if (data.length < 1000) break;
+  }
+  return out;
+});
+
 export const getItem = cache(async (type: string, slug: string) => {
   const { data } = await supabase
     .from("content_items")
