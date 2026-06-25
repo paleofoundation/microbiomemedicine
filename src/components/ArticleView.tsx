@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { sectionBySegment, getItem, stripHost } from "@/lib/content";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
+import { Tooltips } from "@/components/Tooltips";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -71,7 +72,9 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   // Per-type hero features (from auditing each post type's real page).
   const showInterventions = section.type === "condition";
   const showResearchFeed = ["condition", "microbe", "intervention", "definition", "metal", "guide", "post"].includes(section.type);
-  const img = stripHost(item.featured_image_url);
+  // Dedicated left-panel illustration (separate from the featured image).
+  const heroImg = typeof meta.hero_image === "string" ? meta.hero_image : null;
+  const img = heroImg || stripHost(item.featured_image_url);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
 
@@ -173,6 +176,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         {hasSignature && (
           <MicrobiomeSignature slug={slug} title={item.title} levels={signature!.levels!} />
         )}
+        <Tooltips />
 
         <div className="research-content">
           <div className="research-content__wrapper">
