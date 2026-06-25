@@ -35,6 +35,25 @@ function referenceCount(html: string): number {
   return nums.size;
 }
 
+// The signature modal's "Studies" list = the page's referenced studies.
+function extractStudies(html: string): { title: string; url: string }[] {
+  const out: { title: string; url: string }[] = [];
+  const seen = new Set<string>();
+  const re = /rgbc-reference-tooltip__content[^>]*>([\s\S]*?)<\/div>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    const block = m[1];
+    const titleM = /<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/.exec(block);
+    if (!titleM) continue;
+    const title = titleM[2].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    if (!title || seen.has(title)) continue;
+    seen.add(title);
+    const reviewM = /rgbc-reference-tooltip__btn[^>]*href="([^"]+)"/.exec(block);
+    out.push({ title, url: reviewM ? stripHost(reviewM[1]) : titleM[1] });
+  }
+  return out;
+}
+
 function RightSidebar() {
   return (
     <div className="research-content__right js-research-sidebar">
@@ -88,10 +107,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         <div className="research-hero ">
           <div className="research-hero__wrapper">
             <div className="research-hero__left">
-              <div className="research-hero__left-content">
-                {img && <img src={img} alt={item.title} className="img-autosize" />}
-                {didYouKnow && (<p><strong>Did you know?</strong><br />{didYouKnow}</p>)}
-              </div>
+              {img && <img src={img} alt={item.title} className="research-hero__left-image" />}
+              {didYouKnow && (
+                <div className="research-hero__left-content">
+                  <p><strong>Did you know?</strong><br />{didYouKnow}</p>
+                </div>
+              )}
             </div>
 
             <div className="research-hero__center">
@@ -201,7 +222,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         </div>
 
         {hasSignature && (
-          <MicrobiomeSignature slug={slug} title={item.title} levels={signature!.levels!} />
+          <MicrobiomeSignature slug={slug} title={item.title} levels={signature!.levels!} studies={extractStudies(html)} />
         )}
         <Tooltips />
 

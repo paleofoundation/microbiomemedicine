@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "@/styles/theme-wp.css";
 import { HEADER_HTML, FOOTER_HTML } from "@/theme/themeHtml";
+import { Feedback } from "@/components/Feedback";
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,7 @@ export default function RootLayout({
         <div dangerouslySetInnerHTML={{ __html: headerHtml }} />
         {children}
         <div dangerouslySetInnerHTML={{ __html: footerHtml }} />
+        <Feedback />
       </body>
     </html>
   );

@@ -14,10 +14,12 @@ export function MicrobiomeSignature({
   slug,
   title,
   levels,
+  studies,
 }: {
   slug: string;
   title: string;
   levels: Record<string, Item[]>;
+  studies: { title: string; url: string }[];
 }) {
   const available = LEVEL_ORDER.filter((l) => levels[l]?.length);
   const [open, setOpen] = useState(false);
@@ -117,6 +119,18 @@ export function MicrobiomeSignature({
             </>
           ) : (
             <p style={{ color: "#6b7280" }}>Select a highlighted organism (solid dot) to see its Overview, Metallome, Estrobolome, Body-site, and Studies.</p>
+          )}
+          {studies.length > 0 && (
+            <details open style={{ marginTop: "1.25rem", borderTop: "1px solid #e5e7eb", paddingTop: "1rem" }}>
+              <summary style={{ color: "#cc3333", fontWeight: 600, fontFamily: "var(--font-serif)", fontSize: "1.05rem", cursor: "pointer" }}>Studies</summary>
+              <ul style={{ margin: ".6rem 0 0", paddingLeft: "1.1rem", maxHeight: 260, overflowY: "auto", fontSize: ".82rem", lineHeight: 1.5 }}>
+                {studies.map((s, i) => (
+                  <li key={i} style={{ marginBottom: ".45rem" }}>
+                    <a href={s.url} target="_blank" rel="noreferrer" style={{ color: "#cc3333", textDecoration: "none" }}>{s.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </details>
           )}
         </div>
       </div>
