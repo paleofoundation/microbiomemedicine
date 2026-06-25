@@ -1,19 +1,10 @@
-import { getRootBySlug } from "@/lib/content";
+import { HOME_HTML } from "@/theme/homeMain";
 
 export const revalidate = 3600;
 
-export default async function Home() {
-  // The original WordPress front page (wp_link "/").
-  const home = await getRootBySlug("microbiome-signatures-home-new");
+// Original WordPress homepage markup, with old-host URLs made relative.
+const html = HOME_HTML.replace(/https?:\/\/(www\.)?microbiomemedicine\.com/g, "");
 
-  return (
-    <div className="site-content flex">
-      <main className="main">
-        <div
-          className="entry-content"
-          dangerouslySetInnerHTML={{ __html: home?.content_html || "" }}
-        />
-      </main>
-    </div>
-  );
+export default function Home() {
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }
