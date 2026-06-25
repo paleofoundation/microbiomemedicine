@@ -1,51 +1,72 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { sectionBySegment, listByType } from "@/lib/content";
+import { sectionBySegment, listByType, type ListItem } from "@/lib/content";
 
-export async function ArchiveView({ segment, page = 1 }: { segment: string; page?: number }) {
+export async function ArchiveView({ segment }: { segment: string; page?: number }) {
   const section = sectionBySegment(segment);
   if (!section) notFound();
 
-  const { items, total, pageSize } = await listByType(section.type, page);
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const { items, total } = await listByType(section.type, 1, 1000);
+
+  // Group alphabetically by first letter (matches the original A–Z archive).
+  const groups = new Map<string, ListItem[]>();
+  for (const it of items) {
+    const first = (it.title.trim()[0] || "#").toUpperCase();
+    const key = /[A-Z]/.test(first) ? first : "#";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(it);
+  }
+  const letters = [...groups.keys()].sort();
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      <p className="text-sm font-medium uppercase tracking-wide text-[var(--color-primary)]">
-        Reference
-      </p>
-      <h1 className="mt-1 font-serif text-3xl font-semibold text-gray-900">{section.label}</h1>
-      <p className="mt-2 max-w-2xl text-gray-600">{section.blurb}</p>
-      <p className="mt-1 text-sm text-gray-500">{total} entries</p>
+    <div className="site-content flex">
+      <main className="main">
+        <div className="rgbc-hero">
+          <div className="rgbc-hero__wrapper wrapper">
+            <div className="rgbc-hero__center rgbc-hero__center--archive">
+              <nav className="breadcrumb">
+                <ol className="breadcrumb__wrapper">
+                  <li className="breadcrumb__item">
+                    <Link className="breadcrumb__link" href="/">Home</Link>
+                  </li>
+                  <li className="breadcrumb__item">
+                    <span className="breadcrumb_last"><span className="badge">{section.label}</span></span>
+                  </li>
+                </ol>
+              </nav>
+              <div className="rgbc-hero__content">
+                <h1 className="rgbc-hero__title">{section.label}</h1>
+                <p>{section.blurb}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it) => (
-          <li key={it.id}>
-            <Link
-              href={`/${segment}/${it.slug}`}
-              className="block h-full rounded-lg border border-gray-200 p-4 transition hover:border-[var(--color-primary)] hover:shadow-sm"
-            >
-              <h2 className="font-serif text-lg font-semibold text-gray-900">{it.title}</h2>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      {totalPages > 1 && (
-        <nav className="mt-10 flex items-center justify-center gap-4 text-sm">
-          {page > 1 && (
-            <Link className="rounded border border-gray-300 px-3 py-1.5 hover:border-[var(--color-primary)]" href={`/${segment}?page=${page - 1}`}>
-              ← Previous
-            </Link>
-          )}
-          <span className="text-gray-500">Page {page} of {totalPages}</span>
-          {page < totalPages && (
-            <Link className="rounded border border-gray-300 px-3 py-1.5 hover:border-[var(--color-primary)]" href={`/${segment}?page=${page + 1}`}>
-              Next →
-            </Link>
-          )}
-        </nav>
-      )}
-    </main>
+        <section className="rgbc-content">
+          <div className="rgbc-content__wrapper wrapper">
+            <div className="rgbc-content__main rgbc-archive">
+              <h2 className="rgbc-archive__title">{total} {section.label}</h2>
+              <div className="rgbc-archive__letters">
+                {letters.map((L) => (
+                  <a key={L} className="rgbc-archive__item" href={`#letter-${L}`}>{L}</a>
+                ))}
+              </div>
+              {letters.map((L) => (
+                <div key={L}>
+                  <div className="rgbc-archive__header" id={`letter-${L}`}>
+                    <div className="rgbc-archive__letter">{L}</div>
+                  </div>
+                  {groups.get(L)!.map((it) => (
+                    <div key={it.id} className="rgbc-archive__post">
+                      <a className="rgbc-archive__link" href={`/${segment}/${it.slug}`}>{it.title}</a>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
