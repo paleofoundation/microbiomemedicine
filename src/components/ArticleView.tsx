@@ -94,10 +94,10 @@ function injectFaqs(html: string, title: string): string {
   }
   if (!faqs.length) return html;
   const acc =
-    `<div class="rgbc-faq-accordion">` +
-    faqs.map((f) => `<details class="rgbc-faq"><summary>${escapeHtml(f.q)}</summary><div class="rgbc-faq__a"><p>${escapeHtml(f.a)}</p></div></details>`).join("") +
+    `<div class="rgbc-faq-block">` +
+    faqs.map((f) => `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${escapeHtml(f.q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${escapeHtml(f.a)}</div></details>`).join("") +
     `</div>`;
-  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>[\s\S]*?<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1${acc}`);
+  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1Frequently Asked Questions$2${acc}`);
 }
 
 function RightSidebar() {
