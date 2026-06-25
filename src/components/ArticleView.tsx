@@ -8,6 +8,7 @@ import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
+import { PageSnapshot } from "@/components/PageSnapshot";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -282,13 +283,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                 )}
                 {updated && (<div className="research-hero__right-meta-item"><p>Last Updated: {updated}</p></div>)}
               </div>
-              {(refs > 0 || mmas) && (
-                <div className="research-hero__right-snapshot">
-                  <p><strong>Page Snapshot</strong></p>
-                  {refs > 0 && <p>{refs} References</p>}
-                  {mmas ? <p>{mmas} Identified MMAs</p> : null}
-                </div>
-              )}
+              {(refs > 0 || mmas) && <PageSnapshot refs={refs} mmas={mmas} />}
               {authors.map((a, i) => {
                 const b = AUTHOR_BIOS[a.name];
                 return b ? (
