@@ -194,11 +194,17 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         <div className="research-hero ">
           <div className="research-hero__wrapper">
             <div className="research-hero__left">
-              {img && <img src={img} alt={item.title} className="research-hero__left-image" />}
-              {didYouKnow && (
-                <div className="research-hero__left-content">
-                  <p><strong>Did you know?</strong><br />{didYouKnow}</p>
-                </div>
+              {section.type === "post" ? (
+                <div className="research-hero__left-content" dangerouslySetInnerHTML={{ __html: item.excerpt_html || "" }} />
+              ) : (
+                <>
+                  {img && <img src={img} alt={item.title} className="research-hero__left-image" />}
+                  {didYouKnow && (
+                    <div className="research-hero__left-content">
+                      <p><strong>Did you know?</strong><br />{didYouKnow}</p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
