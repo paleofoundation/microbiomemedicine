@@ -58,7 +58,8 @@ export function MicrobiomeSignature({
   if (!open) return null;
 
   const items = [...(levels[level] || [])].sort((a, b) => b.value - a.value);
-  const size = 560, cx = size / 2, cy = size / 2, R = size / 2 - 135, n = items.length || 1;
+  const size = 560, cx = size / 2, cy = size / 2, R = size / 2 - 165, n = items.length || 1;
+  const maxVal = Math.max(...items.map((x) => x.value), 1);
 
   return (
     <div
@@ -87,13 +88,14 @@ export function MicrobiomeSignature({
           <svg viewBox={`0 0 ${size} ${size}`} style={{ width: "100%", maxWidth: size, height: "auto" }}>
             {items.map((it, i) => {
               const ang = (i / n) * 2 * Math.PI - Math.PI / 2;
+              const rad = it.value > 0 ? 6 + 22 * (it.value / maxVal) : 6;
               const dx = cx + R * Math.cos(ang), dy = cy + R * Math.sin(ang);
-              const lx = cx + (R + 12) * Math.cos(ang), ly = cy + (R + 12) * Math.sin(ang);
+              const lx = cx + (R + rad + 8) * Math.cos(ang), ly = cy + (R + rad + 8) * Math.sin(ang);
               const deg = (ang * 180) / Math.PI, left = Math.cos(ang) < 0, rot = left ? deg + 180 : deg;
               const col = colorFor(it.value, it.has_info);
               return (
                 <g key={i} style={{ cursor: it.has_info ? "pointer" : "default" }} onClick={() => it.has_info && openOrg(it.name)}>
-                  <circle cx={dx} cy={dy} r={6} fill={col} stroke={active === it.name ? "#000" : "none"} strokeWidth={2} />
+                  <circle cx={dx} cy={dy} r={rad} fill={col} stroke={active === it.name ? "#000" : "none"} strokeWidth={2} />
                   <text x={lx} y={ly} fontSize={11} fill={col} fontWeight={it.has_info ? 700 : 400} textAnchor={left ? "end" : "start"} dominantBaseline="middle" transform={`rotate(${rot} ${lx} ${ly})`}>[{it.value}] {it.name}</text>
                 </g>
               );
