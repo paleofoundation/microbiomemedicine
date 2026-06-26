@@ -134,9 +134,13 @@ if (!cond) { console.error(`No condition row for slug=${slug}. Create the condit
   const { error } = await db.from("content_items").update({ meta }).eq("id", cond.id);
   console.log(error ? `condition update ERROR: ${error.message}` : `condition#${cond.id} meta.signature updated.`);
 }
-let created = 0, failed = 0;
-for (const r of feedRows) {
-  const { error } = await db.from("content_items").insert({ ...r, modified_at: new Date().toISOString() });
-  if (error) { failed++; if (failed < 4) console.log(`feed insert ERROR (${r.slug}): ${error.message}`); } else created++;
+if (args["signature-only"]) {
+  console.log(`(--signature-only) skipped ${feedRows.length} research-feed inserts.`);
+} else {
+  let created = 0, failed = 0;
+  for (const r of feedRows) {
+    const { error } = await db.from("content_items").insert({ ...r, modified_at: new Date().toISOString() });
+    if (error) { failed++; if (failed < 4) console.log(`feed insert ERROR (${r.slug}): ${error.message}`); } else created++;
+  }
+  console.log(`research-feed pages created: ${created}, failed: ${failed}`);
 }
-console.log(`research-feed pages created: ${created}, failed: ${failed}`);
