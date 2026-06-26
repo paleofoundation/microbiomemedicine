@@ -1,7 +1,8 @@
 import { Highlights } from "@/components/Highlights";
+import type { Connection } from "@/lib/connections";
 
-// Shared right rail: collapse arrow, Send feedback, Show-highlights toggle, Join the Roundtable.
-export function RightRail() {
+// Shared right rail: collapse arrow, Connections, Send feedback, Show-highlights toggle, Join the Roundtable.
+export function RightRail({ connections = [] }: { connections?: Connection[] }) {
   return (
     <div className="research-content__right js-research-sidebar">
       <div className="research-content__left-menu">
@@ -10,6 +11,16 @@ export function RightRail() {
             <path fill="#6C757D" fillRule="evenodd" d="M0 4.5a.6.6 0 0 0 .6.6H7L4.7 7.5a.6.6 0 1 0 .8.8l3.3-3.4a.6.6 0 0 0 0-.8L5.5.7a.6.6 0 0 0-.8.8L7 4H.6a.6.6 0 0 0-.6.6Z" clipRule="evenodd" />
           </svg>
         </button>
+        {connections.length > 0 && (
+          <div className="research-content__connections">
+            <span className="research-content__connections-title">Connections</span>
+            <ul className="research-content__connections-list">
+              {connections.map((c, i) => (
+                <li key={i}><a href={c.href}>{c.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="research-content__right-actions">
           <button type="button" className="btn btn--full btn--outline js-feedback">Send feedback</button>
           <Highlights />

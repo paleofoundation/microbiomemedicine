@@ -4,6 +4,7 @@ import { sectionBySegment, getItem, getWpHtml } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
+import { extractConnections } from "@/lib/connections";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { JsonLd } from "@/components/JsonLd";
@@ -75,6 +76,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const avatars = authors.filter((a) => a.avatar);
   const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];
   const contentHtml = graphsHtml(feed) + (item.content_html || "");
+  const connections = extractConnections(item.content_html || "", `/research-feeds/${slug}`);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];
   const jsonLd = buildJsonLd(item, {
@@ -211,7 +213,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
 
             <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
 
-            <RightRail />
+            <RightRail connections={connections} />
           </div>
         </div>
       </main>

@@ -94,3 +94,12 @@
   padding: 0.25rem 0.6rem !important;
 }
 .research-feed__footer .btn:hover { background: var(--color-primary) !important; color: #fff !important; }
+
+/* Connections: the other library entities a page links to, listed as blue links in the
+   right rail above Send feedback (auto-derived from the page's internal links). */
+.research-content__connections { margin-bottom: 1.25rem; }
+.research-content__connections-title { display: block; font-weight: 700; color: #1a1a2e; margin-bottom: 0.5rem; }
+.research-content__connections-list { list-style: none; margin: 0; padding: 0; }
+.research-content__connections-list li { margin: 0 0 0.3rem; line-height: 1.4; }
+.research-content__connections-list a { color: #1c43ad; text-decoration: none; font-size: 0.9rem; }
+.research-content__connections-list a:hover { text-decoration: underline; }
