@@ -48,7 +48,37 @@ export function WpInteractivity({ itemId }: { itemId: number }) {
       cleanups.push(() => b.removeEventListener("click", onClick));
     });
 
-    // Sidebar scroll-spy (active section + expand its children)
+    // Sidebar parent expand/collapse (ports front.js gA accordion): toggle `active`
+    // on a parent --h2 item and each following --h3 sibling until the next --h2.
+    const toggleChildren = (h2: Element, force?: boolean) => {
+      for (let n = h2.nextElementSibling; n && !n.classList.contains("post-content__item--h2"); n = n.nextElementSibling) {
+        if (force === undefined) n.classList.toggle("active");
+        else n.classList.toggle("active", force);
+      }
+    };
+    const hasChildren = (h2: Element) => {
+      for (let n = h2.nextElementSibling; n && !n.classList.contains("post-content__item--h2"); n = n.nextElementSibling) {
+        if (n.classList.contains("post-content__item--h3")) return true;
+      }
+      return false;
+    };
+    const onAccordionClick = (e: Event) => {
+      const h2 = (e.target as HTMLElement).closest?.(".post-content__item--h2");
+      if (!h2 || h2.classList.contains("sub-items-disabled") || !hasChildren(h2)) return;
+      const active = h2.classList.toggle("active");
+      toggleChildren(h2, active);
+    };
+    document.addEventListener("click", onAccordionClick);
+    cleanups.push(() => document.removeEventListener("click", onAccordionClick));
+
+    // Expand the first parent (Overview) on load, matching the live site.
+    const firstParent = document.querySelector(".post-content__item--h2.plus");
+    if (firstParent && !firstParent.classList.contains("active")) {
+      firstParent.classList.add("active");
+      toggleChildren(firstParent, true);
+    }
+
+    // Sidebar scroll-spy (active link) + smooth-scroll with sticky-header offset
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.post-content__link[href^="#"]'));
     if (links.length) {
       const ids = links.map((l) => l.getAttribute("href")!.slice(1)).filter(Boolean);
@@ -56,13 +86,28 @@ export function WpInteractivity({ itemId }: { itemId: number }) {
         let cur = "";
         for (const id of ids) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= 140) cur = id; }
         for (const l of links) {
-          const active = l.getAttribute("href") === "#" + cur;
-          l.classList.toggle("post-content__link--active", active);
+          l.classList.toggle("post-content__link--active", l.getAttribute("href") === "#" + cur);
         }
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
       cleanups.push(() => window.removeEventListener("scroll", onScroll));
+
+      for (const l of links) {
+        const onLinkClick = (e: Event) => {
+          const href = l.getAttribute("href");
+          if (!href || !href.startsWith("#")) return;
+          const target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          const header = document.querySelector<HTMLElement>(".header");
+          const offset = (header ? header.offsetHeight : 0) + 100;
+          const top = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: "smooth" });
+        };
+        l.addEventListener("click", onLinkClick);
+        cleanups.push(() => l.removeEventListener("click", onLinkClick));
+      }
     }
 
     // Favorite button -> Supabase

@@ -2,6 +2,7 @@ import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
 import { JsonLd } from "@/components/JsonLd";
 import { WpInteractivity } from "@/components/WpInteractivity";
+import { WpDiagram } from "@/components/WpDiagram";
 import { buildJsonLd } from "@/lib/seo";
 import { getFaqs, injectFaqs } from "@/lib/faqs";
 import { stripHost, type ContentItem } from "@/lib/content";
@@ -58,6 +59,7 @@ export function WpRender({
         <MicrobiomeSignature slug={item.slug} title={item.title} levels={signature!.levels!} studies={studies} />
       )}
       <Tooltips />
+      <WpDiagram />
       <WpInteractivity itemId={item.id} />
       <JsonLd data={jsonLd} />
     </>
