@@ -5,6 +5,7 @@ import { WpInteractivity } from "@/components/WpInteractivity";
 import { WpDiagram } from "@/components/WpDiagram";
 import { buildJsonLd } from "@/lib/seo";
 import { getFaqs, injectFaqs } from "@/lib/faqs";
+import { connectionsBlockHtml } from "@/lib/connections";
 import { stripHost, type ContentItem } from "@/lib/content";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
@@ -82,7 +83,12 @@ export function WpRender({
   const hasSignature = !!signature?.levels;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const faqs = getFaqs(html, item.title);
-  const content = dePurple(injectFaqs(html, faqs));
+  // Inject the auto-derived "Connections" list above the right-rail actions (Send feedback).
+  const connBlock = connectionsBlockHtml(html, path);
+  const withConn = connBlock
+    ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
+    : html;
+  const content = dePurple(injectFaqs(withConn, faqs));
   const sigStudies = extractSignatureStudies(content);
   const studies = sigStudies.length ? sigStudies : extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });
