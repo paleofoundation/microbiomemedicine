@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { sectionBySegment, getItem, stripHost } from "@/lib/content";
+import { sectionBySegment, getItem, stripHost, getWpHtml } from "@/lib/content";
+import { WpRender } from "@/components/WpRender";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
@@ -152,6 +153,24 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const section = sectionBySegment(segment) ?? { segment: "", type: "post", label: "Blog", nav: "Blog", blurb: "" };
   const item = await getItem(section.type, slug);
   if (!item) notFound();
+
+  const wpHtml = await getWpHtml(item.id);
+  if (wpHtml) {
+    const wpPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+    return (
+      <WpRender
+        item={item}
+        html={wpHtml}
+        path={wpPath}
+        type={section.type}
+        breadcrumbs={[
+          { name: "Home", url: "/" },
+          { name: section.label, url: section.type === "post" ? "/" : `/${segment}` },
+          { name: item.title, url: wpPath },
+        ]}
+      />
+    );
+  }
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";

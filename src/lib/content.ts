@@ -40,6 +40,12 @@ export const sectionBySegment = (segment: string): Section | undefined =>
 export const segmentForType = (type: string): string =>
   SECTIONS.find((s) => s.type === type)?.segment ?? type;
 
+// Verbatim captured WordPress content region for a page (pixel-exact rendering).
+export const getWpHtml = cache(async (id: number): Promise<string | null> => {
+  const { data } = await supabase.from("wp_render").select("html").eq("id", id).maybeSingle();
+  return (data?.html as string | undefined) ?? null;
+});
+
 // Internal-link/image URLs were already made root-relative on import; this also
 // covers any absolute featured-image URLs still pointing at the old host.
 export const stripHost = (url: string | null | undefined): string | null =>

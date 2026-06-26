@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { sectionBySegment, getItem } from "@/lib/content";
+import { sectionBySegment, getItem, getWpHtml } from "@/lib/content";
+import { WpRender } from "@/components/WpRender";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
@@ -50,6 +51,23 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   if (!section) notFound();
   const item = await getItem(section.type, slug);
   if (!item) notFound();
+
+  const wpHtml = await getWpHtml(item.id);
+  if (wpHtml) {
+    return (
+      <WpRender
+        item={item}
+        html={wpHtml}
+        path={`/research-feeds/${slug}`}
+        type="research-feed"
+        breadcrumbs={[
+          { name: "Home", url: "/" },
+          { name: "Research Feeds", url: "/research-feeds" },
+          { name: item.title, url: `/research-feeds/${slug}` },
+        ]}
+      />
+    );
+  }
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const feed = (meta.feed || {}) as Feed;
