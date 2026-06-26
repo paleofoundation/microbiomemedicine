@@ -27,7 +27,7 @@ const slug = args.slug;
 const title = args.title || slug;
 if (!slug) { console.error("Usage: --slug <slug> [--title <Title>] [--dry-run] [--out file]"); process.exit(1); }
 
-const dir = path.join("_generator", "samples", slug);
+const dir = path.join("_generator", "samples", args.sample || slug);
 const read = (f) => {
   const p = path.join(dir, f);
   if (!fs.existsSync(p)) { console.error(`Missing ${p}`); process.exit(1); }

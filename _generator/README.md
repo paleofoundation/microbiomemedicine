@@ -60,10 +60,16 @@ node _generator/build-signature.mjs --slug endometriosis --title "Endometriosis"
 # add --dry-run to print the computed data without writing to Supabase
 ```
 
-## Status / TODO
+## Status
 - [x] CSV parsing (`lib/csv.mjs`) + aggregation + level mapping (`lib/signature.mjs`)
 - [x] data-model assembly (`build-signature.mjs`)
-- [ ] verify aggregation reproduces `export_998` (needs the real `signatures.csv` in `samples/`)
-- [ ] Supabase write (content_items.meta) — wire after verification
-- [ ] research-feed study-page generation from studies+experiments
-- [ ] make this a Claude Code skill ("drop a signature CSV set → publish a page")
+- [x] verified: aggregation reproduces the live endometriosis signature exactly (0 score mismatches; Kingdom 3 / Phylum 2 / Class 3 / Order 9 / Family 18 / Genus 29 / Species 8)
+- [x] Supabase write (condition `meta.signature`) — `--dry-run` to preview, omit to write (needs `SUPABASE_SERVICE_ROLE_KEY`)
+- [x] research-feed study-page generation (`lib/feeds.mjs`) — one page per study, reuse-by-title (no duplicates), Location/Sample-Site/Species from experiments, condition Studies linked to `/research-feeds/<slug>`
+- [x] render path for new (non-verbatim) pages: `/api/organism` builds detail from `meta.signature.organisms`; `ArticleView` prefers `meta.signature.studies` — verified end-to-end on a test condition
+- [x] Claude Code skill: `.claude/skills/build-microbiome-signature/`
+
+## Future (per owner)
+- Replace the CSV inputs with repo-folder / PDF-ingested sources (the `lib/` parsers are the only swap point).
+- LLM-author the research-feed `content_html` 4-section summaries (currently mechanically seeded from the abstract).
+- `--sample <dir>` lets the sample folder differ from the condition slug (used in testing).
