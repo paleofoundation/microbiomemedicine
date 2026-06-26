@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getRootBySlug, stripHost } from "@/lib/content";
+import { getRootBySlug, getWpHtml, stripHost } from "@/lib/content";
 import { ArticleView } from "@/components/ArticleView";
+import { WpRender } from "@/components/WpRender";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -26,7 +27,24 @@ export default async function RootContentPage({ params }: Props) {
   // Blog posts use the full research template (red hero + styled content + author).
   if (item.type === "post") return <ArticleView segment="" slug={slug} />;
 
-  // Static pages: clean, theme-styled article.
+  // Static pages: render the verbatim WordPress content region when captured.
+  const wpHtml = await getWpHtml(item.id);
+  if (wpHtml) {
+    return (
+      <WpRender
+        item={item}
+        html={wpHtml}
+        path={`/${slug}`}
+        type="page"
+        breadcrumbs={[
+          { name: "Home", url: "/" },
+          { name: item.title, url: `/${slug}` },
+        ]}
+      />
+    );
+  }
+
+  // Fallback: clean, theme-styled article.
   return (
     <main className="site-content">
       <div className="entry-content" style={{ maxWidth: "65rem", margin: "0 auto", padding: "40px 20px 72px" }}>
