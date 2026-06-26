@@ -147,12 +147,35 @@ H += `<details class="wp-block-details is-layout-flow"><summary><span style="col
 // ----- FAQs (heading only; quick-answers injected at render) -----
 H += `<h2 class="wp-block-heading" id="h-faqs">FAQs</h2>`;
 
-// ----- Research Feed (study cards) -----
-const studies = JSON.parse(fs.readFileSync(new URL("./rf.json", import.meta.url))).feeds;
+// ----- Research Feed (endo-style accordion cards; toggle wired by WpInteractivity) -----
+const RF = JSON.parse(fs.readFileSync(new URL("./rf.json", import.meta.url))).feeds;
+let SUM = {};
+try { SUM = JSON.parse(fs.readFileSync(new URL("./summaries.json", import.meta.url))); } catch { SUM = {}; }
+const SVG_PLUS = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="12" height="12" style="margin:auto"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path></svg>`;
+const SVG_MINUS = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="12" height="12" style="margin:auto"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>`;
+const SVG_DOC = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+const SVG_LINK = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
+const SVG_MAIL = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`;
+function rfGraphs(f) {
+  const fields = [["Location", f.location], ["Sample Site", f.sample_site], ["Species", f.species]].filter(([, v]) => Array.isArray(v) && v.length);
+  if (!fields.length) return "";
+  return `<div class="research-feed__graphs">` + fields.map(([t, items]) =>
+    `<div class="research-feed__graph"><div class="research-feed__graph-title">${esc(t)}</div><div class="research-feed__graph-items">` +
+    items.map((i) => `<div class="research-feed__graph-item">${esc(i)}</div>`).join("") + `</div></div>`).join("") + `</div>`;
+}
 H += `<h2 class="wp-block-heading" id="h-research-feed">Research Feed</h2>`;
-H += `<div class="research-feed">`;
-for (const s of studies) {
-  H += `<div class="research-feed__item"><div class="research-feed__header-wrap"><div class="research-feed__title">${esc(s.title)}</div></div><div class="research-feed__sub-header"><div class="research-feed__sub-header-item research-feed__sub-header-item--date">${esc(s.date || "2024")}</div></div><div class="research-feed__content"><p class="wp-block-paragraph">${dlink("/research-feeds/" + s.slug, "Read the study summary →")}</p></div></div>`;
+H += `<div class="research-feed accordion" data-accordion-disable-auto-close="true">`;
+for (const s of RF) {
+  const sum = SUM[s.slug] || {};
+  const url = "/research-feeds/" + s.slug;
+  const mailto = `mailto:?subject=${encodeURIComponent(s.title)}&body=${encodeURIComponent(s.paper_url || ("https://microbiomemedicine.com" + url))}`;
+  H += `<div class="research-feed__item accordion__item">`
+    + `<div class="research-feed__header-wrap accordion__header"><div class="research-feed__toggle-icon-wrap"><span class="research-feed__toggle-icon research-feed__toggle-icon--plus">${SVG_PLUS}</span><span class="research-feed__toggle-icon research-feed__toggle-icon--minus">${SVG_MINUS}</span></div><div class="research-feed__title">${esc(s.title)}</div></div>`
+    + `<div class="research-feed__sub-header"><div class="research-feed__sub-header-item research-feed__sub-header-item--date">${esc(s.year || "")}</div><div class="research-feed__sub-header-item">/</div><div class="research-feed__sub-header-item"><div class="research-feed__categories"><div class="research-feed__category-wrap">${esc(sum.category || "Infectious Disease")}</div></div></div></div>`
+    + `<div class="research-feed__excerpt">${esc(sum.excerpt || "")}</div>`
+    + `<div class="research-feed__content accordion__content">${rfGraphs(s)}${sum.html ? sum.html.replace(/<(\/?)h3(\b[^>]*)>/g, "<$1h4$2>") : `<p class="wp-block-paragraph">${dlink(url, "Read the full study summary →")}</p>`}</div>`
+    + `<div class="research-feed__footer"><div><a class="btn" href="${url}">${SVG_DOC}Open</a><a class="btn" href="${s.paper_url || url}" target="_blank" rel="noreferrer">${SVG_LINK}Link</a><a class="btn" href="${mailto}">${SVG_MAIL}Email</a></div></div>`
+    + `</div>`;
 }
 H += `</div>`;
 
@@ -177,7 +200,7 @@ for (const k of order) {
 // ---- write artifact + publish ---------------------------------------------------------
 const outPath = new URL("./tb-content.html", import.meta.url);
 fs.writeFileSync(outPath, H);
-console.log(`built content_html: ${H.length} chars · refs: ${order.length} · studies: ${studies.length}`);
+console.log(`built content_html: ${H.length} chars · refs: ${order.length} · studies: ${RF.length}`);
 
 if (process.argv.includes("--publish")) {
   const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });

@@ -5,6 +5,7 @@ import { sectionBySegment, getItem, stripHost, getWpHtml } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
+import { ContentAccordions } from "@/components/ContentAccordions";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
@@ -339,6 +340,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
           />
         )}
         <Tooltips />
+        <ContentAccordions />
 
         <div className="research-content">
           <div className="research-content__wrapper">

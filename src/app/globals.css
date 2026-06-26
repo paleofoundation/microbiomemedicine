@@ -82,3 +82,15 @@
 /* References (.rgbc-references) intentionally use the original WordPress theme's
    default ordered-list rendering — the original had no custom badge/counter CSS,
    so we do NOT override it here. */
+
+/* Research-feed card action buttons: the theme's base .btn is a filled red button;
+   inside the feed footer they should read as quiet text+icon actions on the grey
+   pill (red only on hover), matching the gold-standard cards. */
+.research-feed__footer .btn {
+  background: transparent !important;
+  border: none !important;
+  min-height: auto !important;
+  margin-top: 0 !important;
+  padding: 0.25rem 0.6rem !important;
+}
+.research-feed__footer .btn:hover { background: var(--color-primary) !important; color: #fff !important; }
