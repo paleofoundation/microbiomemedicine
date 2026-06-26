@@ -4,6 +4,7 @@ import "@/styles/theme-wp.css";
 import { HEADER_HTML, FOOTER_HTML } from "@/theme/themeHtml";
 import { Feedback } from "@/components/Feedback";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { HeaderSearch } from "@/components/HeaderSearch";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://microbiomemedicine.com"),
@@ -50,6 +51,7 @@ export default function RootLayout({
         <div dangerouslySetInnerHTML={{ __html: footerHtml }} />
         <Feedback />
         <ScrollToTop />
+        <HeaderSearch />
       </body>
     </html>
   );

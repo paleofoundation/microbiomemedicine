@@ -40,6 +40,26 @@
 .tooltip { background-color: #fff !important; }
 .tooltip__content { background-color: #fff; }
 
+/* Research-feed hero category tags sit on the red hero — must be white (they were
+   inheriting the brand red and rendering nearly invisible). */
+.research-hero__categories,
+.research-hero__categories a,
+.research-hero__categories li::before { color: #fff !important; }
+
+/* Explore / search directory (header search → /search). */
+.rgbc-explore { max-width: 1180px; margin: 0 auto; padding: 56px 24px 88px; }
+.rgbc-explore__form { display: flex; max-width: 760px; margin: 0 auto 52px; }
+.rgbc-explore__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 44px 56px; align-items: start; }
+.rgbc-explore__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px dotted #cbd5e1; padding-bottom: 8px; margin-bottom: 16px; }
+.rgbc-explore__title { font-family: var(--font-serif); font-size: 1.5rem; color: #111; margin: 0; }
+.rgbc-explore__viewall { font-size: 0.85rem; color: var(--color-primary); font-weight: 600; text-decoration: none; white-space: nowrap; }
+.rgbc-explore__viewall:hover { text-decoration: underline; }
+.rgbc-explore__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 11px; }
+.rgbc-explore__list a { color: var(--color-primary); text-decoration: none; font-size: 1.0625rem; line-height: 1.35; }
+.rgbc-explore__list a:hover { text-decoration: underline; }
+.rgbc-explore__results-title { font-family: var(--font-serif); font-size: 1.6rem; margin: 0 0 20px; color: #111; }
+.rgbc-explore__results .rgbc-explore__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px 40px; }
+
 /* FAQ accordion (brand red) — chevron-circle items + "Quick answer:" + left border. */
 .rgbc-faq-block { margin: 1.25rem 0 1.5rem; }
 .rgbc-faq-item { padding: 1.1rem 0; }
