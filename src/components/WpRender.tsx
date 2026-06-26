@@ -9,6 +9,22 @@ import { stripHost, type ContentItem } from "@/lib/content";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
 
+// The site must contain NO purple — the WP theme/markup carries purple accents
+// (e.g. the paywall lock's #6e488c stroke + #d7cedf bg, inlined in the captured
+// HTML). Map every purple to the brand red/pink at render time.
+const PURPLE_TO_RED: [RegExp, string][] = [
+  [/#6e488c/gi, "#cc3333"], [/#562e69/gi, "#a02727"], [/#5e3b76/gi, "#a02727"],
+  [/#5f3b76/gi, "#a02727"], [/#2f1e4e/gi, "#5c1717"], [/#330968/gi, "#5c1717"],
+  [/#7a00df/gi, "#cc3333"], [/#4721fb/gi, "#cc3333"], [/#ab1dfe/gi, "#cc3333"],
+  [/#9b51e0/gi, "#cc3333"], [/#e2d9f3/gi, "#f7e6e6"], [/#dad0ec/gi, "#f7e6e6"],
+  [/#d7cedf/gi, "#f7e6e6"], [/#e0dce5/gi, "#e3c9c9"], [/#efebf2/gi, "#f7e6e6"],
+];
+function dePurple(html: string): string {
+  let out = html;
+  for (const [re, red] of PURPLE_TO_RED) out = out.replace(re, red);
+  return out;
+}
+
 // The signature modal's "Studies" list = the page's referenced studies.
 function extractStudies(html: string): { title: string; url: string }[] {
   const out: { title: string; url: string }[] = [];
@@ -48,7 +64,7 @@ export function WpRender({
   const hasSignature = !!signature?.levels;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const faqs = getFaqs(html, item.title);
-  const content = injectFaqs(html, faqs);
+  const content = dePurple(injectFaqs(html, faqs));
   const studies = extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });
 

@@ -35,6 +35,10 @@
 .tooltip__content { color: #333; }
 .tooltip__content p { margin: 0 0 0.4rem; }
 .tooltip__content a { color: #183fab; font-weight: 600; }
+/* Tooltip windows are solid white (never bleed the red hero through); the header
+   keeps the brand light-red tint (theme-wp.css), never purple. */
+.tooltip { background-color: #fff !important; }
+.tooltip__content { background-color: #fff; }
 
 /* FAQ accordion (brand red) — chevron-circle items + "Quick answer:" + left border. */
 .rgbc-faq-block { margin: 1.25rem 0 1.5rem; }
