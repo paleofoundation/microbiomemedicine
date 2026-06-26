@@ -181,7 +181,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
   const authors: Author[] = Array.isArray(meta.authors) ? (meta.authors as Author[]) : [];
   const didYouKnow = typeof meta.did_you_know === "string" ? meta.did_you_know.replace(/^Did you know\??\s*/i, "") : null;
-  const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
+  const signature = meta.signature as { levels?: Record<string, SigItem[]>; studies?: { title: string; url: string }[] } | undefined;
   const hasSignature = !!signature?.levels;
   // Per-type hero features (from auditing each post type's real page).
   const showInterventions = section.type === "condition";
@@ -331,7 +331,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         </div>
 
         {hasSignature && (
-          <MicrobiomeSignature slug={slug} title={item.title} levels={signature!.levels!} studies={extractStudies(html)} />
+          <MicrobiomeSignature
+            slug={slug}
+            title={item.title}
+            levels={signature!.levels!}
+            studies={Array.isArray(signature!.studies) && signature!.studies!.length ? signature!.studies! : extractStudies(html)}
+          />
         )}
         <Tooltips />
 
