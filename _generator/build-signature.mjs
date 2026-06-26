@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { aggregateSignatures, parseSidebar, buildLevels, LEVEL_ORDER } from "./lib/signature.mjs";
+import { aggregateSignatures, parseSidebar, buildLevels, emitTemplate, LEVEL_ORDER } from "./lib/signature.mjs";
 import { buildResearchFeeds } from "./lib/feeds.mjs";
 import { parseCsvObjects } from "./lib/csv.mjs";
 
@@ -68,9 +68,22 @@ async function fetchExisting() {
 
 // --- compute signature ---
 const { scores, taxonLevel } = aggregateSignatures(read("signatures.csv"));
-const { organisms, sidebarScore } = parseSidebar(read("sidebar.csv"));
+// Sidebar (organism details) is OPTIONAL — it's the download-fill-reupload step.
+const sidebarPath = path.join(dir, "sidebar.csv");
+const hasSidebar = fs.existsSync(sidebarPath);
+const { organisms, sidebarScore } = hasSidebar
+  ? parseSidebar(fs.readFileSync(sidebarPath, "utf8"))
+  : { organisms: {}, sidebarScore: new Map() };
 const levels = buildLevels({ scores, taxonLevel, organisms, sidebarScore });
 delete levels.__unleveled;
+
+// No sidebar yet (or on request) → emit the export_998 template for filling.
+if (!hasSidebar || args["emit-template"]) {
+  const tpl = emitTemplate(levels);
+  const tplPath = typeof args["emit-template"] === "string" ? args["emit-template"] : path.join(dir, "sidebar-template.csv");
+  fs.writeFileSync(tplPath, tpl);
+  console.log(`  sidebar template: ${tplPath} (${tpl.trim().split("\n").length - 1} taxa to fill → save as sidebar.csv)`);
+}
 
 // --- compute research-feed pages + internal study links ---
 const { slugs: existingSlugs, byTitle: existingByTitle } = await fetchExisting();
