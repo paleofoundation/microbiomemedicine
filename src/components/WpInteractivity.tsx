@@ -110,28 +110,50 @@ export function WpInteractivity({ itemId }: { itemId: number }) {
       }
     }
 
-    // Favorite button -> Supabase
-    const fav = document.querySelector<HTMLElement>("#follow-page-btn, .js-favorite-study");
-    if (fav) {
+    // Follow / Favorite button. The captured markup uses one #follow-page-btn,
+    // labelled "Follow page" on encyclopedic pages (-> follows table, feeds the
+    // dashboard's Followed Pages) and "Favorite study" on research feeds (-> favorites).
+    // The original opened a WP-AJAX modal; here it's a direct, persisted toggle.
+    const fbtn = document.querySelector<HTMLElement>("#follow-page-btn");
+    if (fbtn) {
       const supabase = createSupabaseBrowser();
-      let isFav = false;
+      const isFavorite = /favorite/i.test(fbtn.textContent || "");
+      const table = isFavorite ? "favorites" : "follows";
+      const onLabel = isFavorite ? "Favorited" : "Following";
+      const offLabel = isFavorite ? "Favorite study" : "Follow page";
+      const icon = fbtn.querySelector("svg")?.outerHTML || "";
+      let on = false;
+      let busy = false;
+      const render = () => {
+        fbtn.innerHTML = `${icon} ${on ? `✓ ${onLabel}` : offLabel}`;
+        fbtn.classList.toggle("is-active", on);
+      };
       (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        const { data } = await supabase.from("favorites").select("id").eq("content_item_id", itemId).maybeSingle();
-        isFav = !!data;
-        fav.classList.toggle("is-favorited", isFav);
+        const { data } = await supabase.from(table).select("id").eq("content_item_id", itemId).maybeSingle();
+        on = !!data;
+        render();
       })();
       const onClick = async (e: Event) => {
         e.preventDefault();
+        e.stopPropagation();
+        if (busy) return;
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) { window.location.href = "/login"; return; }
-        if (isFav) { await supabase.from("favorites").delete().eq("content_item_id", itemId).eq("user_id", user.id); isFav = false; }
-        else { await supabase.from("favorites").insert({ content_item_id: itemId, user_id: user.id }); isFav = true; }
-        fav.classList.toggle("is-favorited", isFav);
+        busy = true;
+        if (on) {
+          await supabase.from(table).delete().eq("content_item_id", itemId).eq("user_id", user.id);
+          on = false;
+        } else {
+          await supabase.from(table).insert({ content_item_id: itemId, user_id: user.id });
+          on = true;
+        }
+        busy = false;
+        render();
       };
-      fav.addEventListener("click", onClick);
-      cleanups.push(() => fav.removeEventListener("click", onClick));
+      fbtn.addEventListener("click", onClick);
+      cleanups.push(() => fbtn.removeEventListener("click", onClick));
     }
 
     return () => cleanups.forEach((f) => f());
