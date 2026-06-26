@@ -1,33 +1,50 @@
 ---
 name: build-condition-page
-description: Author and publish a full condition page (Overview → Causal Chain → Metallomic Signature → Nutritional Immunity → Microbiome Signature → Ecosystem Story → Achilles' Heels → Interventions/STOPs → Diagnosis → Research Gaps → FAQs, with inline citations + References + Studies) for the microbiomemedicine rebuild (~/microbiomemedicine), in Karen Pendergrass's "Microbiome Signature Triangulation" framework. Use when building/expanding a condition page beyond just its signature chart.
+description: Author and publish a condition page for the microbiomemedicine rebuild (~/microbiomemedicine) in the canonical "endometriosis gold-standard" structure (Overview→Primer, Interventions tables, STOPs/SWAPs, Research Feed, Update History, rgbc-references citations). Use when building or upgrading any condition page so it matches the established template.
 ---
 
-# Build a condition page in Karen's framework
+# Build a condition page (endometriosis gold-standard template)
 
-This builds the **prose** of a condition page (the signature chart itself comes from
-[[build-microbiome-signature]]). It encodes Karen Pendergrass's reasoning system —
-see `_framework/karens-brain/master-spec.md` (the Master Reference Specification) and
-`Framework_Extraction_Analysis.md` / `Raw_Thoughts_and_Transcripts.md`. Read those first.
+**The endometriosis page (`content_items` id 998, slug `endometriosis`) is the canonical template — every condition page must match its structure, markup, and density.** Dump it to study any detail: `select content_html from content_items where slug='endometriosis'`. It renders via `src/components/ArticleView.tsx` (a `content_html` page, NOT `wp_render`) — the same path generated pages use. Reasoning is Karen's framework — see [[karens-brain-framework]] and `_framework/karens-brain/master-spec.md`.
 
-## The framework in one line
-**Signature → Functional Patterns → Ecosystem Story → Vulnerabilities → Interventions → Triangulation → Validate/Reject → Iterate.** Disease is a constraint-based ecological network of microbes + **metals** + host defenses + exposures, not a single cause. Analyze the **metallome first**; treat **nutritional immunity** as an interpretive lens (a "low" metal in active disease is often host defense, not deficiency — so supplementing it can be a **STOP**); target pathogen **Achilles' heels**; validate every intervention with the **Triangle Test**.
+## Canonical structure (exact heading tree)
+```
+Overview (h2)              ← 1–2 concise paras; cause + the metallome/microbiome lens
+  Associated Conditions (h3)
+  Causes (h3)              ← prose + a <details> accordion table (theories / determinants)
+  Diagnosis (h3)
+  Primer (h3)             ← 1 intro para, then h4 subsections:
+    Nutritional Immunity (h4)
+    Metallomic Signature (h4)  ← prose + <details> accordion "Metal | Findings" table
+    Microbiome Signature (h4)  ← refers to the interactive chart
+    <disease-specific mechanism> (h4)   ← endo: "Estrogen Metabolism"; TB: "Oxygen, Redox & the Granuloma"
+Interventions (h2)        ← intro (link /our-validation-method/) + MAIN TABLE (Intervention | Classification | Status: Validated / Promising Candidate / Validation In Progress)
+  STOPs (h3)              ← define STOP + <details> "STOPs | SWAPs" table
+  (Validation In Progress lives in a <details> accordion table under Interventions: Intervention | Classification | Notes)
+FAQs (h2)                 ← heading only; ArticleView injects quick-answers + JSON-LD
+Research Feed (h2)        ← study cards linking to /research-feeds/<slug>
+Update History (h2)       ← mbio-card entries
+References (h2)           ← <ol class="rgbc-references">
+```
+**Density principle:** sections are *concise prose + rich tables/accordions*, not 500-word essays. The depth lives in the accordion tables (theories, Metal|Findings) and the three intervention tables.
 
-### Triangle Test (every intervention I targeting disease D via feature f)
-1. **I→f** — does I move the feature in the predicted direction? 2. **I→D** — does I improve the disease clinically? 3. **f→D** — is f causally linked to D? Classify: **Validated** (all 3, no contradictions, safe) · **Promising** (2 of 3) · **In Progress** (logic sound, evidence incomplete) · **STOP** (counterproductive — feeds pathogen / overrides host defense; give a mechanistic reason + a SWAP) · **Model Failure** (contradiction → revise the model). Be honest: classify by the *actual* evidence, never the desired answer.
-
-## Page structure (Master Spec, Part 6, Mode 3)
-Section ids the template/TOC expect: `h-overview`, `h-causal-chain`, `h-metallomic-signature`, `h-nutritional-immunity`, `h-microbiome-signature`, `h-ecosystem-story`, `h-vulnerabilities`, `h-interventions`, `h-stops`, `h-in-progress`, `h-research-gaps`, `h-diagnosis`, `h-faqs`, then `h-references` + `h-studies`. Each ~400–500 words.
+## Markup conventions (copy endo exactly)
+- Headings: `<h2|h3|h4 class="wp-block-heading" id="h-...">`. Paragraphs: `<p class="wp-block-paragraph">`.
+- **Citations** (inline): `<sup><a class="rgbc-reference rgbc-tooltip js-rgbc-scroll-link" href="#ref-KEY" id="ref-KEY-back" data-title="AUTHORS" data-link="URL" data-link-name="TITLE" data-date="JOURNAL. YEAR" data-review-link="/research-feeds/..." target="_blank" title=".wiki-ref-KEY">[n]</a></sup>`. Number `[n]` is assigned in first-appearance order; reused sources keep their number.
+- **References**: `<ol class="rgbc-references"><li class="rgbc-references__item" id="ref-KEY"><a class="rgbc-references__link" href="URL" target="_blank">TITLE</a> AUTHORS <span>(DATE)</span></li>…</ol>` (anchors match the inline `href`).
+- **Citation tooltips** (so hover works like endo): append one hidden block per ref — `<div class="tooltip wiki-ref-KEY"><div class="tooltip__header">…</div><div class="tooltip__content">…</div></div>`. `Tooltips.tsx` shows `.tooltip.wiki-*` on hover of `.rgbc-tooltip[title^="."]`.
+- **Accordions**: `<details class="wp-block-details"><summary><span style="color:#1c43ad;">Question?</span></summary><figure class="wp-block-table"><table class="has-fixed-layout">…</table></figure></details>`.
+- **Metal names** in the Metal|Findings table: `<mark style="background-color:rgba(0,0,0,0)" class="has-inline-color has-vivid-red-color">Iron</mark>`.
+- **Cross-links**: link key terms to existing `/definition/`, `/metals/`, `/microbes/`, `/interventions/`, `/supplement/`, `/conditions/` pages (verify they resolve).
 
 ## Procedure
-1. **Build the signature first** ([[build-microbiome-signature]]): the CSVs → `meta.signature` (chart + organism metallome panels + studies). The condition page references the chart; the "Microbiome Signature" hero button + sidebar entry appear automatically when `meta.signature.levels` exists (see `src/components/ArticleView.tsx`).
-2. **Author the sections** with parallel grounded subagents (one per section/pair). Each agent: writes ~500 words in Karen's framework, grounds every claim with **web search**, returns `{id, title, html, refs}` where `html` carries inline `{{cite:KEY}}` markers and `refs:[{key, citation, url}]`. **Never fabricate a citation/DOI/PMID/URL** — real, web-verified links only (PubMed/PMC, WHO/CDC). Prefer human studies + meta-analyses; state evidence class honestly.
-3. **Assemble** (`_generator/pages/<slug>/assemble.mjs` is the reference impl): concatenate sections in order; globally renumber citations (dedupe by canonical PMC/PMID/DOI → `[n]`), replacing each marker with `<sup><a class="rgbc-reference" href="#ref-n">[n]</a></sup>`; append `<h2 id="h-references">` numbered `<ol>` (citation + working URL) and `<h2 id="h-studies">` linking to `/research-feeds/<slug>` (the signature's study pages). Verify: 0 leftover `{{cite` markers, every marker resolved.
-4. **Publish**: upsert the condition row with `content_html`, `excerpt_html`, and `meta` (`did_you_know`, `authors`); run from the repo so `@supabase/supabase-js` resolves; needs `SUPABASE_SERVICE_ROLE_KEY`. Then run `node _generator/build-signature.mjs --slug <slug> --title "<T>"` to attach `meta.signature` (merges) and create the research-feed pages.
-5. **Verify render**: `/conditions/<slug>` → inline `[n]` citations, References list, Studies links resolve, signature modal + organism panels work, left TOC shows all sections + "Microbiome Signature".
+1. Build the signature first ([[build-microbiome-signature]]) so `meta.signature` exists (hero "Microbiome Signature" button + chart appear automatically).
+2. Research/verify each section (parallel grounded subagents are ideal; **never fabricate a citation/URL** — web-verify every link).
+3. Author with a deterministic builder: `_generator/pages/<slug>/build.mjs` (worked example = `_generator/pages/tuberculosis/build.mjs`) holds a `refs` map, a `cite()` engine (assigns numbers + emits the rgbc-reference markup), the section HTML, the three intervention tables, the `rgbc-references` list, and the tooltip blocks. Run with `--publish` (from repo root, `.env.local` loaded → needs `SUPABASE_SERVICE_ROLE_KEY`) to update the condition row's `content_html` + `meta` (`did_you_know`, `authors`). Create the condition row first if missing.
+4. Create the research-feed study pages with `node _generator/build-signature.mjs --slug <slug> --title "<T>"` (also writes `meta.signature`; assigns ids above the current max).
+5. **Verify render** at `/conditions/<slug>`: heading tree (6 h2 / ~5 h3 / 4 h4), 5 tables, accordions open, `rgbc-references` populated, inline `[n]` citations resolve, research-feed cards link out, signature modal works, left TOC mirrors endo. Compare side-by-side with `/conditions/endometriosis`.
 
 ## Notes
-- `ArticleView` auto-injects a 3-item "Quick answer" FAQ accordion into `#h-faqs` (from Overview/Diagnosis/Interventions) + builds FAQ JSON-LD; keep the detailed `<h3>` Q&As after it.
+- Worked example **Tuberculosis** inverts two endo findings: iron supplementation = STOP (functional anemia is host defense); HBOT contraindicated (Mtb is an obligate aerobe restricted by granuloma hypoxia).
+- The Interventions tables ARE the long-pending "Interventions feature" (#13) in the gold-standard form.
 - `content_items.id` has no sequence default — the generator assigns ids above the current max for new feeds.
-- Worked example: **Tuberculosis** (`_generator/pages/tuberculosis/`) — inverts two endometriosis findings (iron supplementation = STOP because functional anemia is host defense; HBOT contraindicated because Mtb is an obligate aerobe restricted by granuloma hypoxia — the oxygen primitive cutting the opposite way from anaerobe-dominated disease).
-- Inline citation class `rgbc-reference` is CSS-only (the tooltip JS targets `.rgbc-tooltip[title^="."]`, not references) — safe.
