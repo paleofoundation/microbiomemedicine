@@ -34,6 +34,8 @@ const read = (f) => {
 const { scores, taxonLevel } = aggregateSignatures(read("signatures.csv"));
 const { organisms, sidebarScore } = parseSidebar(read("sidebar.csv"));
 const levels = buildLevels({ scores, taxonLevel, organisms, sidebarScore });
+const unleveled = levels.__unleveled || [];
+delete levels.__unleveled;
 
 const studies = parseCsvObjects(read("studies.csv"))
   .map((s) => ({
@@ -74,6 +76,7 @@ for (const L of LEVEL_ORDER) {
   const top = levels[L].slice(0, 3).map((t) => `[${t.value}] ${t.name}`).join(", ");
   console.log(`  ${L.padEnd(8)} ${String(levels[L].length).padStart(3)} taxa   ${top}`);
 }
+console.log(`  total chart taxa: ${LEVEL_ORDER.reduce((n, L) => n + levels[L].length, 0)} | sidebar taxa: ${sidebarScore.size} | unleveled: ${unleveled.length}${unleveled.length ? " (" + unleveled.slice(0, 8).join(", ") + ")" : ""}`);
 console.log(`  studies: ${studies.length} | organisms w/ detail: ${Object.values(organisms).filter((o) => o.overview).length}`);
 console.log(`  feed.location: ${feed.location.join(", ")}`);
 console.log(`  feed.sample_site: ${feed.sample_site.join(", ")}`);

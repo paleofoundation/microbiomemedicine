@@ -57,28 +57,23 @@ export function parseSidebar(csvText) {
   return { organisms, sidebarScore };
 }
 
-// Assemble meta.signature.levels: per level, taxa with net value + has_info flag.
-// Prefers the aggregated score; falls back to the sidebar's embedded [score].
+// Assemble meta.signature.levels. The chart shows the CURATED set — exactly the taxa
+// in the sidebar (= the downloaded export_998 template the human filled in), not the
+// full observed long tail. Score = aggregated net score (verified to match the sidebar's
+// embedded [score]); level = from the MetaPhlAn lineage; has_info = organism detail present.
 export function buildLevels({ scores, taxonLevel, organisms, sidebarScore }) {
   const levels = {};
   for (const L of LEVEL_ORDER) levels[L] = [];
-  const placed = new Set();
-  for (const [key, value] of scores) {
-    const [level, name] = key.split("\t");
-    if (!levels[level]) continue;
-    const det = organisms[name];
-    levels[level].push({ name, value, has_info: !!(det && det.overview) });
-    placed.add(name);
-  }
-  // taxa present in the sidebar but missing from aggregation (e.g. species the study
-  // reported only via the sidebar) — place using its level + embedded score.
-  for (const [name, value] of sidebarScore) {
-    if (placed.has(name)) continue;
+  const unleveled = [];
+  for (const [name, sScore] of sidebarScore) {
     const level = taxonLevel.get(name);
-    if (!level || !levels[level]) continue;
+    if (!level || !levels[level]) { unleveled.push(name); continue; }
+    const agg = scores.get(level + "\t" + name);
+    const value = agg !== undefined ? agg : sScore;
     const det = organisms[name];
     levels[level].push({ name, value, has_info: !!(det && det.overview) });
   }
   for (const L of LEVEL_ORDER) levels[L].sort((a, b) => b.value - a.value || a.name.localeCompare(b.name));
+  levels.__unleveled = unleveled; // diagnostic: sidebar taxa with no level mapping
   return levels;
 }

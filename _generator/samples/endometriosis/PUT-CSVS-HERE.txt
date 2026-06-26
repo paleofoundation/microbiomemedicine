@@ -1,7 +1,0 @@
-Drop the five CSVs for a condition here as:
-  signatures.csv      (WP 'Signatures CSV')
-  sidebar.csv         (WP 'Sidebar Import CSV', with overview/metallome/etc.)
-  studies.csv         (WP 'Studies CSV')
-  experiments.csv     (WP 'Experiments CSV')
-  sidebar-template.csv (optional: the downloaded export_998)
-Then: node _generator/build-signature.mjs --slug <slug> --title <Title> --dry-run
