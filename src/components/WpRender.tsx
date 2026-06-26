@@ -25,7 +25,25 @@ function dePurple(html: string): string {
   return out;
 }
 
-// The signature modal's "Studies" list = the page's referenced studies.
+// The signature modal's "Studies" list = the microbiome-signature studies the
+// original page lists inside the diagram modal (.modal--research-diagram__list),
+// i.e. the research-feed signature studies for this condition.
+function extractSignatureStudies(html: string): { title: string; url: string }[] {
+  const out: { title: string; url: string }[] = [];
+  const seen = new Set<string>();
+  const listM = /<ul[^>]*class="modal--research-diagram__list"[^>]*>([\s\S]*?)<\/ul>/.exec(html);
+  if (!listM) return out;
+  const re = /<a\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(listM[1]))) {
+    const url = stripHost(m[1]) || m[1];
+    const title = m[2].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    if (title && !seen.has(url)) { seen.add(url); out.push({ title, url }); }
+  }
+  return out;
+}
+
+// Fallback for non-signature pages: the page's referenced studies.
 function extractStudies(html: string): { title: string; url: string }[] {
   const out: { title: string; url: string }[] = [];
   const seen = new Set<string>();
@@ -65,7 +83,8 @@ export function WpRender({
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const faqs = getFaqs(html, item.title);
   const content = dePurple(injectFaqs(html, faqs));
-  const studies = extractStudies(content);
+  const sigStudies = extractSignatureStudies(content);
+  const studies = sigStudies.length ? sigStudies : extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });
 
   return (
