@@ -22,7 +22,7 @@ Interventions (h2)        ← intro (link /our-validation-method/) + MAIN TABLE 
   STOPs (h3)              ← define STOP + <details> "STOPs | SWAPs" table
   (Validation In Progress lives in a <details> accordion table under Interventions: Intervention | Classification | Notes)
 FAQs (h2)                 ← heading only; ArticleView injects quick-answers + JSON-LD
-Research Feed (h2)        ← study cards linking to /research-feeds/<slug>
+Research Feed (h2)        ← accordion study cards (collapsed: excerpt + Open/Link/Email; expanded: 4-section summary + graphs)
 Update History (h2)       ← mbio-card entries
 References (h2)           ← <ol class="rgbc-references">
 ```
@@ -36,6 +36,7 @@ References (h2)           ← <ol class="rgbc-references">
 - **Accordions**: `<details class="wp-block-details"><summary><span style="color:#1c43ad;">Question?</span></summary><figure class="wp-block-table"><table class="has-fixed-layout">…</table></figure></details>`.
 - **Metal names** in the Metal|Findings table: `<mark style="background-color:rgba(0,0,0,0)" class="has-inline-color has-vivid-red-color">Iron</mark>`.
 - **Cross-links**: link key terms to existing `/definition/`, `/metals/`, `/microbes/`, `/interventions/`, `/supplement/`, `/conditions/` pages (verify they resolve).
+- **Research Feed cards**: `<div class="research-feed accordion">` › per study `<div class="research-feed__item accordion__item">` with `.research-feed__header-wrap.accordion__header` (±toggle icons + `.research-feed__title`), `.research-feed__sub-header` (year / category), `.research-feed__excerpt` (italic, shown collapsed), `.research-feed__content.accordion__content` (the 4-section summary — use **h4** not h3 so the TOC stays clean — + a `.research-feed__graphs` Location/Sample-Site/Species block), and `.research-feed__footer > div` with `.btn` Open/Link/Email actions. The toggle is wired by **`ContentAccordions`** (mounted in ArticleView for `content_html` pages; WpInteractivity is NOT mounted there). Author the per-study 4-section summaries (What Was Studied? / Who Was Studied? / What Were the Key Findings? / What Are the Implications?) with grounded subagents and write them to the `/research-feeds/<slug>` pages too.
 
 ## Procedure
 1. Build the signature first ([[build-microbiome-signature]]) so `meta.signature` exists (hero "Microbiome Signature" button + chart appear automatically).
