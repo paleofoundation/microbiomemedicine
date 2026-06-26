@@ -1,0 +1,442 @@
+products
+through a big expertise in microbial
+metalics which is quite exciting topic.
+So today the the talk is about
+endometriosis and unlocking the
+microbial signature in this disease. The
+floor is yours. Thank you.
+>> Thank you.
+>> Yeah. So quick confession. I'm not a
+doctor. Um and this is also the very
+first time I have ever done a
+presentation like this in my life. Um,
+so I'm super nervous. Uh, but also I'm
+super excited for this opportunity to
+share with you today because I think
+this is going to be one of those things
+where you're kind of gonna see it and
+you won't be able to unsee it. So with
+that, my name is Karen Pendergrass and I
+am the founder of Micro Signatures and
+I'm going to attempt to cover as much as
+I possibly can in 15 minutes or less.
+But unfortunately, in order to do that,
+I'm going to have to read some of these
+slides word for word. I have no
+conflicts of interest. Uh, so let's get
+into it.
+Oh yes, click.
+All right. So the following are cited as
+the primary bottlenecks causing the lag
+between microbiome science and
+microbiome medicine. So we have lack of
+high quality RCTs, lack of
+standardization in methods and analysis,
+complexity of the microbiome and
+mechanistic understanding.
+No.
+Yes. Okay. So already it's time for a
+poll. Uh based on those bottlenecks I
+just said, when do you think Microbiome
+science will have the potential to reach
+clinical application. Show of hands. Who
+thinks 30 to 50 years? Most people think
+it's 30 to 50 years. We do have chat.
+GBT AI. Okay. All right. Good. I'm glad
+you don't think that anymore. 20 to 30
+years. Anyone? 20 to 30. Okay. 10 to 20.
+10 to 20. Okay. Cool. All right. 0 to 5
+years. Dope. All right. Is there anyone
+in this room that thinks that we could
+have I've been doing it for the past 10
+to 15 years.
+Nice. [clears throat]
+Nice. What's up, people? All right. So,
+for context
+context, in 2008, I was perfectly
+healthy. But by the end of 2009, at the
+age of 25, I'd been diagnosed with the
+following: PCOS, PMDD, schizophrenia,
+good times, um, grade three anemia,
+cerosis, a kidney mass, reflux,
+peripheral uh, neuropathy, optic
+neuritis, bacterial vaginosis,
+um, menopause misdiagnosis by the way,
+SIDS and chronic edema, indometriosis,
+and finally had celiac disease. And not
+to mention, I gained 50 lbs or 24 kilos
+in 3 months. Literally 3 months. So, I
+basically looked like a giant gray
+balloon.
+Fun.
+Because of all the sudden onset of all
+of these diseases, I asked myself what I
+thought was going to be a simple
+question. What if these are not sep
+separate conditions at all, but are
+symptoms of something else, something
+bigger? And if so, symptoms of what?
+Dispiosis. Clearly, so thinking of my
+dis diagnosis as symptoms of a larger
+problem led me to the discovery of the
+microbiome back in 2010. And that's when
+I found out that my conditions had
+overlapping signatures.
+And after I pieced the signatures
+together and I got a more coherent
+pattern, I began figuring out how to
+decrease the pathogens and support the
+more beneficial ones. So I read
+everything I could get my hands on,
+which as you can see at the time it
+wasn't very much. uh and despite the
+fact uh that there are only dozens or
+dozen or so relevant papers somehow that
+was enough. So uh briefly I would like
+to cover my conditions today.
+This is a lie because when I got here to
+Amsterdam I remembered I have seasonal
+effective disorder. Okay. So that said
+today's presentation isn't about what I
+did. It's about how I did what I did and
+what that looked like.
+So ladies and gentlemen, this is an
+accurate representation of what that
+looks like. And for the record, people
+like this have to read off their index
+cards to meet strict time limits. Uh
+jokes aside, this kind of all over the
+placeeness is what I think this entire
+field is missing. Uh pattern recognition
+and connections made from
+interdisciplinary fields mixed with
+complete and utter desperation.
+Next. Oh, I bet you're thinking this is
+an unnecessary slide for a room like
+this, but alas it is not. Um, so what is
+a microbiome signature? Well, uh,
+microbiome signatures are commonly
+reduced to lists of differentially
+abundant disease associated taxa judged
+by reproducibility and statistical
+significance. However, it is because of
+this very definition that many
+researchers have argued that a
+definitive microbiome signature is
+completely unattainable given regional
+differences and inconsistent methods.
+Now, my contention is that a true
+microbiome signature has to be more
+nuanced than that. First, imposing
+standardization
+uh to resolve variability risks
+systematic bias. And I personally think
+that's a terrible idea. Uh second, a
+microbiome has to ultimately provide a
+framework that incorporates and
+tolerates regional differences in
+microbiota and inconsistent methods. And
+third, taxoncentric framing like that is
+rigid, non-intuitive and makes
+translational research unnecessary,
+difficult.
+So let me ask you here people of the
+audience, what is the point of this data
+if it isn't translational?
+What is the point if it doesn't give us
+a first principles understanding of a
+disease?
+What is the point if it doesn't help us
+connect the dots, form hypotheses, or
+develop novel interventions?
+And most importantly, what is the point
+if it can't even support predictive
+modeling or ultimately save lives?
+Parsing through the literature while
+trying not to die inadvertently offered
+some distinct advantages. So, let me
+show you how I've been doing this for
+the last 15 years. If you have this PDF,
+this one, it's on your chair. If you
+have it, now is the time to have it in
+front of you because this next part is
+going to be a lot.
+All right, number one, the metalomic
+signature of indometriosis.
+Raise your hand if you've ever heard of
+the metalomic signature.
+Dope. All right, what about microbial
+metalomics? Anyone in here? Dope. Okay.
+Well, that's a couple of you. All right.
+All right. So, the metalic signature in
+indometriosis is characterized by
+elevated zinc, iron, cadmium, lead, and
+nickel in the tissues. I don't need that
+right now. Let me set that down. Um,
+number two, environmental exposures.
+This includes smoking, stainless steel
+cookware, pesticides, especially organo
+phosphates, water, cosmetics, jewelry,
+retrograde administration, which is
+technically a micro environment
+exposure, and diet, which is the biggest
+one of all. Number three, nutritional
+immunity. These are the host defenses to
+the metalomic environment that are
+increased. Calp protectant keates and
+sequester zinc. Lactopherin, chilates,
+iron, but also nickel. transparent
+chilates iron locally. Hepsiden is
+increased in the presence of high iron
+and decreases during iron deficiency and
+lipocal 2 is a sedera for binding
+protein and those are all elevated. Now
+glutathione is decreased and that's a
+problem because of all the nutritional
+immunity factors me mentioned it's the
+only one that can kill cadmium and lead
+and speaking of cadmium and lead number
+four mismetilation
+cadmium and lead both enter the cell
+through the calcium channels displacing
+correct co-actors like zinc or iron
+ultimately leading to hypoxia. However,
+when cadmium and lead are combined in
+the environment they have a synergistic
+effect and produce even more oxidative
+stress. Then number five, taxa with
+robust toxin antitoxin systems. So taxa
+with more robust e-lux pumps or those
+that can survive ironrich
+pro-inflammatory environments will out
+compete taxa that don't. Number six and
+the taxes that persist often use zinc,
+iron, and nickel as critical co-actors
+for motel enzymes including zinc
+dependent metallop proteasis. It's up
+there. This enzyme uses zinc as a
+critical co-actor that helps bacteria
+degrade host tissues and inhibit the
+host immune system. Nepheh hydrogenasis
+one, two, and three. These are iron and
+nickel dependent enzymes that decrease
+local oxygen saturation and create a
+hypoxic environment allowing a suitable
+environment for strict or facultative
+anorobes. Then you have nickel dependent
+urase uh which increases local pH via
+ammonia and carbon dioxide which is
+definitely a problem for your vaginal
+actillus that need a tightly regulated
+pH
+and then there's nickel dependent
+gioxilase which allows for persistence
+against neutrfils in the blood Jessica
+and this is the specific enzymes that
+allows these toxins to persist in the
+blood but I have to come back to that
+number seven features next we have
+betagluconase and betaglucid Positivity
+involves increasing hippotic estrogen
+recirculation from estrogen G
+conjugation which is a hallmark of
+endometriosis. Then cedaraphor
+expression. Cedaraphors are produced by
+pathogens to chilate and uptake iron
+from their host or environment which is
+essential for their growth and bofilm
+formation. Then facultative anorobes and
+the problem with facultative anorobes is
+that in order to survive in a low oxygen
+state they have to switch to
+fermentative metabolism but then the
+lesion micro environment becomes acidic
+zinc and iron rich pro-inflammatory
+which in turn is growth promoting
+further amplifying leian survival and
+invasions which perpetuations which
+perpetuates the condition. Do you see
+that? You see that? No. No amount of
+heads. Yes. Do you see that? It's cool.
+All right, moving on to taxin. E.coli
+are disproportionately high in
+indometriosis, and it has all of the
+zinc, iron, and nickel dependent
+enzymes, plus the mechanistic ability
+for estrogen deongjugation. Notice it
+ticks all of the above enzymes and
+features. So, it's easy to see the role
+of E.coli that it plays in this
+framework. Bactis fragillis. It also
+utilizes zinc as a critical co-actor for
+its main virulence factor, the Baggillis
+toxin, BFT. It expresses a super iron
+dependent hydrogenase and even pirates
+iron from other microbes
+um and expresses betalucaronidase as
+well. It's a strict anorob so its
+presence spells trouble antipoxia. So
+strep agalactier aka groupy strep. Uh
+zinc and nickel are critical co-actors
+and express betagluconase.
+It also pirates
+fusive bacterium nucleatum. Zinc and
+nickel are critical co-actors for its
+enzymes and persistence. Uh it's also
+interesting because it decreases local
+oxygen levels primarily by metabolizing
+and consuming oxygen. However, it is not
+directly involved in estrogen
+deconjugation.
+Candidate. This is one of my long cards.
+Let me explain. I once listened to
+someone describe Canada albocans as an
+incidental finding and dismissed it as
+noise in the context of indometriosis.
+So let me tell you about Canada in the
+context of indometriosis
+in this signature. Candidada biophilms
+consume oxygen which results in anorobic
+pockets that allow for oblate anorobes
+such as bifrogillis and ethnucleatum and
+in a hypoxic state facultative anorobes
+switch to fermentative metabolism like I
+said but it also needs to be said that
+there is solid evidence of tight
+cohesion and reduced cytoine output when
+there are co-aggregates of candida with
+fth nucleatum which suggests functional
+shielding
+candida also enhances epithelial
+colonization of strap. Not to mention,
+Canada creates mixed bofilms with E.coli
+and reduces host defenses. This is also
+consistent with functional shielding. So
+also other studies that found that
+nickel significantly increases the
+biomass of the bofilms in these
+co-agregates
+nickel. So just to be clear, this is not
+an incidental finding and this is not
+noise. This is a problem that 16S
+studies are not detecting and
+researchers in my opinion have got to
+take microbiome signatures finding a
+step further and look at the
+relationship between the taxa before
+dismissing anything as noise.
+Lactobacillus. Okay. Lactobacillus.
+Lactobacillus is enriched in the gut and
+paritinium but decreased in the vaginal
+cavity. Transllocation is likely the
+culprit as the gut microbiome is also a
+better predictor of indometriosis than
+the microbiome of the vaginal cavity. It
+is also nickel dependent and gioxilase
+positive. Finally, we have lacnosaci and
+ruminccus which are likely decreased
+simply because they didn't have the
+right defense systems to survive in the
+ironrich environment and that's it. So
+moving on to number nine dietary
+interventions. So, clinically evaluated
+dietary interventions for indometriosis
+include a low red meat diet, a low-fat
+diet, a diet with increased citrus
+fruits, an avoidance of brassici, and a
+low nickel diet. And this makes total
+sense. A low red meat diet reduces free
+iron and zinc. A low-fat diet works well
+if e.coli is the major pathogen. Citrus
+fruits reduce circulating LPS and were
+found protective especially in smokers
+while increased brasic consumption was
+found as a risk factor for indometriosis
+and members of that family are cadmium,
+lead, zinc and nickel hyperaccumulators
+which is already elevated in the metalic
+signature. See that makes sense. So
+question, who in here has ever heard of
+a low nickel diet?
+Dope. Okay. There are several studies
+that have found that a loonical diet
+shows promise for endometriosis. Several
+studies. But even the researchers
+involved in those studies have said they
+don't quite understand the mechanisms
+behind it. So I really want to stress
+this next point. Gioxilase positivity
+enables their persistence because it
+enables them to evade neutrfils. Without
+gioise they become susceptible to immune
+responses. But keep in mind gioxilase is
+a nickel dependent enzyme. Remove the
+nickel and you all of the
+pathogens. You'll see that beneficial
+microbes since that's what we're here
+for. Ecoli nissle which is often
+genetically modified by the way is one
+of my favorite probiotics on the planet.
+It lacks virulence genes. It out
+competes pathogenic strains of E.coli,
+Bergillis, group B strep, fusabacterium
+nucleatum, candidada albocans and other
+important pathogens including club and
+pneumonia and salmonella typhurium
+because not only does it have more
+sensitive cedar and thus better iron
+acquisition systems. It also uptakes
+nickel and competes even in hypoxic
+environment. There's also sacrifices
+bord
+um another one of my favorites which is
+non- pathogenic fungal species that can
+out compete Canada and its cell walls
+can also bind cadmium and lead. Love it.
+Novel interventions using this
+microbiome signature framework. One
+could easily have predicted that Hbot
+would be beneficial due to the sheer
+number of strict and facultitative
+amores in the signature. And guess what?
+HBO was the only intervention I had ever
+come across in two years of looking that
+mentioned complete remission in the
+animal model. However, it hasn't been
+clinically investigated in humans yet
+and it probably should be.
+Yay. Last slide. Okay, we're going to do
+a stop analysis together. So, let me
+recap the following. Increased dietary
+zinc and iron are associated with an
+increased risk of endometriosis.
+The literature consistently shows that
+lactopherin and cal protectin which
+sequester iron and zinc away from
+pathogens are already elevated. The
+literature also shows that pepsidin is
+increased in indometriosis which is an
+indicator of functional anemia and not
+true iron deficiency. This signature
+also shows that key pathogenic taxa
+express zinc dependent metallop
+proteasis and advanced iron uptake
+systems that enable them to degrade host
+tissues and inhibit the host immune
+system. Doctors often find that
+indometriosis patients have anemia or
+low serum zinc and prescribe iron and
+zinc supplementation which clinically
+should add exacerb is found to
+exacerbate symptoms. So let me ask you
+question. Does the routine
+recommendation of iron and zinc
+supplementation make sense based on the
+microbiome signature that you just saw?
+Yes. No. No. No. No.
+Congratulations if you said anything. Um
+you just used a non-exhaustive
+microbiome signature to shape the
+clinical recommendation and you did it
+in 15 minutes if I was successful. Of
+course.

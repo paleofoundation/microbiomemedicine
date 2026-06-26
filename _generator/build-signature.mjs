@@ -137,9 +137,13 @@ if (!cond) { console.error(`No condition row for slug=${slug}. Create the condit
 if (args["signature-only"]) {
   console.log(`(--signature-only) skipped ${feedRows.length} research-feed inserts.`);
 } else {
+  // content_items.id has no sequence default — assign explicit ids above the current max.
+  const { data: maxRow } = await db.from("content_items").select("id").order("id", { ascending: false }).limit(1).maybeSingle();
+  let nextId = (Number(maxRow?.id) || 990100) + 1;
   let created = 0, failed = 0;
   for (const r of feedRows) {
-    const { error } = await db.from("content_items").insert({ ...r, modified_at: new Date().toISOString() });
+    const id = nextId++;
+    const { error } = await db.from("content_items").insert({ id, ...r, modified_at: new Date().toISOString() });
     if (error) { failed++; if (failed < 4) console.log(`feed insert ERROR (${r.slug}): ${error.message}`); } else created++;
   }
   console.log(`research-feed pages created: ${created}, failed: ${failed}`);
