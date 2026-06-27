@@ -20,5 +20,10 @@ export const AUTHOR_BIOS: Record<string, AuthorBio> = {
     "bio": "Giorgos \u2014 BSc, MSc. Giorgos is an exercise scientist whose training and professional practice sit at the intersection of human performance, clinical health, and emerging microbiome science. He holds a BSc in Sports Science &amp; Physical Education from Aristotle University (2012) and an MSc in Exercise &amp; Health from Democritus University (2016), where his graduate work explored physiological adaptations to training across the lifespan. Now in his 15th year of practice, Giorgos pairs evidence-based coaching (ACSM-CPT, NSCA, USA Weightlifting) with a research-driven interest in how physical activity, body composition, and musculoskeletal integrity shape\u2014and are shaped by\u2014host\u2013microbiome dynamics.",
     "avatar": "https://secure.gravatar.com/avatar/ee71b5b7f05209a3ceb2aa5c0cb8929f02f59216d3275f42b5b04a3a92a41a8d?s=96&amp;d=mm&amp;r=g",
     "profile": "/author/giorgos/"
+  },
+  "Dr. Umar": {
+    "bio": "Clinical Pharmacist and Clinical Pharmacy Master's candidate focused on antibiotic stewardship, AI-driven pharmacy practice, and research that strengthens safe and effective medication use. Experience spans digital health research with Bloomsbury Health (London), pharmacovigilance in patient support programs, and behavioral approaches to mental health care. Published work includes studies on antibiotic use and awareness, AI applications in medicine, postpartum depression management, and patient safety reporting. Developer of an AI-based clinical decision support system designed to enhance antimicrobial stewardship and optimize therapeutic outcomes.",
+    "avatar": "https://secure.gravatar.com/avatar/48e4a3b2b9664fc8b17e680aa7201df7c0c39f4f83f17de7a13185344c42d420?s=96&d=mm&r=g",
+    "profile": "/author/dr-umar/"
   }
 };
