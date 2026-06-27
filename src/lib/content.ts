@@ -108,6 +108,27 @@ export const getRootBySlug = cache(async (slug: string) => {
   return (data as ContentItem | null) ?? null;
 });
 
+// "Identified MMAs" = the microbes important enough to be given their own sidebar
+// (detail panel) in the microbiome signature — i.e. has_info:true across the signature
+// levels. That is exactly how the original site counted them; clicking the count opens
+// the signature modal.
+export function signatureMmaCount(meta: Record<string, unknown> | null | undefined): number {
+  const levels = (meta?.signature as { levels?: Record<string, { has_info?: boolean }[]> } | undefined)?.levels;
+  if (!levels) return 0;
+  let n = 0;
+  for (const arr of Object.values(levels)) if (Array.isArray(arr)) for (const t of arr) if (t?.has_info) n++;
+  return n;
+}
+
+// A page's reference count = the distinct [n] citation markers in its body.
+export function referenceCount(html: string): number {
+  const nums = new Set<string>();
+  const re = /\[(\d{1,3})\]/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html || ""))) nums.add(m[1]);
+  return nums.size;
+}
+
 export const sampleByType = cache(async (type: string, limit = 6) => {
   const { data } = await supabase
     .from("content_items")

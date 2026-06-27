@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { sectionBySegment, getItem, stripHost, getWpHtml } from "@/lib/content";
+import { sectionBySegment, getItem, stripHost, getWpHtml, signatureMmaCount } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
@@ -177,7 +177,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const contentHtml = linkifyClassifications(injectFaqs(html, faqs));
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
-  const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
+  // Identified MMAs = microbes given their own sidebar in the signature (has_info), NOT studies.
+  const mmas = signatureMmaCount(meta) || null;
   // Resolve each author's photo from AUTHOR_BIOS when meta omits one, so every page
   // shows a face at the top (e.g. generated pages credited to the founder).
   const authors: Author[] = (Array.isArray(meta.authors) ? (meta.authors as Author[]) : []).map((a) => ({

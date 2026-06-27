@@ -30,13 +30,13 @@ export function PageSnapshot({ refs, mmas }: { refs: number; mmas: number | null
           {refs > 0 && (
             <li className="snapshot__list-item">
               <a className="snapshot__link" href="#h-references">
-                <span className="js-count-references"></span> References
+                <span className="js-count-references">{refs}</span> References
               </a>
             </li>
           )}
           {mmas ? (
             <li className="snapshot__list-item js-show-mmas" data-status="reset" data-modal-id="research-diagram-modal">
-              <span className="js-count-mmas"></span> Identified MMAs
+              <span className="js-count-mmas">{mmas}</span> Identified MMAs
             </li>
           ) : null}
         </ul>
