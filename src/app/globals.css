@@ -105,7 +105,10 @@
 
 /* Connections: the other library entities a page links to, listed as blue links in the
    right rail above Send feedback (auto-derived from the page's internal links). */
-.research-content__connections { margin-bottom: 1.25rem; }
+/* Center the connections list between the collapse arrow above and the Send
+   feedback button below: gap above (this margin-top) matches the gap below
+   (.research-content__right-actions margin-top, 2.5rem), instead of hugging the arrow. */
+.research-content__connections { margin-top: 2.5rem; margin-bottom: 0; }
 .research-content__connections-title { display: block; font-weight: 700; color: #1a1a2e; margin-bottom: 0.5rem; }
 .research-content__connections-list { list-style: none; margin: 0; padding: 0; }
 .research-content__connections-list li { margin: 0 0 0.3rem; line-height: 1.4; }
