@@ -64,6 +64,17 @@ function extractStudies(html: string): { title: string; url: string }[] {
   return out;
 }
 
+// A visible author photo (rounded square) for the top of the hero — shown on every
+// page, not just inside the hover bio card.
+function heroAvatarImg(authors: { name: string; avatar?: string | null }[]): string {
+  const a = authors[0];
+  if (!a) return "";
+  const raw = a.avatar || AUTHOR_BIOS[a.name]?.avatar || "";
+  if (!raw) return "";
+  const src = raw.replace(/&amp;|&/g, "&amp;").replace(/s=\d+/, "s=152");
+  return `<img alt="${a.name}" src="${src}" class="rgbc-hero-avatar" height="76" width="76" />`;
+}
+
 // Authorless captured pages have no "Researched by" block in their hero. When meta
 // credits an author (the site founder is the default for authorless research content),
 // inject the same hero author markup the themed pages use, so attribution is visible.
@@ -115,13 +126,20 @@ export function WpRender({
   const withConn = connBlock
     ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
     : html;
-  // Make author attribution visible on captured pages whose hero has no "Researched by".
-  const withAuthor =
-    authors.length && !/Researched\s*by/i.test(withConn)
-      ? withConn
-          .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
-          .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors))
-      : withConn;
+  // Author at the top of every page: a visible photo above the title, plus (for
+  // captured pages whose hero has no "Researched by") the attribution block.
+  let withAuthor = withConn;
+  if (authors.length) {
+    const avatarImg = heroAvatarImg(authors);
+    if (avatarImg && !withAuthor.includes("rgbc-hero-avatar")) {
+      withAuthor = withAuthor.replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>)/, (m) => avatarImg + m);
+    }
+    if (!/Researched\s*by/i.test(withAuthor)) {
+      withAuthor = withAuthor
+        .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
+        .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors));
+    }
+  }
   const content = dePurple(injectFaqs(withAuthor, faqs));
   const sigStudies = extractSignatureStudies(content);
   const studies = sigStudies.length ? sigStudies : extractStudies(content);

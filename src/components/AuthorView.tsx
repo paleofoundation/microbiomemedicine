@@ -7,7 +7,7 @@ import { AUTHOR_BIOS } from "@/theme/authorsBios";
 
 // Author archive page: who the author is + everything they've worked on. Mirrors the
 // original /author/<slug> page — hero (avatar + "Name, Role"), About (bio), then
-// "Recent Posts" cards (date + title link + excerpt), most-recent first.
+// "Recent Posts" cards (date + title link + excerpt), most-recent first, paginated.
 const AUTHORS: Record<string, { name: string; role?: string }> = {
   "kmfp84gmail-com": { name: "Karen Pendergrass", role: "Standards Team" },
   kimberly: { name: "Kimberly Eyer" },
@@ -17,20 +17,23 @@ const AUTHORS: Record<string, { name: string; role?: string }> = {
   "jonathan-pendergrass": { name: "Jonathan Pendergrass" },
 };
 
+const PAGE_SIZE = 24;
+
 type Post = { type: string; slug: string; title: string; excerpt_html: string | null; modified_at: string | null };
 
 const hrefFor = (type: string, slug: string): string =>
   type === "post" || type === "page" ? `/${slug}/` : `/${segmentForType(type)}/${slug}/`;
 
-async function authorPosts(name: string): Promise<Post[]> {
-  const { data } = await supabase
+async function authorPosts(name: string, page: number): Promise<{ posts: Post[]; total: number }> {
+  const from = (page - 1) * PAGE_SIZE;
+  const { data, count } = await supabase
     .from("content_items")
-    .select("type,slug,title,excerpt_html,modified_at")
+    .select("type,slug,title,excerpt_html,modified_at", { count: "exact" })
     .eq("status", "publish")
     .contains("meta->authors", JSON.stringify([{ name }]))
     .order("modified_at", { ascending: false, nullsFirst: false })
-    .limit(400);
-  return (data ?? []) as Post[];
+    .range(from, from + PAGE_SIZE - 1);
+  return { posts: (data ?? []) as Post[], total: count ?? 0 };
 }
 
 export async function authorMetadata(slug: string): Promise<Metadata> {
@@ -38,12 +41,51 @@ export async function authorMetadata(slug: string): Promise<Metadata> {
   return a ? { title: a.name } : {};
 }
 
-export async function AuthorView({ slug }: { slug: string }) {
+function Paginator({ slug, page, totalPages }: { slug: string; page: number; totalPages: number }) {
+  if (totalPages <= 1) return null;
+  const href = (p: number) => `/author/${slug}${p > 1 ? `?page=${p}` : ""}`;
+  const set = new Set<number>([1, 2, totalPages - 1, totalPages, page - 1, page, page + 1]);
+  const sorted = [...set].filter((n) => n >= 1 && n <= totalPages).sort((a, b) => a - b);
+  const items: (number | "ellipsis")[] = [];
+  let prev = 0;
+  for (const n of sorted) {
+    if (prev && n - prev > 1) items.push("ellipsis");
+    items.push(n);
+    prev = n;
+  }
+  return (
+    <nav className="mbio-pagination" aria-label="Author pages">
+      {page > 1 ? (
+        <Link className="mbio-pagination__item prev" href={href(page - 1)}>‹ Prev</Link>
+      ) : (
+        <span className="mbio-pagination__item prev disabled">‹ Prev</span>
+      )}
+      {items.map((it, i) =>
+        it === "ellipsis" ? (
+          <span key={`e${i}`} className="mbio-pagination__ellipsis">…</span>
+        ) : (
+          <Link key={it} className={`mbio-pagination__item${it === page ? " current" : ""}`} href={href(it)}>
+            {it}
+          </Link>
+        )
+      )}
+      {page < totalPages ? (
+        <Link className="mbio-pagination__item next" href={href(page + 1)}>Next ›</Link>
+      ) : (
+        <span className="mbio-pagination__item next disabled">Next ›</span>
+      )}
+    </nav>
+  );
+}
+
+export async function AuthorView({ slug, page = 1 }: { slug: string; page?: number }) {
   const author = AUTHORS[slug];
   if (!author) notFound();
   const bio = AUTHOR_BIOS[author.name];
   const avatar = bio?.avatar ? bio.avatar.replace(/&amp;/g, "&").replace(/s=\d+/, "s=256") : null;
-  const posts = await authorPosts(author.name);
+  const cur = Math.max(1, page);
+  const { posts, total } = await authorPosts(author.name, cur);
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <div className="site-content">
@@ -69,7 +111,7 @@ export async function AuthorView({ slug }: { slug: string }) {
             )}
             <h3 className="rgbc-accent">Recent Posts</h3>
             <div>
-              {posts.length === 0 && <p>No published contributions yet.</p>}
+              {total === 0 && <p>No published contributions yet.</p>}
               {posts.map((p) => (
                 <article className="mbio-card" key={`${p.type}-${p.slug}`}>
                   <div className="mbio-card__border"></div>
@@ -83,6 +125,7 @@ export async function AuthorView({ slug }: { slug: string }) {
                 </article>
               ))}
             </div>
+            <Paginator slug={slug} page={cur} totalPages={totalPages} />
           </div>
         </div>
       </main>
