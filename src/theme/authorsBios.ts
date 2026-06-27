@@ -25,5 +25,10 @@ export const AUTHOR_BIOS: Record<string, AuthorBio> = {
     "bio": "Clinical Pharmacist and Clinical Pharmacy Master's candidate focused on antibiotic stewardship, AI-driven pharmacy practice, and research that strengthens safe and effective medication use. Experience spans digital health research with Bloomsbury Health (London), pharmacovigilance in patient support programs, and behavioral approaches to mental health care. Published work includes studies on antibiotic use and awareness, AI applications in medicine, postpartum depression management, and patient safety reporting. Developer of an AI-based clinical decision support system designed to enhance antimicrobial stewardship and optimize therapeutic outcomes.",
     "avatar": "https://secure.gravatar.com/avatar/48e4a3b2b9664fc8b17e680aa7201df7c0c39f4f83f17de7a13185344c42d420?s=96&d=mm&r=g",
     "profile": "/author/dr-umar/"
+  },
+  "Jonathan Pendergrass": {
+    "bio": "",
+    "avatar": "https://secure.gravatar.com/avatar/9c1e5ad427ad1f7c4ddbe88cdfe763b337fa623580afef4558ef0759c96f2578?s=96&amp;d=mm&amp;r=g",
+    "profile": "/author/jonathan-pendergrass/"
   }
 };

@@ -6,6 +6,7 @@ import { WpDiagram } from "@/components/WpDiagram";
 import { buildJsonLd } from "@/lib/seo";
 import { getFaqs, injectFaqs } from "@/lib/faqs";
 import { connectionsBlockHtml } from "@/lib/connections";
+import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { stripHost, type ContentItem } from "@/lib/content";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
@@ -63,6 +64,32 @@ function extractStudies(html: string): { title: string; url: string }[] {
   return out;
 }
 
+// Authorless captured pages have no "Researched by" block in their hero. When meta
+// credits an author (the site founder is the default for authorless research content),
+// inject the same hero author markup the themed pages use, so attribution is visible.
+function researchedByHtml(authors: { name: string; orcid?: string | null; avatar?: string | null }[]): string {
+  if (!authors.length) return "";
+  const items = authors
+    .map((a, i) => {
+      const cls = `user-bio-auto-${i + 1}`;
+      const bio = AUTHOR_BIOS[a.name]?.bio || "";
+      const avatarRaw = a.avatar || AUTHOR_BIOS[a.name]?.avatar || "";
+      const avatar = avatarRaw.replace(/&amp;|&/g, "&amp;"); // normalize to HTML entity form
+      const orcid = a.orcid ? `<a class="orchid-id" target="_blank" href="${a.orcid}">ID</a>` : "";
+      const tip = bio
+        ? `<div class="tooltip ${cls}"><div class="tooltip__header">${a.name}</div><div class="tooltip__content"><p>${
+            avatar ? `<img alt="User avatar" src="${avatar}" class="avatar avatar-96 photo" height="96" width="96" />` : ""
+          }${bio}</p></div></div>`
+        : "";
+      const trigger = bio
+        ? `<span class="rgbc-tooltip" data-options="position:left" title=".${cls}"> ${a.name}</span>`
+        : `<span> ${a.name}</span>`;
+      return `<li>${trigger}${orcid}${tip}</li>`;
+    })
+    .join("");
+  return `<div class="research-hero__center-meta"><div class="research-hero__center-meta-item"><p><span>Researched by:</span></p><ul class="research-hero__tooltips-list">${items}</ul></div></div>`;
+}
+
 // Renders the captured WordPress content region verbatim (pixel-exact), injecting
 // our generated FAQs and re-attaching the interactive pieces.
 export function WpRender({
@@ -88,7 +115,14 @@ export function WpRender({
   const withConn = connBlock
     ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
     : html;
-  const content = dePurple(injectFaqs(withConn, faqs));
+  // Make author attribution visible on captured pages whose hero has no "Researched by".
+  const withAuthor =
+    authors.length && !/Researched\s*by/i.test(withConn)
+      ? withConn
+          .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
+          .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors))
+      : withConn;
+  const content = dePurple(injectFaqs(withAuthor, faqs));
   const sigStudies = extractSignatureStudies(content);
   const studies = sigStudies.length ? sigStudies : extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });

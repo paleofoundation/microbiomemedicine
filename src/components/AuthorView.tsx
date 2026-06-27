@@ -14,6 +14,7 @@ const AUTHORS: Record<string, { name: string; role?: string }> = {
   aleru: { name: "Divine Aleru", role: "Microbiome Signatures Research Coordinator" },
   giorgos: { name: "Giorgos Aristotelous" },
   "dr-umar": { name: "Dr. Umar" },
+  "jonathan-pendergrass": { name: "Jonathan Pendergrass" },
 };
 
 type Post = { type: string; slug: string; title: string; excerpt_html: string | null; modified_at: string | null };
