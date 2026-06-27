@@ -81,4 +81,4 @@ To **surface a study on an intervention/validation page**, the page (if it rende
 
 ## Known gaps to fix when touching interventions
 - **TB** condition page: header says "Status" (→ "MBTI Status"); MBTI Status cells are not linked to validation pages; no validation pages exist yet for TB's interventions.
-- **Endo:** HBOT is labelled "Promising Candidate" but should be **Validated** (animal-model complete remission). Per the build-order rule, author the HBOT-endo validation page first, then relabel and link.
+- **Endo:** HBOT MBTI Status is now **Validated** (fixed 2026-06; animal-model complete remission), linked to its validation page `/hbot-candidate-for-microbiome-targeted-intervention-endometriosis/`. That validation page's slug/title still say "candidate" — optional follow-up to re-slug/retitle it (with a redirect) to read as Validated.

@@ -38,16 +38,26 @@ export function buildMetadata(item: SeoItem, o: SeoOpts): Metadata {
   const title = item.seo_title || item.title;
   const description = item.seo_description || stripTags(item.excerpt_html);
   const image = abs(o.image);
-  const date = (item.published_at || item.modified_at || "").slice(0, 10);
+  // Google Scholar prefers slash-separated dates (YYYY/MM/DD).
+  const date = (item.published_at || item.modified_at || "").slice(0, 10).replace(/-/g, "/");
+  const canonical = abs(o.path) || SITE_URL;
+  // Authorless pages are authored by Karen (site rule), so Scholar always gets an author.
+  const authors = o.authors?.length ? o.authors : [{ name: "Karen Pendergrass" }];
+  const citationAbstract = stripTags(item.seo_description) || stripTags(item.excerpt_html);
 
+  // Highwire Press citation_* tags — the bibliographic metadata Google Scholar indexes on.
   const other: Record<string, string | string[]> = {
     citation_title: item.title,
     citation_journal_title: o.journal || SITE_NAME,
     citation_publisher: SITE_NAME,
-    citation_fulltext_world_readable: "",
+    citation_author: authors.map((a) => a.name),
+    citation_fulltext_world_readable: "true",
+    citation_language: "en",
+    citation_abstract_html_url: canonical,
+    citation_fulltext_html_url: canonical,
   };
   if (date) { other.citation_publication_date = date; other.citation_online_date = date; }
-  if (o.authors?.length) other.citation_author = o.authors.map((a) => a.name);
+  if (citationAbstract) other.citation_abstract = citationAbstract.slice(0, 5000);
   if (o.doi) other.citation_doi = o.doi;
   const pdf = abs(o.pdfUrl);
   if (pdf) other.citation_pdf_url = pdf;
@@ -64,7 +74,7 @@ export function buildMetadata(item: SeoItem, o: SeoOpts): Metadata {
       type: "article",
       publishedTime: item.published_at || undefined,
       modifiedTime: item.modified_at || undefined,
-      authors: o.authors?.map((a) => a.name),
+      authors: authors.map((a) => a.name),
       images: image ? [image] : undefined,
     },
     twitter: { card: "summary_large_image", title, description: description || undefined, images: image ? [image] : undefined },
@@ -94,9 +104,8 @@ export function buildJsonLd(
     inLanguage: "en-US",
     isAccessibleForFree: true,
     publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    author: o.authors?.length
-      ? o.authors.map((a) => ({ "@type": "Person", name: a.name, ...(a.orcid ? { identifier: a.orcid, sameAs: a.orcid } : {}) }))
-      : { "@type": "Organization", name: SITE_NAME },
+    author: (o.authors?.length ? o.authors : [{ name: "Karen Pendergrass", orcid: "https://orcid.org/0000-0002-2348-7259" }])
+      .map((a) => ({ "@type": "Person", name: a.name, ...(a.orcid ? { identifier: a.orcid, sameAs: a.orcid } : {}) })),
   };
   if (o.doi) main.sameAs = `https://doi.org/${o.doi}`;
   const out: Record<string, unknown>[] = [main];
