@@ -14,7 +14,7 @@ import { PageSnapshot } from "@/components/PageSnapshot";
 import { RightRail } from "@/components/RightRail";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata, buildJsonLd } from "@/lib/seo";
-import { extractConnections } from "@/lib/connections";
+import { resolveConnections } from "@/lib/connections";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -191,7 +191,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
   const selfPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
-  const connections = extractConnections(html, selfPath);
+  const connections = resolveConnections(meta.connections, html, selfPath);
   const jsonLd = buildJsonLd(item, {
     path: selfPath,
     type: section.type,

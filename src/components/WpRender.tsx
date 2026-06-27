@@ -84,7 +84,7 @@ export function WpRender({
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const faqs = getFaqs(html, item.title);
   // Inject the auto-derived "Connections" list above the right-rail actions (Send feedback).
-  const connBlock = connectionsBlockHtml(html, path);
+  const connBlock = connectionsBlockHtml(html, path, meta.connections);
   const withConn = connBlock
     ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
     : html;

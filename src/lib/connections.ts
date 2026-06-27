@@ -1,17 +1,19 @@
-// "Connections" = the other library entities a page links to in its body content
-// (conditions, metals, interventions, definitions, microbes, supplements), shown as
-// blue links in the right rail above Send feedback. Auto-derived from the page's own
-// internal links — the original WordPress theme generated this; we derive it at render time.
+// "Connections" = up to 3 most-relevant library entities for a page, shown as blue links
+// in the right rail above Send feedback. Originally hand-curated (conditions first, then a
+// heavily-referenced intervention) — that field wasn't captured in migration, so:
+//   1. meta.connections (curated override) wins when present, else
+//   2. an auto-default: rank the entities the page links to by mention frequency,
+//      conditions first, cap 3.
 export type Connection = { label: string; href: string; type: string };
 
 const SEGMENTS = ["conditions", "metals", "interventions", "definition", "microbes", "supplement", "guide", "theory"];
+const MAX = 3;
 
-export function extractConnections(html: string, selfPath = ""): Connection[] {
+// Auto-default: frequency-rank the page's internal entity links, conditions first, cap N.
+export function autoConnections(html: string, selfPath = "", max = MAX): Connection[] {
   if (!html) return [];
-  const out: Connection[] = [];
-  const seen = new Set<string>();
   const self = selfPath.replace(/\/+$/, "").toLowerCase();
-  // tolerate root-relative (/definition/x) and absolute (https://host/definition/x) hrefs
+  const acc = new Map<string, { label: string; type: string; n: number }>();
   const re = new RegExp(
     `<a\\b[^>]*href="(?:https?:)?(?:\\/\\/[^\\/"]+)?(\\/(?:${SEGMENTS.join("|")})\\/[^"#?]+)"[^>]*>([\\s\\S]*?)<\\/a>`,
     "gi"
@@ -19,23 +21,43 @@ export function extractConnections(html: string, selfPath = ""): Connection[] {
   let m: RegExpExecArray | null;
   while ((m = re.exec(html))) {
     const href = "/" + m[1].replace(/^\/|\/$/g, "");
-    const key = href.toLowerCase();
-    if (key === self || seen.has(key)) continue;
+    if (href.toLowerCase() === self) continue;
     const label = m[2].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
     if (!label) continue;
-    seen.add(key);
-    out.push({ label, href: href + "/", type: href.split("/")[1] });
+    const cur = acc.get(href);
+    if (cur) cur.n++;
+    else acc.set(href, { label, type: href.split("/")[1], n: 1 });
   }
-  return out.sort((a, b) => a.label.localeCompare(b.label));
+  return [...acc.entries()]
+    .map(([href, v]) => ({ href: href + "/", label: v.label, type: v.type, n: v.n }))
+    .sort((a, b) => {
+      const ac = a.type === "conditions" ? 0 : 1, bc = b.type === "conditions" ? 0 : 1;
+      return ac - bc || b.n - a.n || a.label.localeCompare(b.label);
+    })
+    .slice(0, max)
+    .map(({ label, href, type }) => ({ label, href, type }));
+}
+
+type Override = { label: string; href: string }[] | undefined | unknown;
+
+// Curated override (meta.connections) wins; otherwise the auto-default.
+export function resolveConnections(override: Override, html: string, selfPath = "", max = MAX): Connection[] {
+  if (Array.isArray(override) && override.length) {
+    return override
+      .filter((o): o is { label: string; href: string } => !!o && typeof o.label === "string" && typeof o.href === "string")
+      .slice(0, max)
+      .map((o) => ({ label: o.label, href: o.href, type: (o.href.split("/")[1] || "") }));
+  }
+  return autoConnections(html, selfPath, max);
 }
 
 function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-// HTML string version of the Connections block, for injection into verbatim WP markup.
-export function connectionsBlockHtml(html: string, selfPath = ""): string {
-  const cons = extractConnections(html, selfPath);
+// HTML-string version for injection into verbatim WP markup.
+export function connectionsBlockHtml(html: string, selfPath = "", override?: Override): string {
+  const cons = resolveConnections(override, html, selfPath);
   if (!cons.length) return "";
   const items = cons.map((c) => `<li><a href="${esc(c.href)}">${esc(c.label)}</a></li>`).join("");
   return `<div class="research-content__connections"><span class="research-content__connections-title">Connections</span><ul class="research-content__connections-list">${items}</ul></div>`;
