@@ -96,7 +96,9 @@ export function autolinkConditions(html: string, conditions: { title: string; hr
     for (const { c, terms } of conds) {
       if (done.has(c.href)) continue;
       for (const t of terms) {
-        const m = new RegExp(`\\b${escRe(t.term)}\\b`, t.ci ? "i" : "").exec(p);
+        // Treat any apostrophe variant interchangeably (title "Crohn’s" vs body "Crohn's").
+        const pat = escRe(t.term).replace(/['‘’ʼ]/g, "['‘’ʼ]");
+        const m = new RegExp(`\\b${pat}\\b`, t.ci ? "i" : "").exec(p);
         if (m && (!best || m.index < best.idx)) {
           best = { idx: m.index, len: m[0].length, matched: m[0], href: c.href, label: c.title.replace(/\s*\([^)]*\)\s*$/, "").trim() };
         }
