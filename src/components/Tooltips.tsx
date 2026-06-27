@@ -20,7 +20,8 @@ export function Tooltips() {
 
     for (const tr of triggers) {
       const sel = tr.getAttribute("title") || "";
-      tr.removeAttribute("title"); // suppress the native browser tooltip; keep theme's cursor:pointer
+      tr.removeAttribute("title"); // suppress the native browser tooltip
+      tr.style.cursor = "pointer"; // the original theme's cursor (NOT the "help" question mark)
       const cls = sel.replace(/^\./, "");
       const show = () => {
         let tip: HTMLElement | null = null;
