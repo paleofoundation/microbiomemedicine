@@ -5,6 +5,7 @@ import { HEADER_HTML, FOOTER_HTML } from "@/theme/themeHtml";
 import { Feedback } from "@/components/Feedback";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { HeaderSearch } from "@/components/HeaderSearch";
+import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://microbiomemedicine.com"),
@@ -52,6 +53,7 @@ export default function RootLayout({
         <Feedback />
         <ScrollToTop />
         <HeaderSearch />
+        <SearchAutocomplete />
       </body>
     </html>
   );

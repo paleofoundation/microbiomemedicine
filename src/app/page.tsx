@@ -1,5 +1,4 @@
 import { HOME_HTML } from "@/theme/homeMain";
-import { HeroSearch } from "@/components/HeroSearch";
 
 export const revalidate = 3600;
 
@@ -9,10 +8,5 @@ const html = HOME_HTML
   .replace(/action="\/"/g, 'action="/search"');
 
 export default function Home() {
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
-      <HeroSearch />
-    </>
-  );
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

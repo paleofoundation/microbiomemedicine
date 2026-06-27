@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { segmentForType } from "@/lib/content";
+import { SECTIONS } from "@/lib/content";
 
 // Live autocomplete for the homepage hero search (the WordPress front.js search
 // plugin that populated `.js-search-result` doesn't run in the rebuild). Returns
@@ -44,8 +44,11 @@ const rank = (type: string): number => {
   return i === -1 ? TYPE_ORDER.length : i;
 };
 
+// Mirror the /search page's pathFor: only types mapped to a URL segment get a
+// prefix; everything else (posts, pages) lives at the site root.
+const SEGMENT_BY_TYPE: Record<string, string> = Object.fromEntries(SECTIONS.map((s) => [s.type, s.segment]));
 function hrefFor(type: string, slug: string): string {
-  const seg = segmentForType(type);
+  const seg = SEGMENT_BY_TYPE[type];
   return seg ? `/${seg}/${slug}` : `/${slug}`;
 }
 
