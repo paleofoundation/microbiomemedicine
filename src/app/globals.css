@@ -13,13 +13,13 @@
 
 /* Content-link convention (the theme's :where() rules lose to Tailwind's reset,
    so set these explicitly): blue, no underline, underline on hover. */
-.entry-content a:not(.btn):not(.research-hero__center-tag),
-.article a:not(.btn) {
+.entry-content a:not([class*="btn"]):not(.research-hero__center-tag),
+.article a:not([class*="btn"]) {
   color: #183fab !important;
   text-decoration: none !important;
 }
-.entry-content a:not(.btn):not(.research-hero__center-tag):hover,
-.article a:not(.btn):hover {
+.entry-content a:not([class*="btn"]):not(.research-hero__center-tag):hover,
+.article a:not([class*="btn"]):hover {
   text-decoration: underline !important;
 }
 
