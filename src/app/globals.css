@@ -143,6 +143,13 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
   table-layout: auto;
   width: 100%;
 }
+/* Floor + ceiling on the label column so very short labels don't collapse to a sliver
+   and long ones still stay clearly the narrower of the two columns. */
+.research-content__center table:has(tbody tr > td:nth-child(2):last-child) th:first-child,
+.research-content__center table:has(tbody tr > td:nth-child(2):last-child) td:first-child {
+  min-width: 9rem;
+  max-width: 30%;
+}
 
 /* Search results page (/?s=term or /search?q=) — "Search Results for: X" hero + result
    cards (title + type badge + excerpt), matching the original WordPress search page. */
