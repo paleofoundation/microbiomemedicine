@@ -117,14 +117,6 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
   font-weight: 400 !important;
 }
 
-/* Author photo at the top of every content page — a rounded square that is always
-   visible (not hidden inside the hover bio card). Sits in the red hero. */
-.rgbc-hero-avatar {
-  width: 76px; height: 76px; border-radius: 16px; object-fit: cover;
-  display: block; margin: 0 0 0.9rem; border: 2px solid rgba(255, 255, 255, 0.7);
-  background: #fff;
-}
-
 /* Author archive pagination (matches the original .mbio-pagination). */
 .mbio-pagination { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; padding: 52px 0 8px; font-size: 14px; }
 .mbio-pagination__item { border-radius: 100px; min-height: 36px; min-width: 36px; display: flex; align-items: center; justify-content: center; padding: 0 13px; color: #1c43ad; text-decoration: none; }

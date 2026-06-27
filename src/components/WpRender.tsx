@@ -64,41 +64,39 @@ function extractStudies(html: string): { title: string; url: string }[] {
   return out;
 }
 
-// A visible author photo (rounded square) for the top of the hero — shown on every
-// page, not just inside the hover bio card.
-function heroAvatarImg(authors: { name: string; avatar?: string | null }[]): string {
-  const a = authors[0];
-  if (!a) return "";
-  const raw = a.avatar || AUTHOR_BIOS[a.name]?.avatar || "";
-  if (!raw) return "";
-  const src = raw.replace(/&amp;|&/g, "&amp;").replace(/s=\d+/, "s=152");
-  return `<img alt="${a.name}" src="${src}" class="rgbc-hero-avatar" height="76" width="76" />`;
-}
-
 // Authorless captured pages have no "Researched by" block in their hero. When meta
 // credits an author (the site founder is the default for authorless research content),
-// inject the same hero author markup the themed pages use, so attribution is visible.
+// inject the same hero author markup the themed pages use — a visible photo row + the
+// "Researched by" names + hover bios — so attribution (and a face) is shown at the top.
 function researchedByHtml(authors: { name: string; orcid?: string | null; avatar?: string | null }[]): string {
   if (!authors.length) return "";
-  const items = authors
-    .map((a, i) => {
-      const cls = `user-bio-auto-${i + 1}`;
-      const bio = AUTHOR_BIOS[a.name]?.bio || "";
-      const avatarRaw = a.avatar || AUTHOR_BIOS[a.name]?.avatar || "";
-      const avatar = avatarRaw.replace(/&amp;|&/g, "&amp;"); // normalize to HTML entity form
-      const orcid = a.orcid ? `<a class="orchid-id" target="_blank" href="${a.orcid}">ID</a>` : "";
-      const tip = bio
-        ? `<div class="tooltip ${cls}"><div class="tooltip__header">${a.name}</div><div class="tooltip__content"><p>${
-            avatar ? `<img alt="User avatar" src="${avatar}" class="avatar avatar-96 photo" height="96" width="96" />` : ""
-          }${bio}</p></div></div>`
-        : "";
-      const trigger = bio
-        ? `<span class="rgbc-tooltip" data-options="position:left" title=".${cls}"> ${a.name}</span>`
-        : `<span> ${a.name}</span>`;
-      return `<li>${trigger}${orcid}${tip}</li>`;
-    })
+  const resolved = authors.map((a, i) => {
+    const info = AUTHOR_BIOS[a.name];
+    const avatar = (a.avatar || info?.avatar || "").replace(/&amp;|&/g, "&amp;"); // HTML entity form
+    return { name: a.name, orcid: a.orcid || null, avatar, bio: info?.bio || "", cls: `user-bio-auto-${i + 1}` };
+  });
+  const photos = resolved.filter((r) => r.avatar);
+  const photoRow = photos.length
+    ? `<div class="research-hero__right-users"><ul class="research-hero__tooltips-list research-hero__tooltips-list--an-image-as-link">${photos
+        .map(
+          (r) =>
+            `<li><span class="rgbc-tooltip" data-options="position:left"${r.bio ? ` title=".${r.cls}"` : ""}><img alt="${r.name}" src="${r.avatar}" class="avatar avatar-96 photo" height="96" width="96" /></span></li>`
+        )
+        .join("")}</ul></div>`
+    : "";
+  const names = `<div class="research-hero__center-meta-item"><p><span>Researched by:</span></p><ul class="research-hero__tooltips-list">${resolved
+    .map((r) => `<li><span>${r.name}</span>${r.orcid ? `<a class="orchid-id" target="_blank" href="${r.orcid}">ID</a>` : ""}</li>`)
+    .join("")}</ul></div>`;
+  const bios = resolved
+    .filter((r) => r.bio)
+    .map(
+      (r) =>
+        `<div class="tooltip ${r.cls}"><div class="tooltip__header">${r.name}</div><div class="tooltip__content"><p>${
+          r.avatar ? `<img alt="User avatar" src="${r.avatar}" class="avatar avatar-96 photo" height="96" width="96" />` : ""
+        }${r.bio}</p></div></div>`
+    )
     .join("");
-  return `<div class="research-hero__center-meta"><div class="research-hero__center-meta-item"><p><span>Researched by:</span></p><ul class="research-hero__tooltips-list">${items}</ul></div></div>`;
+  return `<div class="research-hero__center-meta">${photoRow}${names}${bios}</div>`;
 }
 
 // Renders the captured WordPress content region verbatim (pixel-exact), injecting
@@ -126,20 +124,14 @@ export function WpRender({
   const withConn = connBlock
     ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
     : html;
-  // Author at the top of every page: a visible photo above the title, plus (for
-  // captured pages whose hero has no "Researched by") the attribution block.
-  let withAuthor = withConn;
-  if (authors.length) {
-    const avatarImg = heroAvatarImg(authors);
-    if (avatarImg && !withAuthor.includes("rgbc-hero-avatar")) {
-      withAuthor = withAuthor.replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>)/, (m) => avatarImg + m);
-    }
-    if (!/Researched\s*by/i.test(withAuthor)) {
-      withAuthor = withAuthor
-        .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
-        .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors));
-    }
-  }
+  // Author at the top of every page: inject the "Researched by" block (with a visible
+  // author photo row) into captured heroes that lack one.
+  const withAuthor =
+    authors.length && !/Researched\s*by/i.test(withConn)
+      ? withConn
+          .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
+          .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors))
+      : withConn;
   const content = dePurple(injectFaqs(withAuthor, faqs));
   const sigStudies = extractSignatureStudies(content);
   const studies = sigStudies.length ? sigStudies : extractStudies(content);

@@ -177,7 +177,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;
-  const authors: Author[] = Array.isArray(meta.authors) ? (meta.authors as Author[]) : [];
+  // Resolve each author's photo from AUTHOR_BIOS when meta omits one, so every page
+  // shows a face at the top (e.g. generated pages credited to the founder).
+  const authors: Author[] = (Array.isArray(meta.authors) ? (meta.authors as Author[]) : []).map((a) => ({
+    ...a,
+    avatar: (a.avatar || AUTHOR_BIOS[a.name]?.avatar || null)?.replace(/&amp;/g, "&") ?? null,
+  }));
   const didYouKnow = typeof meta.did_you_know === "string" ? meta.did_you_know.replace(/^Did you know\??\s*/i, "") : null;
   const signature = meta.signature as { levels?: Record<string, SigItem[]>; studies?: { title: string; url: string }[] } | undefined;
   const hasSignature = !!signature?.levels;
