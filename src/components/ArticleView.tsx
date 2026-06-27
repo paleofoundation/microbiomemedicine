@@ -8,6 +8,7 @@ import { Tooltips } from "@/components/Tooltips";
 import { ContentAccordions } from "@/components/ContentAccordions";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
+import { applyTextRules } from "@/lib/textRules";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
@@ -174,7 +175,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
   const faqs = getFaqs(html, item.title);
-  const contentHtml = linkifyClassifications(injectFaqs(html, faqs));
+  const contentHtml = applyTextRules(linkifyClassifications(injectFaqs(html, faqs)));
+  const excerptHtml = applyTextRules(item.excerpt_html || "");
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   // Identified MMAs = microbes given their own sidebar in the signature (has_info), NOT studies.
@@ -221,7 +223,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
           <div className="research-hero__wrapper">
             <div className="research-hero__left">
               {section.type === "post" ? (
-                <div className="research-hero__left-content" dangerouslySetInnerHTML={{ __html: item.excerpt_html || "" }} />
+                <div className="research-hero__left-content" dangerouslySetInnerHTML={{ __html: excerptHtml }} />
               ) : (
                 <>
                   {img && <img src={img} alt={item.title} className="research-hero__left-image" />}
@@ -247,7 +249,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
               <div className="research-hero__center-content ">
                 <h1 className="research-hero__center-title">{item.title}</h1>
                 {item.excerpt_html && (
-                  <div className="research-hero__center-text" dangerouslySetInnerHTML={{ __html: item.excerpt_html }} />
+                  <div className="research-hero__center-text" dangerouslySetInnerHTML={{ __html: excerptHtml }} />
                 )}
               </div>
 

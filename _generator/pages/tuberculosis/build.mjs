@@ -108,10 +108,9 @@ H += `<details class="wp-block-details is-layout-flow"><summary><span style="col
   + `<tr><td><mark style="background-color:rgba(0,0,0,0)" class="has-inline-color has-vivid-red-color">Manganese</mark></td><td>Neutrophil calprotectin sequesters Mn (and Zn), and NRAMP1/SLC11A1 pumps Fe/Mn out of the phagosome&mdash;SLC11A1 variants are linked to susceptibility.${cite("calprotectin", "nramp1")}</td></tr>`
   + `</tbody></table></figure></details>`;
 
-H += `<h4 class="wp-block-heading" id="h-microbiome-signature">Microbiome Signature</h4>`;
 H += P(`Explore the interactive ${dlink("#rgbc-database", "Microbiome Signature")} chart above for the per-taxon metallome panels. The airway signature is dominated by enrichment of oral-origin anaerobes (<em>Prevotella</em>, <em>Streptococcus</em>, <em>Megasphaera</em>, <em>Campylobacter</em>, <em>Kingella</em>) and a collapse of diversity, with active disease often Mtb-dominated;${cite("cheung", "kayongo")} in non-TB lungs the same oral-taxa "pneumotype" provokes a Th17 inflammatory tone.${cite("segal")} Through the gut&ndash;lung axis, depletion of SCFA producers and butyrate may blunt protective Th1/Th17 immunity.${cite("scfa", "gutlung")} These are associations around a known pathogen and are heavily antibiotic-confounded&mdash;interpret each taxon in that light.`);
 
-H += `<h4 class="wp-block-heading" id="h-oxygen-granuloma">Oxygen, Redox &amp; the Granuloma</h4>`;
+H += `<h4 class="wp-block-heading" id="h-oxygen-ecology">Oxygen Ecology</h4>`;
 H += P(`TB's disease-specific mechanism is oxygen ecology. The granuloma's caseous core becomes hypoxic, and because Mtb is an obligate aerobe, falling O&#8322; does not aid it&mdash;it forces non-replicating dormancy through the DosR regulon, the basis of latency and decades-long persistence.${cite("dosr", "hypoxia")} This is why raising tissue oxygen (HBOT) is the wrong lever for TB&mdash;the exact opposite of anaerobe-dominated conditions. The bacillus is also vulnerable to host redox: glutathione (and its precursor NAC) has direct anti-mycobacterial and immune-enhancing effects in the granuloma.${cite("gsh")}`);
 
 // ----- Interventions -----

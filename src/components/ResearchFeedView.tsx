@@ -5,6 +5,7 @@ import { WpRender } from "@/components/WpRender";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
 import { autolinkConditions, buildConnections } from "@/lib/connections";
+import { applyTextRules } from "@/lib/textRules";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { JsonLd } from "@/components/JsonLd";
@@ -85,7 +86,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
     orcid: a.orcid || AUTHOR_BIOS[a.name]?.orcid || null,
   }));
   const avatars = authors.filter((a) => a.avatar);
-  const { html: contentHtml, linked } = autolinkConditions(graphsHtml(feed) + (item.content_html || ""), condLinks);
+  const { html: contentHtml, linked } = autolinkConditions(applyTextRules(graphsHtml(feed) + (item.content_html || "")), condLinks);
   const connections = buildConnections(meta.connections, conditions, linked);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];

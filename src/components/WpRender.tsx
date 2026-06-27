@@ -8,6 +8,7 @@ import { getFaqs, injectFaqs } from "@/lib/faqs";
 import { connectionsBlockHtml } from "@/lib/connections";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
+import { applyTextRules } from "@/lib/textRules";
 import { stripHost, referenceCount, signatureMmaCount, type ContentItem } from "@/lib/content";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
@@ -136,7 +137,7 @@ export function WpRender({
           .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
           .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors))
       : withConn;
-  let content = dePurple(injectFaqs(linkifyClassifications(withAuthor), faqs));
+  let content = applyTextRules(dePurple(injectFaqs(linkifyClassifications(withAuthor), faqs)));
   // Fill the Page Snapshot counts the way front.js used to (it's not loaded): References =
   // distinct [n] citations; Identified MMAs = signature taxa given their own sidebar.
   const refCount = referenceCount(content);

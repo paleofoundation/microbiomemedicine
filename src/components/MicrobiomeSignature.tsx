@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Item = { name: string; value: number; has_info?: boolean };
 const LEVEL_ORDER = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"];
@@ -10,6 +10,48 @@ function colorFor(value: number, hasInfo?: boolean): string {
   if (value > 0) return hasInfo ? "#f04c4c" : "#efbdbd";
   if (value < 0) return hasInfo ? "#183fab" : "#b5b9d2";
   return "#cbd5e1";
+}
+
+// Circumference-packing layout (identical to the inline chart and the original front.js):
+// circles are sized up to 50px, the ring radius grows so neighbours never overlap (5px gap).
+const W = 600;
+function packed(items: Item[]) {
+  const cx = W / 2, cy = W / 2;
+  const its = items.map((it) => ({ ...it, radius: 0, angle: 0 }));
+  if (!its.length) return { list: [] as (Item & { dx: number; dy: number; lx: number; ly: number; rotDeg: number; leftSide: boolean; txt: string; radius: number })[], vb: `0 0 ${W} ${W}` };
+  let maxRaw = 0;
+  its.forEach((it) => { it.radius = Math.abs(it.value); if (it.radius > maxRaw) maxRaw = it.radius; });
+  const scale = maxRaw > 50 ? 50 / maxRaw : 1;
+  let totalSpan = 0;
+  its.forEach((it) => { const r = Math.max(Math.round(it.radius * scale), 5); totalSpan += 2 * r + 5; it.radius = r; });
+  maxRaw *= scale;
+  const baseR = W / 2;
+  const ringR = Math.max(baseR * (totalSpan / (2 * Math.PI * baseR)), maxRaw + 5);
+  let sumAng = 0;
+  for (let i = 0; i < its.length; i++) {
+    const a = 2 * Math.asin(Math.max(-1, Math.min(1, (its[i].radius + its[(i + 1) % its.length].radius + 5) / (2 * ringR))));
+    its[i].angle = a; sumAng += a;
+  }
+  const norm = (2 * Math.PI) / sumAng;
+  its.forEach((it) => { it.angle *= norm; });
+  let angle = -Math.PI / 4; // start at -45deg, clockwise
+  let minX = 0, minY = 0, maxX = W, maxY = W;
+  const list = its.map((it) => {
+    const t = angle, deg = (180 * t) / Math.PI;
+    const dx = cx + Math.cos(t) * ringR, dy = cy + Math.sin(t) * ringR;
+    const leftSide = deg < -90 && deg > -270;
+    const labelR = it.radius + 5;
+    const lx = cx + Math.cos(t) * (ringR + labelR), ly = cy + Math.sin(t) * (ringR + labelR);
+    const rotDeg = leftSide ? deg + 180 : deg;
+    const txt = `[${it.value}] ${it.name}`;
+    const tw = txt.length * 6, ex = lx + (leftSide ? -tw : tw);
+    minX = Math.min(minX, dx - it.radius, lx, ex); maxX = Math.max(maxX, dx + it.radius, lx, ex);
+    minY = Math.min(minY, dy - it.radius, ly - 7); maxY = Math.max(maxY, dy + it.radius, ly + 7);
+    angle -= it.angle;
+    return { ...it, dx, dy, lx, ly, rotDeg, leftSide, txt };
+  });
+  const p = Math.ceil(Math.max(-minX, -minY, maxX - W, maxY - W, 0));
+  return { list, vb: `${-p} ${-p} ${W + 2 * p} ${W + 2 * p}` };
 }
 
 export function MicrobiomeSignature({
@@ -24,14 +66,25 @@ export function MicrobiomeSignature({
   studies: { title: string; url: string }[];
 }) {
   const available = LEVEL_ORDER.filter((l) => levels[l]?.length);
+  // Default to the level with the most info-bearing organisms (the original "best slide").
+  const bestLevel = available.reduce(
+    (best, l) => {
+      const n = (levels[l] || []).filter((x) => x.has_info).length;
+      return n > best.n ? { l, n } : best;
+    },
+    { l: available.includes("Genus") ? "Genus" : available[0], n: -1 }
+  ).l;
+
   const [open, setOpen] = useState(false);
-  const [level, setLevel] = useState(available.includes("Genus") ? "Genus" : available[0]);
+  const [level, setLevel] = useState(bestLevel);
   const [active, setActive] = useState<string | null>(null);
   const [detail, setDetail] = useState("");
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
 
-  // The hero "Microbiome Signature" button carries data-modal-id="research-diagram-modal".
+  // The hero "Microbiome Signature" button, the inline chart, the Page-Snapshot "Identified
+  // MMAs" row, and the signature nav item all carry data-modal-id="research-diagram-modal".
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const t = (e.target as HTMLElement)?.closest?.('[data-modal-id="research-diagram-modal"]');
@@ -60,18 +113,29 @@ export function MicrobiomeSignature({
     setLoading(false);
   }
 
-  if (!open) return null;
+  // On open, auto-select the first info-bearing organism (positive first) so the modal
+  // appears with one MMA already showing its sidebar detail (matches the original).
+  useEffect(() => {
+    if (!open || active) return;
+    const its = levels[level] || [];
+    const first =
+      its.find((x) => x.has_info && x.value > 0) ||
+      its.find((x) => x.has_info && x.value < 0) ||
+      its.find((x) => x.has_info);
+    if (first) openOrg(first.name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
-  const items = [...(levels[level] || [])].sort((a, b) => b.value - a.value);
-  const size = 560, cx = size / 2, cy = size / 2, R = size / 2 - 165, n = items.length || 1;
-  const maxVal = Math.max(...items.map((x) => x.value), 1);
+  const { list, vb } = useMemo(() => packed(levels[level] || []), [levels, level]);
+
+  if (!open) return null;
 
   return (
     <div
       onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
       style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
     >
-      <div role="dialog" aria-label={`Microbiome signature for ${title}`} style={{ background: "#fff", borderRadius: 12, maxWidth: 1080, width: "100%", maxHeight: "92vh", overflow: "auto", display: "flex", flexWrap: "wrap", position: "relative" }}>
+      <div role="dialog" aria-label={`Microbiome signature for ${title}`} style={{ background: "#fff", borderRadius: 12, maxWidth: 1180, width: "100%", maxHeight: "94vh", overflow: "auto", display: "flex", flexWrap: "wrap", position: "relative" }}>
         <button
           onClick={() => setOpen(false)}
           aria-label="Close"
@@ -80,14 +144,14 @@ export function MicrobiomeSignature({
           ✕
         </button>
 
-        <div style={{ flex: "1 1 480px", minWidth: 0, padding: 0 }}>
+        <div style={{ flex: "1 1 620px", minWidth: 0, padding: 0 }}>
           <div style={{ position: "relative" }}>
-            <div style={{ background: "#cc3333", color: "#fff", padding: ".7rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem", fontFamily: "var(--font-serif)", fontWeight: 600, fontSize: "1.1rem", borderRadius: "12px 0 0 0" }}>
+            <div style={{ background: "#cc3333", color: "#fff", padding: ".7rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem", fontFamily: "var(--font-serif)", fontSize: "1.1rem", borderRadius: "12px 0 0 0" }}>
               <span
                 onMouseEnter={() => setShowInfo(true)}
                 onMouseLeave={() => setShowInfo(false)}
                 aria-label="What is a microbiome signature?"
-                style={{ cursor: "help", border: "1.5px solid #fff", borderRadius: "50%", width: 18, height: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: ".72rem", fontStyle: "italic", flexShrink: 0, fontFamily: "var(--font-sans)" }}
+                style={{ cursor: "pointer", border: "1.5px solid #fff", borderRadius: "50%", width: 18, height: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: ".72rem", fontStyle: "italic", flexShrink: 0, fontFamily: "var(--font-sans)" }}
               >i</span>
               Relative Abundance ({level})
             </div>
@@ -98,33 +162,35 @@ export function MicrobiomeSignature({
             )}
           </div>
           <div style={{ padding: "1.25rem 1.5rem" }}>
-          <svg viewBox={`0 0 ${size} ${size}`} style={{ width: "100%", maxWidth: size, height: "auto" }}>
-            {items.map((it, i) => {
-              const ang = (i / n) * 2 * Math.PI - Math.PI / 2;
-              const rad = it.value > 0 ? 6 + 22 * (it.value / maxVal) : 6;
-              const dx = cx + R * Math.cos(ang), dy = cy + R * Math.sin(ang);
-              const lx = cx + (R + rad + 8) * Math.cos(ang), ly = cy + (R + rad + 8) * Math.sin(ang);
-              const deg = (ang * 180) / Math.PI, left = Math.cos(ang) < 0, rot = left ? deg + 180 : deg;
-              const col = colorFor(it.value, it.has_info);
-              return (
-                <g key={i} style={{ cursor: it.has_info ? "pointer" : "default" }} onClick={() => it.has_info && openOrg(it.name)}>
-                  <circle cx={dx} cy={dy} r={rad} fill={col} stroke={active === it.name ? "#000" : "none"} strokeWidth={2} />
-                  <text x={lx} y={ly} fontSize={11} fill={col} fontWeight={it.has_info ? 700 : 400} textAnchor={left ? "end" : "start"} dominantBaseline="middle" transform={`rotate(${rot} ${lx} ${ly})`}>[{it.value}] {it.name}</text>
-                </g>
-              );
-            })}
-          </svg>
-          <div style={{ display: "flex", gap: ".35rem", flexWrap: "wrap", justifyContent: "center", marginTop: ".85rem" }}>
-            {available.map((l) => (
-              <button key={l} onClick={() => setLevel(l)} style={{ padding: ".3rem .7rem", borderRadius: 6, border: "1px solid #e5e7eb", background: l === level ? "#cc3333" : "#fff", color: l === level ? "#fff" : "#333", fontSize: ".78rem", cursor: "pointer" }}>{l}</button>
-            ))}
-          </div>
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", fontSize: ".72rem", marginTop: ".75rem", color: "#444" }}>
-            <span style={{ color: "#f04c4c" }}>● Increased (info)</span>
-            <span style={{ color: "#efbdbd" }}>● Increased</span>
-            <span style={{ color: "#183fab" }}>● Decreased (info)</span>
-            <span style={{ color: "#b5b9d2" }}>● Decreased</span>
-          </div>
+            <svg viewBox={vb} style={{ width: "100%", height: "auto", display: "block" }}>
+              {list.map((it, i) => {
+                const col = colorFor(it.value, it.has_info);
+                const lit = active === it.name || hovered === i;
+                return (
+                  <g
+                    key={i}
+                    style={{ cursor: it.has_info ? "pointer" : "default", transition: "opacity .15s" }}
+                    onClick={() => it.has_info && openOrg(it.name)}
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                  >
+                    <circle cx={it.dx} cy={it.dy} r={it.radius} fill={col} fillOpacity={lit ? 1 : 0.4} stroke={active === it.name ? "#000" : "none"} strokeWidth={2} />
+                    <text x={it.lx} y={it.ly} fontSize={11} fill={col} fillOpacity={lit ? 1 : 0.7} textAnchor={it.leftSide ? "end" : "start"} dominantBaseline="middle" transform={`rotate(${it.rotDeg} ${it.lx} ${it.ly})`}>{it.txt}</text>
+                  </g>
+                );
+              })}
+            </svg>
+            <div style={{ display: "flex", gap: ".35rem", flexWrap: "wrap", justifyContent: "center", marginTop: ".85rem" }}>
+              {available.map((l) => (
+                <button key={l} onClick={() => setLevel(l)} style={{ padding: ".3rem .7rem", borderRadius: 6, border: "1px solid #e5e7eb", background: l === level ? "#cc3333" : "#fff", color: l === level ? "#fff" : "#333", fontSize: ".78rem", cursor: "pointer" }}>{l}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", fontSize: ".72rem", marginTop: ".75rem", color: "#444" }}>
+              <span style={{ color: "#f04c4c" }}>● Increased (info)</span>
+              <span style={{ color: "#efbdbd" }}>● Increased</span>
+              <span style={{ color: "#183fab" }}>● Decreased (info)</span>
+              <span style={{ color: "#b5b9d2" }}>● Decreased</span>
+            </div>
           </div>
         </div>
 
@@ -135,11 +201,11 @@ export function MicrobiomeSignature({
               {loading ? <p>Loading…</p> : <div className="organism-detail" dangerouslySetInnerHTML={{ __html: detail }} />}
             </>
           ) : (
-            <p style={{ color: "#6b7280" }}>Select a highlighted organism (solid dot) to see its Overview, Metallome, Estrobolome, Body-site, and Studies.</p>
+            <p style={{ color: "#6b7280" }}>Select a highlighted organism (solid dot) to see its detail panel.</p>
           )}
           {studies.length > 0 && (
             <details open style={{ marginTop: "1.25rem", borderTop: "1px solid #e5e7eb", paddingTop: "1rem" }}>
-              <summary style={{ color: "#cc3333", fontWeight: 600, fontFamily: "var(--font-serif)", fontSize: "1.05rem", cursor: "pointer" }}>Studies</summary>
+              <summary style={{ color: "#cc3333", fontFamily: "var(--font-serif)", fontSize: "1.05rem", cursor: "pointer" }}>Studies</summary>
               <ul style={{ margin: ".6rem 0 0", paddingLeft: "1.1rem", maxHeight: 260, overflowY: "auto", fontSize: ".82rem", lineHeight: 1.5 }}>
                 {studies.map((s, i) => (
                   <li key={i} style={{ marginBottom: ".45rem" }}>

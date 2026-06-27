@@ -22,6 +22,9 @@ export function WpDiagram() {
   useEffect(() => {
     const preview = document.querySelector<HTMLElement>(".js-research-diagram-preview");
     if (!preview) return;
+    // Clicking the inline chart opens the full signature modal (global data-modal-id hook).
+    preview.setAttribute("data-modal-id", "research-diagram-modal");
+    preview.style.cursor = "pointer";
     const svg = preview.querySelector<SVGSVGElement>("svg.js-research-diagram-layout");
     if (!svg || svg.childElementCount > 0) return;
 

@@ -4,7 +4,7 @@
 export type AuthorBio = { bio: string; avatar: string | null; profile: string | null; orcid: string | null };
 export const AUTHOR_BIOS: Record<string, AuthorBio> = {
   "Karen Pendergrass": {
-    "bio": "Karen Pendergrass is a microbiome researcher specializing in microbiome-targeted interventions (MBTIs). She systematically analyzes scientific literature to identify microbial patterns, develop hypotheses, and validate interventions. As the founder of the Microbiome Signatures Database, she bridges microbiome research with clinical practice. In 2012, based on her own investigative research, she became the first documented case of FMT for Celiac Disease—four years before the first published case study.",
+    "bio": "Karen Pendergrass is a microbiome researcher specializing in microbiome-targeted interventions (MBTIs). She systematically analyzes scientific literature to identify microbial patterns, develop hypotheses, and validate interventions. As the founder of the Microbiome Signatures Database, she bridges microbiome research with clinical practice. In 2012, based on her own investigative research, she became the first documented case of FMT for Celiac Disease, four years before the first published case study.",
     "avatar": "https://secure.gravatar.com/avatar/104bc2e8ba283fda6309c14b2eca02fe9612e8793ed62621c691e83230d4a963?s=96&amp;d=mm&amp;r=g",
     "profile": "/author/kmfp84gmail-com/",
     "orcid": "https://orcid.org/0000-0002-2348-7259"
@@ -22,7 +22,7 @@ export const AUTHOR_BIOS: Record<string, AuthorBio> = {
     "orcid": "https://orcid.org/0009-0008-1157-6327"
   },
   "Giorgos Aristotelous": {
-    "bio": "Giorgos — BSc, MSc. Giorgos is an exercise scientist whose training and professional practice sit at the intersection of human performance, clinical health, and emerging microbiome science. He holds a BSc in Sports Science &amp; Physical Education from Aristotle University (2012) and an MSc in Exercise &amp; Health from Democritus University (2016), where his graduate work explored physiological adaptations to training across the lifespan. Now in his 15th year of practice, Giorgos pairs evidence-based coaching (ACSM-CPT, NSCA, USA Weightlifting) with a research-driven interest in how physical activity, body composition, and musculoskeletal integrity shape—and are shaped by—host–microbiome dynamics.",
+    "bio": "Giorgos, BSc, MSc. Giorgos is an exercise scientist whose training and professional practice sit at the intersection of human performance, clinical health, and emerging microbiome science. He holds a BSc in Sports Science and Physical Education from Aristotle University (2012) and an MSc in Exercise and Health from Democritus University (2016), where his graduate work explored physiological adaptations to training across the lifespan. Now in his 15th year of practice, Giorgos pairs evidence-based coaching (ACSM-CPT, NSCA, USA Weightlifting) with a research-driven interest in how physical activity, body composition, and musculoskeletal integrity shape, and are shaped by, host-microbiome dynamics.",
     "avatar": "https://secure.gravatar.com/avatar/ee71b5b7f05209a3ceb2aa5c0cb8929f02f59216d3275f42b5b04a3a92a41a8d?s=96&amp;d=mm&amp;r=g",
     "profile": "/author/giorgos/",
     "orcid": "https://orcid.org/0009-0006-1357-542X"

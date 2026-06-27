@@ -29,9 +29,9 @@ export const SECTIONS: Section[] = [
   { segment: "definition", type: "definition", label: "Definitions", nav: "Definitions", blurb: "Key terms and concepts in microbiome medicine." },
   { segment: "metals", type: "metal", label: "Metals", nav: "Metals", blurb: "Heavy metals and their interactions with the microbiome." },
   { segment: "supplement", type: "supplement", label: "Supplements", nav: "Supplements", blurb: "Supplements studied for microbiome effects." },
-  { segment: "guide", type: "guide", label: "Guides & Resources", nav: "Guides", blurb: "In-depth guides and reference resources." },
+  { segment: "guide", type: "guide", label: "Guides and Resources", nav: "Guides", blurb: "In-depth guides and reference resources." },
   { segment: "research-feeds", type: "research-feed", label: "Research Feeds", nav: "Research", blurb: "Curated summaries of microbiome research." },
-  { segment: "theories-hypotheses", type: "theory", label: "Novel Theories & Hypotheses", nav: "Theories", blurb: "Emerging theories and hypotheses." },
+  { segment: "theories-hypotheses", type: "theory", label: "Novel Theories and Hypotheses", nav: "Theories", blurb: "Emerging theories and hypotheses." },
 ];
 
 export const sectionBySegment = (segment: string): Section | undefined =>

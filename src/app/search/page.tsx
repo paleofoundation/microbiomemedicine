@@ -38,8 +38,8 @@ const DIRECTORY: { type: string; seg: string; label: string }[] = [
   { type: "intervention", seg: "interventions", label: "Interventions" },
   { type: "metal", seg: "metals", label: "Metals" },
   { type: "supplement", seg: "supplement", label: "Supplements" },
-  { type: "guide", seg: "guide", label: "Guides & Resources" },
-  { type: "theory", seg: "theories-hypotheses", label: "Theories & Hypotheses" },
+  { type: "guide", seg: "guide", label: "Guides and Resources" },
+  { type: "theory", seg: "theories-hypotheses", label: "Theories and Hypotheses" },
 ];
 
 async function sample(type: string): Promise<Item[]> {
