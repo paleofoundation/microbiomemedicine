@@ -4,15 +4,31 @@ import { SECTIONS } from "@/lib/content";
 export const dynamic = "force-dynamic";
 
 type Props = { searchParams: Promise<{ q?: string; s?: string }> };
-type Item = { type?: string; slug: string; title: string };
+type Item = { type?: string; slug: string; title: string; excerpt_html?: string | null };
 
-const SEGMENT_BY_TYPE: Record<string, string> = Object.fromEntries(
-  SECTIONS.map((s) => [s.type, s.segment])
-);
+const SEGMENT_BY_TYPE: Record<string, string> = Object.fromEntries(SECTIONS.map((s) => [s.type, s.segment]));
 function pathFor(type: string, slug: string): string {
   const seg = SEGMENT_BY_TYPE[type];
   return seg ? `/${seg}/${slug}` : `/${slug}`;
 }
+
+// Badge label per content type (matches the original search results page).
+const TYPE_LABEL: Record<string, string> = {
+  "research-feed": "Research Feed",
+  definition: "Definitions",
+  condition: "Conditions",
+  microbe: "Microbe",
+  metal: "Metal",
+  intervention: "Interventions",
+  supplement: "Supplements",
+  guide: "Guides",
+  theory: "Theories",
+  post: "Article",
+  page: "Page",
+};
+
+const plain = (html: string | null | undefined): string =>
+  (html || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
 // The explore directory shown when the header search opens with no query.
 const DIRECTORY: { type: string; seg: string; label: string }[] = [
@@ -44,72 +60,102 @@ const Magnifier = () => (
   </svg>
 );
 
+function SearchForm({ q }: { q: string }) {
+  return (
+    <form className="rgbc-search__form rgbc-searchresults__form" action="/search" method="get">
+      <input
+        name="q"
+        type="search"
+        defaultValue={q}
+        className="rgbc-search__input field field--lg"
+        placeholder="What do you want to learn about?"
+        autoFocus
+      />
+      <button className="rgbc-search__submit btn btn--lg" type="submit" aria-label="Search">
+        <Magnifier />
+      </button>
+    </form>
+  );
+}
+
 export default async function SearchPage({ searchParams }: Props) {
   const sp = await searchParams;
   const q = (sp.q || sp.s || "").trim();
 
+  // Full-text search across page bodies (title + content + excerpt) — every page that
+  // mentions the term, exactly like the original WordPress ?s= results.
   let results: Item[] = [];
   if (q) {
     const { data } = await supabase
       .from("content_items")
-      .select("type,slug,title")
+      .select("type,slug,title,excerpt_html")
+      .eq("status", "publish")
       .textSearch("search_tsv", q, { type: "websearch", config: "english" })
-      .limit(80);
+      .limit(100);
     results = (data as Item[]) || [];
   }
 
-  const sections = q ? [] : await Promise.all(DIRECTORY.map(async (d) => ({ ...d, items: await sample(d.type) })));
+  if (q) {
+    return (
+      <div className="site-content">
+        <main className="main">
+          <div className="research-hero">
+            <div className="research-hero__container rgbc-searchhero">
+              <nav className="breadcrumb">
+                <ol className="breadcrumb__wrapper">
+                  <li className="breadcrumb__item"><a className="breadcrumb__link" href="/">Home</a></li>
+                  <li className="breadcrumb__item"><span className="breadcrumb_last">You searched for {q}</span></li>
+                </ol>
+              </nav>
+              <h1 className="research-hero__title">Search Results for: {q}</h1>
+              <SearchForm q={q} />
+            </div>
+          </div>
 
+          <div className="rgbc-searchresults">
+            {results.length === 0 ? (
+              <p className="rgbc-searchresults__empty">No results found for “{q}”.</p>
+            ) : (
+              results.map((it, i) => (
+                <article className="rgbc-searchresult" key={i}>
+                  <div className="rgbc-searchresult__head">
+                    <a className="rgbc-searchresult__title" href={pathFor(it.type as string, it.slug)}>{it.title}</a>
+                    <span className="rgbc-searchresult__type">{TYPE_LABEL[it.type as string] || it.type}</span>
+                  </div>
+                  {plain(it.excerpt_html) && <p className="rgbc-searchresult__excerpt">{plain(it.excerpt_html)}</p>}
+                </article>
+              ))
+            )}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const sections = await Promise.all(DIRECTORY.map(async (d) => ({ ...d, items: await sample(d.type) })));
   return (
     <div className="site-content flex">
       <main className="main">
         <div className="rgbc-explore">
           <form className="rgbc-search__form rgbc-explore__form" action="/search" method="get">
-            <input
-              name="q"
-              type="search"
-              defaultValue={q}
-              className="rgbc-search__input field field--lg"
-              placeholder="What do you want to learn about?"
-              autoFocus
-            />
-            <button className="rgbc-search__submit btn btn--lg" type="submit" aria-label="Search">
-              <Magnifier />
-            </button>
+            <input name="q" type="search" className="rgbc-search__input field field--lg" placeholder="What do you want to learn about?" autoFocus />
+            <button className="rgbc-search__submit btn btn--lg" type="submit" aria-label="Search"><Magnifier /></button>
           </form>
-
-          {q ? (
-            <section className="rgbc-explore__results">
-              <h2 className="rgbc-explore__results-title">
-                {results.length} result{results.length === 1 ? "" : "s"} for “{q}”
-              </h2>
-              <ul className="rgbc-explore__list">
-                {results.map((it, i) => (
-                  <li key={i}>
-                    <a href={pathFor(it.type as string, it.slug)}>{it.title}</a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : (
-            <div className="rgbc-explore__grid">
-              {sections.map((s) => (
-                <section key={s.type} className="rgbc-explore__section">
-                  <div className="rgbc-explore__head">
-                    <h2 className="rgbc-explore__title">{s.label}</h2>
-                    <a className="rgbc-explore__viewall" href={`/${s.seg}`}>View All →</a>
-                  </div>
-                  <ul className="rgbc-explore__list">
-                    {s.items.map((it, i) => (
-                      <li key={i}>
-                        <a href={pathFor(s.type, it.slug)}>{it.title}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-          )}
+          <div className="rgbc-explore__grid">
+            {sections.map((s) => (
+              <section key={s.type} className="rgbc-explore__section">
+                <div className="rgbc-explore__head">
+                  <h2 className="rgbc-explore__title">{s.label}</h2>
+                  <a className="rgbc-explore__viewall" href={`/${s.seg}`}>View All →</a>
+                </div>
+                <ul className="rgbc-explore__list">
+                  {s.items.map((it, i) => (
+                    <li key={i}><a href={pathFor(s.type, it.slug)}>{it.title}</a></li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
         </div>
       </main>
     </div>
