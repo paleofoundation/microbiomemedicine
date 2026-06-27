@@ -7,6 +7,7 @@ import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
 import { ContentAccordions } from "@/components/ContentAccordions";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
+import { linkifyClassifications } from "@/lib/classifications";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
@@ -173,7 +174,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
   const faqs = getFaqs(html, item.title);
-  const contentHtml = injectFaqs(html, faqs);
+  const contentHtml = linkifyClassifications(injectFaqs(html, faqs));
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   const mmas = Array.isArray(meta.studies) ? (meta.studies as unknown[]).length : null;

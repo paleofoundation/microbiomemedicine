@@ -7,6 +7,7 @@ import { buildJsonLd } from "@/lib/seo";
 import { getFaqs, injectFaqs } from "@/lib/faqs";
 import { connectionsBlockHtml } from "@/lib/connections";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
+import { linkifyClassifications } from "@/lib/classifications";
 import { stripHost, type ContentItem } from "@/lib/content";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
@@ -132,7 +133,7 @@ export function WpRender({
           .replace(/research-hero__center-content--fullwidth/g, "research-hero__center-content")
           .replace(/(<h1\b[^>]*\bresearch-hero__center-title\b[^>]*>[\s\S]*?<\/h1>)/, (m) => m + researchedByHtml(authors))
       : withConn;
-  const content = dePurple(injectFaqs(withAuthor, faqs));
+  const content = dePurple(injectFaqs(linkifyClassifications(withAuthor), faqs));
   const sigStudies = extractSignatureStudies(content);
   const studies = sigStudies.length ? sigStudies : extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });

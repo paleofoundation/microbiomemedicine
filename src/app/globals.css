@@ -124,3 +124,9 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
 .mbio-pagination__item.current { background-color: var(--color-primary); color: #fff !important; }
 .mbio-pagination__item.disabled { color: #9399b0; pointer-events: none; }
 .mbio-pagination__ellipsis { color: #9399b0; padding: 0 4px; }
+
+/* Definition list — restores a failed table migration as readable term/definition
+   content (e.g. the drug-repurposing synonyms). Term in brand-red serif (no bold). */
+.rgbc-deflist { margin: 1rem 0 1.25rem; }
+.rgbc-deflist dt { color: var(--color-primary); font-family: var(--font-serif); font-size: 1.05rem; margin: 0.7rem 0 0.15rem; }
+.rgbc-deflist dd { margin: 0 0 0.5rem; line-height: 1.6; }
