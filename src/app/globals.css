@@ -34,7 +34,11 @@
 .tooltip__header { font-weight: 600; color: #111; }
 .tooltip__content { color: #333; }
 .tooltip__content p { margin: 0 0 0.4rem; }
-.tooltip__content a { color: #183fab; font-weight: 600; }
+.tooltip__content a:not([class*="btn"]) { color: #183fab; font-weight: 600; }
+/* Filled buttons must never inherit the blue content-link color (white-on-red, not blue-on-red).
+   The modal__details blue-link rule lacks a button exclusion; outline buttons keep their own color. */
+.tooltip__content a[class*="btn"]:not(.btn--outline),
+.modal__details a[class*="btn"]:not(.btn--outline) { color: #fff !important; }
 /* Tooltip windows are solid white (never bleed the red hero through); the header
    keeps the brand light-red tint (theme-wp.css), never purple. */
 .tooltip { background-color: #fff !important; }
