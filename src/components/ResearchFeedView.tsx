@@ -75,6 +75,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const authors: Author[] = (Array.isArray(meta.authors) ? (meta.authors as Author[]) : []).map((a) => ({
     ...a,
     avatar: (a.avatar || AUTHOR_BIOS[a.name]?.avatar || null)?.replace(/&amp;/g, "&") ?? null,
+    orcid: a.orcid || AUTHOR_BIOS[a.name]?.orcid || null,
   }));
   const avatars = authors.filter((a) => a.avatar);
   const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];

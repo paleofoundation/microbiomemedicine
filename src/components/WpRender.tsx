@@ -74,7 +74,7 @@ function researchedByHtml(authors: { name: string; orcid?: string | null; avatar
   const resolved = authors.map((a, i) => {
     const info = AUTHOR_BIOS[a.name];
     const avatar = (a.avatar || info?.avatar || "").replace(/&amp;|&/g, "&amp;"); // HTML entity form
-    return { name: a.name, orcid: a.orcid || null, avatar, bio: info?.bio || "", cls: `user-bio-auto-${i + 1}` };
+    return { name: a.name, orcid: a.orcid || info?.orcid || null, avatar, bio: info?.bio || "", cls: `user-bio-auto-${i + 1}` };
   });
   const photos = resolved.filter((r) => r.avatar);
   const photoRow = photos.length
