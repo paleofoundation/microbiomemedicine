@@ -166,3 +166,17 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
 .rgbc-searchresult__type { flex: 0 0 auto; color: #9399b0; font-size: 0.8rem; white-space: nowrap; }
 .rgbc-searchresult__excerpt { margin: 0.6rem 0 0; padding-left: 1rem; border-left: 3px solid #e3b9b9; color: #444; line-height: 1.6; }
 .rgbc-searchresults__empty { max-width: 1180px; margin: 0 auto; padding: 24px; color: #444; }
+
+/* Hero search autocomplete: the type pill on the right of each suggestion. */
+.rgbc-search__link-type {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-200);
+  border-radius: 999px;
+  padding: 0.28em 0.85em;
+}
+.rgbc-search__link .search__link-text { color: #1f2430; }
