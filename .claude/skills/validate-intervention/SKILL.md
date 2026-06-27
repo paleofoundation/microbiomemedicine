@@ -65,6 +65,11 @@ The one-line test: *both supporting edges present but no in-condition I→D stud
 
 Shared chrome (both page types render via `ArticleView`): "✓ Evidence based" badge, Researched-by + ORCID, Last Updated, Page Snapshot box (N References [+ Identified MMAs if a signature]). `/our-validation-method/` is the public explainer every validation page operationalizes.
 
+## Research-feed entries (how to add + wire a study)
+A research-feed page = `content_items` row `type='research-feed'`, route `/research-feeds/<slug>`. To add one OFF the signature generator (e.g. an extra evidence paper for an intervention): direct insert with an explicit `id` (= max(id)+1; the column has no sequence default), `content_html` = the four `<h3 class="wp-block-heading">` sections (What Was Studied? / Who Was Studied? / What Were the Key Findings? / What Are the Implications?) + `<p class="wp-block-paragraph">`, and `meta.feed = { paper_url (DOI), category, conditions:[{label,href:/conditions/<slug>/}] }` + `meta.authors`. **Do NOT create a `wp_render` row** for a new feed — its absence is what makes `ResearchFeedView` render the themed hero + your `content_html`. Verify each citation via the PubMed MCP first.
+To **surface a study on an intervention/validation page**, the page (if it renders from `wp_render`) needs: a `<li class="rgbc-references__item">` in the `<ol class="rgbc-references">`, and the inline `<a class="rgbc-reference rgbc-tooltip js-rgbc-scroll-link" ... data-review-link="/research-feeds/<slug>/" ...><sup>[n]</sup></a>` marker (the `data-review-link` is what powers the tooltip "Read Review" button and the page's studies list). Optionally clone a `<div class="research-feed__item accordion__item">` card under the `Research Feed` h2. (Worked example: the metformin/endo page got the Cheng 2022 rat-model feed + In-Condition Efficacy evidence this way.)
+*Future (not yet built): research-feed papers will carry evidence scores/grades.*
+
 ## Hard rules
 - **Validated requires a real I→D study in the condition.** Never mark a mechanism-only candidate Validated (that is Promising). When unsure, downgrade.
 - **Author the validation page before wiring its Status link** (no dangling Validated links).
