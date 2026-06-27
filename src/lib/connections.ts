@@ -140,5 +140,5 @@ export function connectionsBlockHtml(html: string, selfPath = "", override?: Ove
   const cons = resolveConnections(override, html, selfPath);
   if (!cons.length) return "";
   const items = cons.map((c) => `<li><a href="${esc(c.href)}">${esc(c.label)}</a></li>`).join("");
-  return `<div class="research-content__connections"><span class="research-content__connections-title">Connections</span><ul class="research-content__connections-list">${items}</ul></div>`;
+  return `<div class="research-content__connections"><ul class="research-content__connections-list">${items}</ul></div>`;
 }

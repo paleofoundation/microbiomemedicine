@@ -105,7 +105,9 @@
 .research-content__connections-title { display: block; font-weight: 700; color: #1a1a2e; margin-bottom: 0.5rem; }
 .research-content__connections-list { list-style: none; margin: 0; padding: 0; }
 .research-content__connections-list li { margin: 0 0 0.3rem; line-height: 1.4; }
-.research-content__connections-list a { color: #1c43ad; text-decoration: none; font-size: 0.9rem; }
+/* Right-rail entity links: no "Connections" title (removed), and every label starts
+   capitalized even when the source link text was lowercase (e.g. "tuberculosis"). */
+.research-content__connections-list a { color: #1c43ad; text-decoration: none; font-size: 0.9rem; text-transform: capitalize; }
 .research-content__connections-list a:hover { text-decoration: underline; }
 
 /* ── Site rule: NO bold text. Anywhere. Ever. ───────────────────────────────

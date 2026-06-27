@@ -13,7 +13,6 @@ export function RightRail({ connections = [] }: { connections?: Connection[] }) 
         </button>
         {connections.length > 0 && (
           <div className="research-content__connections">
-            <span className="research-content__connections-title">Connections</span>
             <ul className="research-content__connections-list">
               {connections.map((c, i) => (
                 <li key={i}><a href={c.href}>{c.label}</a></li>
