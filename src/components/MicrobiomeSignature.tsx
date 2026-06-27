@@ -66,17 +66,9 @@ export function MicrobiomeSignature({
   studies: { title: string; url: string }[];
 }) {
   const available = LEVEL_ORDER.filter((l) => levels[l]?.length);
-  // Default to the level with the most info-bearing organisms (the original "best slide").
-  const bestLevel = available.reduce(
-    (best, l) => {
-      const n = (levels[l] || []).filter((x) => x.has_info).length;
-      return n > best.n ? { l, n } : best;
-    },
-    { l: available.includes("Genus") ? "Genus" : available[0], n: -1 }
-  ).l;
-
   const [open, setOpen] = useState(false);
-  const [level, setLevel] = useState(bestLevel);
+  // Default to Genus (the primary signature level shown in the inline chart), as in the original.
+  const [level, setLevel] = useState(available.includes("Genus") ? "Genus" : available[available.length - 1] || available[0]);
   const [active, setActive] = useState<string | null>(null);
   const [detail, setDetail] = useState("");
   const [loading, setLoading] = useState(false);
