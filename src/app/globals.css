@@ -34,9 +34,13 @@
 .tooltip__header { font-weight: 600; color: #111; }
 .tooltip__content { color: #333; }
 .tooltip__content p { margin: 0 0 0.4rem; }
-.tooltip__content a:not([class*="btn"]) { color: #183fab; font-weight: 600; }
-/* Filled buttons must never inherit the blue content-link color (white-on-red, not blue-on-red).
-   The modal__details blue-link rule lacks a button exclusion; outline buttons keep their own color. */
+/* Citation "View source"/"Review" links read on-brand red, not the blue
+   content-link convention (which sets .entry-content a blue with !important,
+   so we match its specificity and override). */
+.entry-content .tooltip__content a:not([class*="btn"]),
+.tooltip__content a:not([class*="btn"]) { color: var(--color-primary) !important; font-weight: 600; }
+/* Filled buttons must never inherit the brand-red content-link color (white-on-red, not red-on-red).
+   The modal__details link rule lacks a button exclusion; outline buttons keep their own color. */
 .tooltip__content a[class*="btn"]:not(.btn--outline),
 .modal__details a[class*="btn"]:not(.btn--outline) { color: #fff !important; }
 /* Tooltip windows are solid white (never bleed the red hero through); the header
