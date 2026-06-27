@@ -133,6 +133,17 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
 .rgbc-deflist dt { color: var(--color-primary); font-family: var(--font-serif); font-size: 1.05rem; margin: 0.7rem 0 0.15rem; }
 .rgbc-deflist dd { margin: 0 0 0.5rem; line-height: 1.6; }
 
+/* Two-column content tables: a narrow label column on the LEFT (short input) and a wide
+   explanation column on the RIGHT — the gold-standard look. The original WP tables that
+   read correctly use auto layout (content-sized); our generated tables shipped with
+   `has-fixed-layout` (table-layout: fixed → a forced 50/50). Force auto layout for any
+   content table whose body rows have exactly two cells, so the short left column shrinks
+   to its content and the explanation takes the rest. (3-column tables are unaffected.) */
+.research-content__center table:has(tbody tr > td:nth-child(2):last-child) {
+  table-layout: auto;
+  width: 100%;
+}
+
 /* Search results page (/?s=term or /search?q=) — "Search Results for: X" hero + result
    cards (title + type badge + excerpt), matching the original WordPress search page. */
 .rgbc-searchhero { max-width: 1180px; margin: 0 auto; padding: 38px 24px 46px; }
