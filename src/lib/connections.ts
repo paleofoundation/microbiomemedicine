@@ -55,6 +55,84 @@ function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+const escRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Match terms for a condition title: the base name (case-insensitive) plus any
+// parenthetical abbreviation of length >= 3, case-sensitive (e.g. "PCOS", "IBS").
+function conditionTerms(title: string): { term: string; ci: boolean }[] {
+  const m = title.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  const base = (m ? m[1] : title).trim();
+  const terms: { term: string; ci: boolean }[] = [];
+  if (base) terms.push({ term: base, ci: true });
+  if (m) { const abbr = m[2].trim(); if (abbr.length >= 3) terms.push({ term: abbr, ci: false }); }
+  return terms;
+}
+
+// Internally link the FIRST mention of each existing condition in a page's body (rule:
+// research-feed pages must link the conditions they discuss). Returns the linked HTML plus
+// the conditions actually linked, in order of appearance, for the Connections sidebar.
+// Skips text inside existing <a>…</a> and headings; links at most one condition per text run.
+export function autolinkConditions(html: string, conditions: { title: string; href: string }[]): { html: string; linked: Connection[] } {
+  if (!html || !conditions.length) return { html, linked: [] };
+  const conds = [...conditions]
+    .sort((a, b) => b.title.length - a.title.length)
+    .map((c) => ({ c, terms: conditionTerms(c.title) }))
+    .filter((x) => x.terms.length);
+  const done = new Set<string>();
+  const linked = new Map<string, Connection>();
+  const parts = html.split(/(<[^>]+>)/);
+  let aDepth = 0, hDepth = 0;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    if (p.startsWith("<")) {
+      if (/^<a\b/i.test(p)) aDepth++;
+      else if (/^<\/a>/i.test(p)) aDepth = Math.max(0, aDepth - 1);
+      else if (/^<h[1-6][\s/>]/i.test(p)) hDepth++;
+      else if (/^<\/h[1-6]>/i.test(p)) hDepth = Math.max(0, hDepth - 1);
+      continue;
+    }
+    if (aDepth > 0 || hDepth > 0 || !p.trim()) continue;
+    let best: { idx: number; len: number; matched: string; href: string; label: string } | null = null;
+    for (const { c, terms } of conds) {
+      if (done.has(c.href)) continue;
+      for (const t of terms) {
+        const m = new RegExp(`\\b${escRe(t.term)}\\b`, t.ci ? "i" : "").exec(p);
+        if (m && (!best || m.index < best.idx)) {
+          best = { idx: m.index, len: m[0].length, matched: m[0], href: c.href, label: c.title.replace(/\s*\([^)]*\)\s*$/, "").trim() };
+        }
+      }
+    }
+    if (best) {
+      parts[i] = p.slice(0, best.idx) + `<a href="${best.href}">${best.matched}</a>` + p.slice(best.idx + best.len);
+      done.add(best.href);
+      if (!linked.has(best.href)) linked.set(best.href, { label: best.label, href: best.href, type: "conditions" });
+    }
+  }
+  return { html: parts.join(""), linked: [...linked.values()] };
+}
+
+// Build the Connections list for a research-feed: a curated meta.connections override
+// wins; otherwise the feed's tagged conditions first, then any other condition linked in
+// the body. Conditions-first, deduped by href, capped at 3.
+export function buildConnections(
+  override: Override,
+  feedConditions: { label: string; href: string }[],
+  linked: Connection[],
+  max = MAX
+): Connection[] {
+  if (Array.isArray(override) && override.length) return resolveConnections(override, "", "", max);
+  const seen = new Set<string>();
+  const out: Connection[] = [];
+  for (const c of [...feedConditions.map((c) => ({ label: c.label, href: c.href, type: "conditions" })), ...linked]) {
+    const key = (c.href || "").replace(/\/+$/, "").toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(c);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
 // HTML-string version for injection into verbatim WP markup.
 export function connectionsBlockHtml(html: string, selfPath = "", override?: Override): string {
   const cons = resolveConnections(override, html, selfPath);

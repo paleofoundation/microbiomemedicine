@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { sectionBySegment, getItem, getWpHtml } from "@/lib/content";
+import { sectionBySegment, getItem, getWpHtml, allConditionLinks } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
-import { resolveConnections } from "@/lib/connections";
+import { autolinkConditions, buildConnections } from "@/lib/connections";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { JsonLd } from "@/components/JsonLd";
@@ -53,14 +53,23 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const item = await getItem(section.type, slug);
   if (!item) notFound();
 
+  const meta = (item.meta || {}) as Record<string, unknown>;
+  const feed = (meta.feed || {}) as Feed;
+  const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];
+  const condLinks = await allConditionLinks();
+
   const wpHtml = await getWpHtml(item.id);
   if (wpHtml) {
+    // Universal rule: internally link the conditions this study discusses + surface them
+    // (max 3, conditions-first) in the right-rail Connections.
+    const { html: linkedHtml, linked } = autolinkConditions(wpHtml, condLinks);
     return (
       <WpRender
         item={item}
-        html={wpHtml}
+        html={linkedHtml}
         path={`/research-feeds/${slug}`}
         type="research-feed"
+        connectionsOverride={buildConnections(meta.connections, conditions, linked)}
         breadcrumbs={[
           { name: "Home", url: "/" },
           { name: "Research Feeds", url: "/research-feeds" },
@@ -70,17 +79,14 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
     );
   }
 
-  const meta = (item.meta || {}) as Record<string, unknown>;
-  const feed = (meta.feed || {}) as Feed;
   const authors: Author[] = (Array.isArray(meta.authors) ? (meta.authors as Author[]) : []).map((a) => ({
     ...a,
     avatar: (a.avatar || AUTHOR_BIOS[a.name]?.avatar || null)?.replace(/&amp;/g, "&") ?? null,
     orcid: a.orcid || AUTHOR_BIOS[a.name]?.orcid || null,
   }));
   const avatars = authors.filter((a) => a.avatar);
-  const conditions = Array.isArray(feed.conditions) ? feed.conditions : [];
-  const contentHtml = graphsHtml(feed) + (item.content_html || "");
-  const connections = resolveConnections(meta.connections, item.content_html || "", `/research-feeds/${slug}`);
+  const { html: contentHtml, linked } = autolinkConditions(graphsHtml(feed) + (item.content_html || ""), condLinks);
+  const connections = buildConnections(meta.connections, conditions, linked);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];
   const jsonLd = buildJsonLd(item, {

@@ -129,6 +129,17 @@ export function referenceCount(html: string): number {
   return nums.size;
 }
 
+// All published condition pages as {title, href} — for internally linking condition
+// mentions in research-feed bodies + populating the Connections sidebar.
+export const allConditionLinks = cache(async (): Promise<{ title: string; href: string }[]> => {
+  const { data } = await supabase
+    .from("content_items")
+    .select("slug,title")
+    .eq("type", "condition")
+    .eq("status", "publish");
+  return (data ?? []).map((c) => ({ title: String((c as { title: string }).title).trim(), href: `/conditions/${(c as { slug: string }).slug}/` }));
+});
+
 export const sampleByType = cache(async (type: string, limit = 6) => {
   const { data } = await supabase
     .from("content_items")

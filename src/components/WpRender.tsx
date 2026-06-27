@@ -108,20 +108,23 @@ export function WpRender({
   path,
   type,
   breadcrumbs,
+  connectionsOverride,
 }: {
   item: ContentItem;
   html: string;
   path: string;
   type: string;
   breadcrumbs: { name: string; url: string }[];
+  connectionsOverride?: { label: string; href: string }[];
 }) {
   const meta = (item.meta || {}) as Record<string, unknown>;
   const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
   const hasSignature = !!signature?.levels;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const faqs = getFaqs(html, item.title);
-  // Inject the auto-derived "Connections" list above the right-rail actions (Send feedback).
-  const connBlock = connectionsBlockHtml(html, path, meta.connections);
+  // Inject the "Connections" list above the right-rail actions (Send feedback). A caller
+  // override (e.g. research-feed conditions) wins, else the curated meta.connections.
+  const connBlock = connectionsBlockHtml(html, path, connectionsOverride ?? meta.connections);
   const withConn = connBlock
     ? html.replace(/<div\b[^>]*\bresearch-content__right-actions\b[^>]*>/, (m) => connBlock + m)
     : html;
