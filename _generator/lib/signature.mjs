@@ -34,25 +34,45 @@ export function aggregateSignatures(csvText) {
   return { scores, taxonLevel };
 }
 
+// sidebar.csv column header (lowercased) -> organism detail field. The lens columns
+// vary by condition: the lens set is always the condition's primer sections
+// (endo -> Metallome/Estrobolome; TB -> Nutritional Immunity/Metallomic Signature/Oxygen
+// Ecology). `references` holds the per-organism citation list shown below Body site.
+const SIDEBAR_FIELD = {
+  "overview": "overview",
+  "nutritional immunity": "nutritionalImmunity",
+  "metallomic signature": "metallomicSignature",
+  "metallome": "metallome",
+  "estrobolome": "estrobolome",
+  "oxygen ecology": "oxygenEcology",
+  "body site": "bodySite",
+  "references": "references",
+  "link": "link",
+};
+
 // sidebar.csv -> organism details keyed by taxon name (+ the [score] embedded in col 1).
+// Generic over the lens columns: any header in SIDEBAR_FIELD is mapped; others are ignored.
 export function parseSidebar(csvText) {
   const rows = parseCsvObjects(csvText);
   const organisms = {};
   const sidebarScore = new Map();
   for (const row of rows) {
-    const firstKey = Object.keys(row)[0]; // unnamed taxon column
+    const keys = Object.keys(row);
+    const firstKey = keys[0]; // unnamed taxon column
     const raw = (row[firstKey] || "").trim();
     const m = raw.match(/^\[(-?\d+)\]\s*(.+)$/);
     const name = (m ? m[2] : raw).trim();
     if (!name) continue;
     if (m) sidebarScore.set(name, parseInt(m[1], 10));
-    organisms[name] = {
-      overview: (row["overview"] || "").trim(),
-      metallome: (row["metallome"] || "").trim(),
-      estrobolome: (row["estrobolome"] || "").trim(),
-      bodySite: (row["body site"] || "").trim(),
-      link: (row["link"] || "").trim(),
-    };
+    const det = {};
+    for (const k of keys) {
+      if (k === firstKey) continue;
+      const field = SIDEBAR_FIELD[k.trim().toLowerCase()];
+      if (!field) continue;
+      const v = (row[k] || "").trim();
+      if (v) det[field] = v;
+    }
+    organisms[name] = det;
   }
   return { organisms, sidebarScore };
 }
@@ -93,10 +113,11 @@ export function buildLevels({ scores, taxonLevel, organisms, sidebarScore }) {
 
 // Emit the export_998-style sidebar template: one row per chart taxon ("[score] Name")
 // with empty detail columns for a human/LLM to fill, then re-import as sidebar.csv.
-export function emitTemplate(levels) {
-  const out = [",overview,metallome,estrobolome,body site,link"];
+export function emitTemplate(levels, lensCols = ["overview", "metallome", "estrobolome", "body site", "link"]) {
+  const empties = lensCols.map(() => "").join(",");
+  const out = ["," + lensCols.join(",")];
   for (const L of LEVEL_ORDER) for (const t of levels[L] || []) {
-    out.push(`"[${t.value}] ${String(t.name).replace(/"/g, '""')}",,,,,`);
+    out.push(`"[${t.value}] ${String(t.name).replace(/"/g, '""')}",${empties}`);
   }
   return out.join("\n") + "\n";
 }

@@ -9,7 +9,7 @@ The repo generates a condition's Microbiome Signature + its research-feed study 
 
 ## Inputs — `_generator/samples/<slug>/`
 - `signatures.csv` — raw observations (`Abundance in Group 1` + `MetaPhlAn taxon names`) → net score per taxon + the taxonomy→level map.
-- `sidebar.csv` — per-taxon `overview, metallome, estrobolome, body site, link` (the filled `export_998` template) → organism detail panel + `has_info`.
+- `sidebar.csv` — per-taxon detail panels + `has_info`. Column 1 is `[score] Taxon`; the remaining columns are the **lens columns = the condition's primer sections** (endo → `overview, metallome, estrobolome, body site, link`; TB → `overview, nutritional immunity, metallomic signature, oxygen ecology, body site, references, link`). `parseSidebar` maps headers generically (nutritional immunity→nutritionalImmunity, metallomic signature→metallomicSignature, oxygen ecology→oxygenEcology, body site→bodySite; plus overview/metallome/estrobolome/references/link). See **Per-organism detail panels** below for how to author them.
 - `studies.csv` — studies (Title/DOI/URL/Authors/Year/Abstract) → research-feed study pages + the modal Studies list.
 - `experiments.csv` — per-study `Location of subjects`, `Host species`, `Body site` → the Location/Sample Site/Species block.
 
@@ -22,7 +22,26 @@ The repo generates a condition's Microbiome Signature + its research-feed study 
 3. Ensure the **condition row exists** (`content_items` type=condition, slug=`<slug>`, status=publish, with authored prose in `content_html` — Overview/Causes/etc.). The generator only ADDS `meta.signature`; it does not author prose. Create the row first if missing.
 4. **Write**: `node _generator/build-signature.mjs --slug <slug> --title "<Title>"`.
    Needs a writable key — set `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` (the anon key is read-only; alternatively add a temporary `content_items` write policy and DROP it after). Writes `meta.signature` on the condition and INSERTs only NEW research-feed pages.
-5. **Verify render**: open `/conditions/<slug>` → click "Microbiome Signature" → modal chart + level switcher; click a red "info" dot → organism panel (Overview/Metallome/Estrobolome/Body site); check the Studies list links to `/research-feeds/…`.
+5. **Verify render**: open `/conditions/<slug>` → click "Microbiome Signature" → modal chart + level switcher; click a solid "info" dot → organism panel renders the condition's lens sections (Overview → lenses → Body site → References) then the page-level Studies list (linking to `/research-feeds/…`).
+
+## Per-organism detail panels (the modal sidebar) — the authoring method
+
+Karen's rules, treated as truth. A panel ties **one taxon** to the condition through each lens, always anchored to whether that taxon is **enriched or depleted**.
+
+1. **Which taxa get a panel:** the **strongest enriched and strongest depleted** taxa at the chart's default level (Genus). Not every taxon — the standouts. `has_info` becomes true automatically once a taxon has an `overview`.
+2. **Lens set = the condition's primer sections** (the h4s under Primer on the condition page). Endo → Metallome, Estrobolome. TB → Nutritional Immunity, Metallomic Signature, Oxygen Ecology. Always preceded by Overview and followed by Body site.
+3. **What each lens answers, for that taxon (tie to its direction):**
+   - **Overview** — what the species/genus is, why it matters here, and that it is enriched/depleted in this signature.
+   - **Nutritional Immunity** — how the taxon acquires/competes for host-restricted metals (siderophores, heme uptake, Feo/TonB, Fur/Zur, ZnuABC…) and how it fares against host metal-withholding.
+   - **Metallomic Signature** — how the taxon relates to the **patient-level** metallome (the host metal findings on the condition page), e.g. iron/heme-scavenging anaerobes favored by an iron-rich, hypoxic, hemorrhagic cavitary niche. (Do NOT put the microbe's own metal-resistance machinery on the *condition page* table — that is the patient findings; the per-organism mechanism lives here and on the microbe page.)
+   - **Estrobolome** (endo) — β-glucuronidase / estrogen-reactivation potential.
+   - **Oxygen Ecology** (TB) — the taxon's O₂ class (obligate anaerobe / aerobe / microaerophile / facultative / capnophile) and how it fits the condition's oxygen landscape (granuloma hypoxia, necrotic cavities, the oral-anaerobe pneumotype).
+4. **≤650 characters (with spaces) per section** — universal. `/api/organism` hard-caps each section (tag-safe) as a backstop, but author to fit.
+5. **Every claim needs an inline citation** (`<sup>[n]</sup>`) listed in a per-panel **References** column; `/api/organism` renders References **below Body site, above the page Studies**.
+6. **Thin or absent data → SKIP the section. Never fabricate** a fact, citation, PMID, or DOI. A panel with only Overview + one lens is fine.
+7. No em-dashes, no ampersands, no bold (site-wide rules).
+
+Workflow that scales this: read each taxon's already-researched seed, restructure into the lens set, tie to direction, add real citations, then run an **adversarial citation-verification pass** that prunes anything unverifiable before publishing.
 
 ## Key facts
 - Condition `meta.signature = { levels (chart), organisms (panel, served by /api/organism), studies:[{title,url:/research-feeds/<slug>}] }`.
