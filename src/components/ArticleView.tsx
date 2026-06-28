@@ -372,7 +372,5 @@ export async function articleMetadata(segment: string, slug: string): Promise<Me
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const image = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
   const path = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
-  // Condition monographs are also published as journal-format PDFs (Google Scholar citation_pdf_url).
-  const pdfUrl = section.type === "condition" ? `/pdf/${slug}.pdf` : undefined;
-  return buildMetadata(item, { path, type: section.type, authors, image, pdfUrl });
+  return buildMetadata(item, { path, type: section.type, authors, image });
 }
