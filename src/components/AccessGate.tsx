@@ -9,7 +9,7 @@ import { createSupabaseBrowser } from "@/lib/supabase/client";
 const WALL =
   '<div class="rgbc-gate__wall"><div class="rgbc-gate__wall-inner">' +
   '<p class="rgbc-gate__wall-title">Create a free account to unlock this study summary.</p>' +
-  '<a href="#join-waitlist" data-open-waitlist class="btn">Join the Waitlist</a>' +
+  '<a href="#join-waitlist" data-open-waitlist class="btn">Get started with your free account</a>' +
   '</div></div>';
 
 function apply(locked: boolean) {

@@ -26,8 +26,7 @@ export const metadata: Metadata = {
 const headerHtml = HEADER_HTML
   .replace(/action="\/"/g, 'action="/search"')
   .replace(/href="\/auth\/login\/"/g, 'href="/dashboard"')
-  .replace(/href="\/membership-2\/"/g, 'href="#join-waitlist" data-open-waitlist="1"')
-  .replace(/>Membership<\/a>/g, '>Join the Waitlist</a>');
+  .replace(/href="\/membership-2\/"/g, 'href="/dashboard/subscription"');
 
 // Wire the footer newsletter forms to our subscribe endpoint.
 const footerHtml = FOOTER_HTML

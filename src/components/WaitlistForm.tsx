@@ -75,8 +75,12 @@ export function WaitlistForm({ onSuccess }: { onSuccess?: () => void }) {
         setBusy(false);
         return;
       }
-      onSuccess?.();
-      router.refresh();
+      if (onSuccess) {
+        onSuccess();
+        router.refresh();
+      } else {
+        router.push("/dashboard");
+      }
     } catch {
       setErr("Network error. Please try again.");
       setBusy(false);
