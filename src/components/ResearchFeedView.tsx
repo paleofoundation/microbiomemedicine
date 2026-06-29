@@ -222,7 +222,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            <div className="research-content__center entry-content" data-gated="research-feed" dangerouslySetInnerHTML={{ __html: contentHtml }} />
 
             <RightRail connections={connections} />
           </div>

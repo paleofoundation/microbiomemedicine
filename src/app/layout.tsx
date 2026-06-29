@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { HeaderSearch } from "@/components/HeaderSearch";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
 import { WaitlistModal } from "@/components/WaitlistModal";
+import { AccessGate } from "@/components/AccessGate";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://microbiomemedicine.com"),
@@ -57,6 +58,7 @@ export default function RootLayout({
         <HeaderSearch />
         <SearchAutocomplete />
         <WaitlistModal />
+        <AccessGate />
       </body>
     </html>
   );
