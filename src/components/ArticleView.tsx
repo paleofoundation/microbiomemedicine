@@ -12,6 +12,7 @@ import { applyTextRules } from "@/lib/textRules";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
+import { OrcidIcon } from "@/components/OrcidIcon";
 import { PageSnapshot } from "@/components/PageSnapshot";
 import { RightRail } from "@/components/RightRail";
 import { JsonLd } from "@/components/JsonLd";
@@ -312,7 +313,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                         {authors.map((a, i) => (
                           <li key={i}>
                             <span>{a.name}</span>
-                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
+                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid} aria-label="ORCID iD"><OrcidIcon /></a>)}
                           </li>
                         ))}
                       </ul>

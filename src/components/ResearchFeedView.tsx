@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sectionBySegment, getItem, getWpHtml, allConditionLinks } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
+import { OrcidIcon } from "@/components/OrcidIcon";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
 import { autolinkConditions, buildConnections } from "@/lib/connections";
@@ -173,7 +174,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
                         {authors.map((a, i) => (
                           <li key={i}>
                             <span className="rgbc-tooltip" title={AUTHOR_BIOS[a.name] ? `.author-bio-${i}` : undefined}>{a.name}</span>
-                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid}>ID</a>)}
+                            {a.orcid && (<a className="orchid-id" target="_blank" rel="noreferrer" href={a.orcid} aria-label="ORCID iD"><OrcidIcon /></a>)}
                           </li>
                         ))}
                       </ul>

@@ -10,6 +10,7 @@ import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
 import { applyTextRules } from "@/lib/textRules";
 import { stripHost, referenceCount, signatureMmaCount, type ContentItem } from "@/lib/content";
+import { ORCID_SVG } from "@/components/OrcidIcon";
 
 type SigItem = { name: string; value: number; has_info?: boolean };
 
@@ -87,7 +88,7 @@ function researchedByHtml(authors: { name: string; orcid?: string | null; avatar
         .join("")}</ul></div>`
     : "";
   const names = `<div class="research-hero__center-meta-item"><p><span>Researched by:</span></p><ul class="research-hero__tooltips-list">${resolved
-    .map((r) => `<li><span>${r.name}</span>${r.orcid ? `<a class="orchid-id" target="_blank" href="${r.orcid}">ID</a>` : ""}</li>`)
+    .map((r) => `<li><span>${r.name}</span>${r.orcid ? `<a class="orchid-id" target="_blank" href="${r.orcid}" aria-label="ORCID iD">${ORCID_SVG}</a>` : ""}</li>`)
     .join("")}</ul></div>`;
   const bios = resolved
     .filter((r) => r.bio)
