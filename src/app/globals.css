@@ -89,6 +89,12 @@
 .rgbc-faq-a { margin: 0.85rem 0 0 2.6rem; padding-left: 1.1rem; border-left: 3px solid #e3b9b9; color: #333; line-height: 1.65; }
 .rgbc-faq-a strong { display: block; color: var(--color-primary); margin-bottom: 0.35rem; }
 
+/* Author "Connect" social row (author hero) — white circular buttons, branded icons. */
+.author-socials { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; justify-content: center; }
+.author-socials__link { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.18); transition: transform .15s ease, box-shadow .15s ease; }
+.author-socials__link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.28); }
+.author-socials__link svg { width: 22px; height: 22px; display: block; }
+
 /* References (.rgbc-references) intentionally use the original WordPress theme's
    default ordered-list rendering — the original had no custom badge/counter CSS,
    so we do NOT override it here. */

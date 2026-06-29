@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { segmentForType } from "@/lib/content";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
+import { AuthorSocials } from "@/components/AuthorSocials";
 
 // Author archive page: who the author is + everything they've worked on. Mirrors the
 // original /author/<slug> page — hero (avatar + "Name, Role"), About (bio), then
@@ -97,6 +98,7 @@ export async function AuthorView({ slug, page = 1 }: { slug: string; page?: numb
                 <img alt={author.name} src={avatar} className="avatar avatar-256 photo author-avatar" height={256} width={256} decoding="async" />
               )}
               <h1 className="research-hero__title">{author.role ? `${author.name}, ${author.role}` : author.name}</h1>
+              <AuthorSocials bio={bio} />
             </div>
           </div>
         </div>
