@@ -29,10 +29,13 @@ export function AccessGate() {
   useEffect(() => {
     const supabase = createSupabaseBrowser();
     let mounted = true;
-    supabase.auth.getUser().then(({ data }) => {
-      if (mounted) apply(!data.user);
+    // Use the LOCAL session (no network round-trip) so a slow/failed getUser() call
+    // can't wrongly lock out a signed-in reader. The wall is cosmetic, so the local
+    // session is the right signal.
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) apply(!data.session);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => apply(!session?.user));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => apply(!session));
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();

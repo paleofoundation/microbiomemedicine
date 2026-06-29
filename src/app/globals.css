@@ -90,10 +90,10 @@
 .rgbc-faq-a strong { display: block; color: var(--color-primary); margin-bottom: 0.35rem; }
 
 /* Author "Connect" social row (author hero) — white circular buttons, branded icons. */
-.author-socials { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; justify-content: center; }
-.author-socials__link { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.18); transition: transform .15s ease, box-shadow .15s ease; }
-.author-socials__link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.28); }
-.author-socials__link svg { width: 22px; height: 22px; display: block; }
+.author-socials { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; justify-content: center; }
+.author-socials__link { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; border: 1.5px solid rgba(255,255,255,.85); background: transparent; color: #fff; transition: background .15s ease, color .15s ease, border-color .15s ease; }
+.author-socials__link:hover { background: #fff; color: var(--color-primary); border-color: #fff; }
+.author-socials__link svg { width: 20px; height: 20px; display: block; fill: currentColor; }
 
 /* Join the Waitlist — form (ported from the original theme's template-auth.css) + modal. */
 .auth-form { display: flex; flex-direction: column; gap: 22px; }
