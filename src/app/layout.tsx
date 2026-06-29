@@ -6,6 +6,7 @@ import { Feedback } from "@/components/Feedback";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { HeaderSearch } from "@/components/HeaderSearch";
 import { SearchAutocomplete } from "@/components/SearchAutocomplete";
+import { WaitlistModal } from "@/components/WaitlistModal";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://microbiomemedicine.com"),
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
 const headerHtml = HEADER_HTML
   .replace(/action="\/"/g, 'action="/search"')
   .replace(/href="\/auth\/login\/"/g, 'href="/dashboard"')
-  .replace(/href="\/membership-2\/"/g, 'href="/dashboard/subscription"');
+  .replace(/href="\/membership-2\/"/g, 'href="#join-waitlist" data-open-waitlist="1"')
+  .replace(/>Membership<\/a>/g, '>Join the Waitlist</a>');
 
 // Wire the footer newsletter forms to our subscribe endpoint.
 const footerHtml = FOOTER_HTML
@@ -54,6 +56,7 @@ export default function RootLayout({
         <ScrollToTop />
         <HeaderSearch />
         <SearchAutocomplete />
+        <WaitlistModal />
       </body>
     </html>
   );
