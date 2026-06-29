@@ -154,6 +154,11 @@ export function WpRender({
     content = content.replace(/(<div[^>]*\bresearch-content__center\b[^>]*)>/, '$1 data-gated="research-feed">');
   }
 
+  // Right-rail "Join the Roundtable" CTA: relabel the captured /auth/signup link to "Join the Waitlist".
+  content = content
+    .replace(/Yes,\s*I want to\s*(<a href="\/auth\/signup)/i, "$1")
+    .replace(/(<a href="\/auth\/signup\/"[^>]*>)[\s\S]*?(<\/a>)/, "$1Join the Waitlist$2 and help shape the future of microbiome medicine.");
+
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: content }} />
