@@ -6,10 +6,14 @@
 //   - an ampersand is only rewritten to "and" when it is SPACE-flanked prose ("X & Y" or
 //     "X &amp; Y"). URL params (?s=96&d=mm), HTML entities (&amp; &nbsp; &mdash;), and the
 //     JS && operator have no surrounding space, so they are left untouched by construction.
+import { ORCID_SVG } from "@/components/OrcidIcon";
+
 export function applyTextRules(html: string): string {
   if (!html) return html;
   return html
     .replace(/(\d)\s*(?:—|&mdash;|—)\s*(\d)/g, "$1 to $2")
     .replace(/\s*(?:—|&mdash;|—)\s*/g, ", ")
-    .replace(/([A-Za-z0-9)\]])\s(?:&amp;|&)\s([A-Za-z0-9(\[])/g, "$1 and $2");
+    .replace(/([A-Za-z0-9)\]])\s(?:&amp;|&)\s([A-Za-z0-9(\[])/g, "$1 and $2")
+    // Author ORCID links captured from WP render their text as "ID"; swap in the real ORCID iD logo.
+    .replace(/(<a\b[^>]*\borchid-id\b[^>]*>)\s*ID\s*(<\/a>)/gi, `$1${ORCID_SVG}$2`);
 }
