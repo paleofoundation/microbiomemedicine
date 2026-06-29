@@ -148,6 +148,12 @@ export function WpRender({
   const studies = sigStudies.length ? sigStudies : extractStudies(content);
   const jsonLd = buildJsonLd(item, { path, type, authors, faqs, breadcrumbs });
 
+  // Research-feed summaries get the cosmetic account-wall (AccessGate blurs + overlays
+  // [data-gated] for logged-out visitors). Gate only the main summary column, not the hero.
+  if (type === "research-feed") {
+    content = content.replace(/(<div[^>]*\bresearch-content__center\b[^>]*)>/, '$1 data-gated="research-feed">');
+  }
+
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: content }} />
