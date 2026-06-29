@@ -6,11 +6,13 @@ export type NavGroup = { id: string; text: string; icon: string; children: Child
 
 const ICON_BASE = "/wp-content/themes/rgbcode/static_media/";
 
-// Reproduces the theme's left section-navigation: icon per top section, "+"
-// expanders, white-bg/red-text active item, h3 children shown under the active
-// section (scroll-spy).
+// Left section-navigation: icon per top section with "+/–" expanders. Subsections
+// are COLLAPSED by default and open only when the user clicks the section (manual
+// accordion) — they never auto-open on navigation or scroll. The scroll-spy only
+// highlights the current link; it does not expand anything.
 export function SectionNav({ groups }: { groups: NavGroup[] }) {
   const [active, setActive] = useState<string>("");
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
@@ -30,7 +32,13 @@ export function SectionNav({ groups }: { groups: NavGroup[] }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [groups]);
 
-  const groupActive = (g: NavGroup) => active === g.id || g.children.some((c) => c.id === active);
+  const toggle = (id: string) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   return (
     <div className="research-content__left js-research-sidebar">
@@ -44,17 +52,18 @@ export function SectionNav({ groups }: { groups: NavGroup[] }) {
         {!collapsed && (
           <div className="post-content__list post-sidebar">
             {groups.map((g) => {
-              const gActive = groupActive(g);
               const hasChildren = g.children.length > 0;
+              const isOpen = expanded.has(g.id);
               return (
                 <div key={g.id}>
-                  <div className={`post-content__item post-content__item--h2${hasChildren ? " plus" : ""}${gActive ? " active" : ""}`}>
+                  <div className={`post-content__item post-content__item--h2${hasChildren ? " plus" : ""}${isOpen ? " active" : ""}`}>
                     <span className="post-content__title">
                       <a
                         rel="nofollow"
                         className={`post-content__link${active === g.id ? " post-content__link--active" : ""}`}
                         href={g.isSignature ? "#" : `#${g.id}`}
                         data-modal-id={g.isSignature ? "research-diagram-modal" : undefined}
+                        onClick={hasChildren ? () => toggle(g.id) : undefined}
                       >
                         <img src={ICON_BASE + g.icon} alt="" width={20} height={20} />
                         {g.text}
@@ -62,7 +71,7 @@ export function SectionNav({ groups }: { groups: NavGroup[] }) {
                     </span>
                   </div>
                   {g.children.map((c) => (
-                    <div key={c.id} className={`post-content__item post-content__item--h3${gActive ? " active" : ""}`}>
+                    <div key={c.id} className={`post-content__item post-content__item--h3${isOpen ? " active" : ""}`}>
                       <span className="post-content__title">
                         <a rel="nofollow" className={`post-content__link${active === c.id ? " post-content__link--active" : ""}`} href={`#${c.id}`}>
                           {c.text}

@@ -71,12 +71,8 @@ export function WpInteractivity({ itemId }: { itemId: number }) {
     document.addEventListener("click", onAccordionClick);
     cleanups.push(() => document.removeEventListener("click", onAccordionClick));
 
-    // Expand the first parent (Overview) on load, matching the live site.
-    const firstParent = document.querySelector(".post-content__item--h2.plus");
-    if (firstParent && !firstParent.classList.contains("active")) {
-      firstParent.classList.add("active");
-      toggleChildren(firstParent, true);
-    }
+    // Subsections stay COLLAPSED on load — they open only when the user clicks the
+    // parent section (manual accordion above). No auto-expand on navigation.
 
     // Sidebar scroll-spy (active link) + smooth-scroll with sticky-header offset
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.post-content__link[href^="#"]'));
