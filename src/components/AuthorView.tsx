@@ -12,7 +12,7 @@ import { AuthorSocials } from "@/components/AuthorSocials";
 const AUTHORS: Record<string, { name: string; role?: string }> = {
   "kmfp84gmail-com": { name: "Karen Pendergrass", role: "Standards Team" },
   kimberly: { name: "Kimberly Eyer" },
-  aleru: { name: "Divine Aleru", role: "Microbiome Signatures Research Coordinator" },
+  aleru: { name: "Divine Aleru", role: "Microbiome Medicine Research Coordinator" },
   giorgos: { name: "Giorgos Aristotelous" },
   "dr-umar": { name: "Dr. Umar" },
   "jonathan-pendergrass": { name: "Jonathan Pendergrass" },

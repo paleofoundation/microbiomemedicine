@@ -16,6 +16,10 @@ export function getFaqs(html: string, title: string): { q: string; a: string; aH
     [/treatment|intervention/i, `What helps treat ${title}?`],
     [/prevent/i, `Can ${title} be prevented?`],
     [/risk/i, `What are the risk factors for ${title}?`],
+    // Intervention-page sections (Overview matches "What is X?" above).
+    [/mechanism of action|how it works/i, `How does ${title} work?`],
+    [/^conditions\b|conditions improved/i, `What conditions can ${title} help?`],
+    [/dosage|dosing/i, `What is the recommended dosage of ${title}?`],
   ];
   const faqs: { q: string; a: string; aHtml: string }[] = [];
   const re = /<h([23])\b[^>]*>([\s\S]*?)<\/h\1>([\s\S]*?)(?=<h[23]\b|$)/gi;

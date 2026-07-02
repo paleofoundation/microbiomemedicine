@@ -24,10 +24,10 @@ export default async function RootContentPage({ params }: Props) {
   const item = await getRootBySlug(slug);
   if (!item) notFound();
 
-  // Blog posts use the full research template (red hero + styled content + author).
-  if (item.type === "post") return <ArticleView segment="" slug={slug} />;
-
-  // Static pages: render the verbatim WordPress content region when captured.
+  // Captured WordPress content (imported posts + static pages) renders verbatim via WpRender.
+  // STOP pages and imported posts carry their full hero, "Did you know?", Update History, and
+  // references in this captured HTML, so they must render here — the ArticleView post template
+  // would drop that hero. type="post" preserves STOP detection + sidebar ordering.
   const wpHtml = await getWpHtml(item.id);
   if (wpHtml) {
     return (
@@ -35,7 +35,7 @@ export default async function RootContentPage({ params }: Props) {
         item={item}
         html={wpHtml}
         path={`/${slug}`}
-        type="page"
+        type={item.type === "post" ? "post" : "page"}
         breadcrumbs={[
           { name: "Home", url: "/" },
           { name: item.title, url: `/${slug}` },
@@ -43,6 +43,9 @@ export default async function RootContentPage({ params }: Props) {
       />
     );
   }
+
+  // Blog posts without captured WordPress content use the full research template.
+  if (item.type === "post") return <ArticleView segment="" slug={slug} />;
 
   // Fallback: clean, theme-styled article.
   return (

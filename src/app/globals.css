@@ -86,6 +86,9 @@
 .rgbc-faq-icon::after { transform: translatey(-50%) rotate(90deg); }
 .rgbc-faq-item[open] .rgbc-faq-icon::before { transform: translatey(-50%) rotate(-90deg); opacity: 0; }
 .rgbc-faq-item[open] .rgbc-faq-icon::after { transform: translatey(-50%) rotate(0); }
+/* Center the +/− glyph inside the research-feed accordion toggle circle (it defaulted to
+   grid top-left; this matches the centered FAQ icon). !important beats the inline captured CSS. */
+.research-feed__toggle-icon { place-items: center !important; place-content: center !important; line-height: 1 !important; }
 .rgbc-faq-a { margin: 0.85rem 0 0 2.6rem; padding-left: 1.1rem; border-left: 3px solid #e3b9b9; color: #333; line-height: 1.65; }
 .rgbc-faq-a strong { display: block; color: var(--color-primary); margin-bottom: 0.35rem; }
 
@@ -228,3 +231,20 @@ body :not(i):not(svg):not(path):not([class*="fa-"]):not([class*="icon"]):not([cl
   padding: 0.28em 0.85em;
 }
 .rgbc-search__link .search__link-text { color: #1f2430; }
+
+/* Subtle captions on substantive in-body content figures (image SEO/LLMO + editorial
+   authority). Injected by normalizeImages() in src/lib/textRules.ts ONLY for content
+   images that have a generated caption; hero illustrations and decorative avatars/icons
+   are never captioned. Style = Option A from the approved mockup (small, muted, italic). */
+figure.rgbc-figure { margin: 1.25rem 0; }
+figure.rgbc-figure img { display: block; max-width: 100%; height: auto; }
+.rgbc-figcaption {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #ececec;
+  font-family: var(--font-sans, Inter, sans-serif);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: #6b6b6b;
+}

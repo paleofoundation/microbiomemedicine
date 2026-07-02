@@ -1,7 +1,13 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 
-type Item = { name: string; value: number; has_info?: boolean };
+type Item = { name: string; value: number; has_info?: boolean; tier?: string; direction?: string; agreementBin?: string; domain?: string };
+type ConditionEvidence = {
+  nStudies?: number; nExperiments?: number;
+  methodMix?: Record<string, number>;
+  domainCoverage?: Record<string, { frac: number; glyph: string }>;
+  methodMonoculture?: boolean; coverageStrip?: string;
+};
 const LEVEL_ORDER = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"];
 const SIGNATURE_DEF =
   "A microbiome signature is defined through a comprehensive approach that integrates differential abundance analysis across multiple datasets, followed by interpretation for biological relevance. This rigorous process ensures that the identified signature is both statistically robust and biologically meaningful. Associations that do not meet statistical significance or lack mechanistic relevance are excluded from the final signature.";
@@ -59,14 +65,18 @@ export function MicrobiomeSignature({
   title,
   levels,
   studies,
+  evidence,
+  defaultOpen = false,
 }: {
   slug: string;
   title: string;
   levels: Record<string, Item[]>;
   studies: { title: string; url: string }[];
+  evidence?: ConditionEvidence;
+  defaultOpen?: boolean;
 }) {
   const available = LEVEL_ORDER.filter((l) => levels[l]?.length);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   // Default to Genus (the primary signature level shown in the inline chart), as in the original.
   const [level, setLevel] = useState(available.includes("Genus") ? "Genus" : available[available.length - 1] || available[0]);
   const [active, setActive] = useState<string | null>(null);
@@ -119,6 +129,11 @@ export function MicrobiomeSignature({
   }, [open]);
 
   const { list, vb } = useMemo(() => packed(levels[level] || []), [levels, level]);
+  const activeItem = useMemo(() => {
+    if (!active) return null;
+    for (const L of LEVEL_ORDER) { const f = (levels[L] || []).find((x) => x.name === active); if (f) return f; }
+    return null;
+  }, [active, levels]);
 
   if (!open) return null;
 
@@ -187,9 +202,43 @@ export function MicrobiomeSignature({
         </div>
 
         <div style={{ flex: "1 1 300px", minWidth: 0, borderLeft: "1px solid #eee", padding: "1.5rem", background: "#fafafa" }}>
+          {evidence && (
+            <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", padding: ".8rem .9rem", marginBottom: "1.1rem", fontSize: ".8rem", lineHeight: 1.5, color: "#374151" }}>
+              <div style={{ fontFamily: "var(--font-serif)", color: "#cc3333", fontSize: ".98rem", marginBottom: ".35rem" }}>Evidence &amp; Coverage</div>
+              {evidence.domainCoverage && (
+                <div style={{ marginBottom: ".3rem" }}>
+                  Detection coverage:{" "}
+                  {Object.entries(evidence.domainCoverage).map(([d, c], i) => (
+                    <span key={d} title={`${(c.frac * 100).toFixed(0)}% capable`} style={{ whiteSpace: "nowrap" }}>
+                      {i ? " · " : ""}{d} <span style={{ color: c.glyph === "●" ? "#166534" : c.glyph === "◐" ? "#b45309" : "#b91c1c" }}>{c.glyph}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
+              {evidence.methodMix && (
+                <div style={{ color: "#6b7280", marginBottom: ".3rem" }}>
+                  Methods: {Object.entries(evidence.methodMix).map(([m, n], i) => `${i ? ", " : ""}${m}×${n}`)}
+                </div>
+              )}
+              <div style={{ color: "#6b7280" }}>
+                {evidence.domainCoverage && evidence.domainCoverage.Fungi && evidence.domainCoverage.Fungi.frac < 0.1
+                  ? "Fungi were barely assayed here — a taxon's absence means “not measured,” not “not present.” "
+                  : ""}
+                Certainty reflects observational association, not causation.
+              </div>
+            </div>
+          )}
           {active ? (
             <>
-              <h4 style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", marginBottom: ".5rem", color: "#cc3333" }}>{active}</h4>
+              <h4 style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", marginBottom: ".3rem", color: "#cc3333" }}>{active}</h4>
+              {activeItem?.tier && (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: ".35rem", alignItems: "center", marginBottom: ".6rem", fontSize: ".74rem" }}>
+                  <span style={{ background: "#eef1f4", border: "1px solid #e5e7eb", borderRadius: 999, padding: ".08rem .5rem", color: activeItem.tier === "High" || activeItem.tier === "Moderate" ? "#111827" : "#6b7280" }}>{activeItem.tier} certainty</span>
+                  {activeItem.direction && <span style={{ color: "#4b5563" }}>{activeItem.direction === "increased" ? "↑ increased" : activeItem.direction === "decreased" ? "↓ decreased" : "↕ mixed"}</span>}
+                  {activeItem.agreementBin && <span style={{ color: "#6b7280" }}>· {activeItem.agreementBin} agreement</span>}
+                  {activeItem.domain && activeItem.domain !== "Unknown" && <span style={{ color: "#6b7280" }}>· {activeItem.domain}</span>}
+                </div>
+              )}
               {loading ? <p>Loading…</p> : <div className="organism-detail" dangerouslySetInnerHTML={{ __html: detail }} />}
             </>
           ) : (

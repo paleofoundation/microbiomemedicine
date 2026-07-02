@@ -7,6 +7,8 @@ description: Discover and validate a microbiome-targeted intervention (MBTI) for
 
 **This is the thing microbiomemedicine does that others do not: interventions are discovered from the signature and validated by triangulation, *before* waiting for RCTs.** Authoritative source: `_framework/karens-brain/master-spec.md` ("Karen's Brain" Master Reference Spec v1.0). See also [[karens-brain-framework]]. Canonical worked example: endometriosis → low-nickel diet.
 
+**Formatting rule (sitewide): PROSE and TABLES only — never lists.** No bulleted/numbered lists (or numbered `<h5>1. …` heading sequences) in body content; use prose for narrative/directive content (e.g. recommendations) and a canonical `wp-block-table` for structured content (e.g. mechanisms, findings). Only the `<ol class="rgbc-references">` bibliography is a list. See [[content-formatting-no-lists]].
+
 **Epistemic stance (capture this, not just the steps — a pipeline that misses the mindset is "superficially similar but fundamentally different"):** constraint-based ecosystem-level causal inference; mechanism over correlation; triangulation across *independent* evidence streams; **anomaly-driven** — the single most distinctive move: find the data point that *shouldn't* be there and explain it (the lone decreased taxon that led to the mouthwash→breast-cancer insight); and self-falsifying (contradiction = the model is wrong).
 
 ## Part A — Discovery pipeline (Signature → Intervention)
@@ -82,3 +84,9 @@ To **surface a study on an intervention/validation page**, the page (if it rende
 ## Known gaps to fix when touching interventions
 - **TB** condition page: header says "Status" (→ "MBTI Status"); MBTI Status cells are not linked to validation pages; no validation pages exist yet for TB's interventions.
 - **Endo:** HBOT MBTI Status is now **Validated** (fixed 2026-06; animal-model complete remission), linked to its validation page `/hbot-candidate-for-microbiome-targeted-intervention-endometriosis/`. That validation page's slug/title still say "candidate" — optional follow-up to re-slug/retitle it (with a redirect) to read as Validated.
+
+## Images (SEO + LLMO conventions)
+Any image on a validation/intervention page follows [[image-conventions]] (`docs/IMAGE-CONVENTIONS.md`):
+- SVG for diagrams/mechanism figures; WebP for raster art (never new PNG/JPG content) — `npm run img:convert -- add <src> <kebab-keyword-name>`.
+- Hero: set `meta.hero_image` + add an `image_meta` row `{ src, kind:'hero', alt, caption, width, height }`.
+- In-body figures auto-get lazy/dims/alt + `<figure>`/`<figcaption>` via `normalizeImages()`; decorative icons keep empty `alt=""`. Schema + image-sitemap are automatic. Run `npm run img:lint` before publish.

@@ -55,8 +55,6 @@ While their gut expansion likely reflects adaptive survival in high-metal niches
 [-1] Shuttleworthella,,,,,
 [-1] Porphyromonas,,,,,
 [19] Bacteria,,,,,
-[19] Bacillati,,,,,
-[16] Pseudomonadati,,,,,
 [11] Lactobacillales,,,,,
 [10] Eubacteriales,,,,,
 [10] Enterobacterales,,,,,
@@ -76,3 +74,7 @@ While their gut expansion likely reflects adaptive survival in high-metal niches
 [-1] uncultured Oscillospiraceae bacterium,,,,,
 [-1] uncultured Lachnospiraceae bacterium,,,,,
 [-2] Lachnospiraceae bacterium NK4A136,,,,,
+[2] Fusobacterium,"Fusobacterium is an anaerobic, Gram-negative genus increasingly implicated in endometriosis. Muraoka et al. (2023, Science Translational Medicine) found Fusobacterium infiltration in the endometrium of 64% of endometriosis patients versus under 10% of controls, where infection activates TGF-beta signaling and drives the transition of quiescent fibroblasts into proliferative TAGLN-positive myofibroblasts. Antibiotic treatment prevented and reduced lesions in a mouse model, nominating Fusobacterium eradication as a candidate therapy.",,,"Endometrium, endometriotic lesions",https://doi.org/10.1126/scitranslmed.add1531
+[1] Fusobacterium nucleatum,"Fusobacterium nucleatum is the species behind the endometrial Fusobacterium signal (Muraoka et al. 2023). It is detected in the endometrium far more often in endometriosis than in controls and mechanistically converts endometrial fibroblasts to TAGLN-positive myofibroblasts via TGF-beta, promoting lesion formation; antibiotic eradication reduces lesion number and weight in mice. The species is not resolvable by the 16S surveys that make up most of this corpus, so it enters the signature via a targeted study.",,,"Endometrium, endometriotic lesions",https://doi.org/10.1126/scitranslmed.add1531
+[-1] Talaromyces,"Talaromyces is a fungal (Ascomycota) genus of the gut mycobiome that was significantly decreased in endometriosis in the ITS2 study of Talwar et al. (2025, Biology of Reproduction; p=0.004). It is one of the less-prevalent genera whose loss, rather than a shift in the dominant fungi, distinguished the endometriosis mycobiome. Fungi of this kind are invisible to 16S sequencing and appear here only because a fungal (ITS2) method was used.",,,Gut (stool),https://doi.org/10.1093/biolre/ioaf148
+[-1] Rhodotorula,"Rhodotorula is a fungal (Basidiomycota) yeast genus of the gut mycobiome, significantly decreased in endometriosis in Talwar et al. (2025; p=0.013). Like Talaromyces, it is a low-prevalence taxon whose depletion helped define the altered mycobiome, and it is only detectable by fungal-aware sequencing (ITS2), not by 16S.",,,Gut (stool),https://doi.org/10.1093/biolre/ioaf148

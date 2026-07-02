@@ -1,0 +1,1114 @@
+{
+  "slug": "endometriosis",
+  "title": "Endometriosis",
+  "signature": {
+    "levels": {
+      "Kingdom": [
+        {
+          "name": "Bacteria",
+          "value": 20,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "low",
+          "kIndep": 34,
+          "domain": "Bacteria"
+        }
+      ],
+      "Phylum": [
+        {
+          "name": "Bacillota",
+          "value": 18,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "low",
+          "kIndep": 27,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Pseudomonadota",
+          "value": 16,
+          "has_info": false,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "medium",
+          "kIndep": 20,
+          "domain": "Bacteria"
+        }
+      ],
+      "Class": [
+        {
+          "name": "Gammaproteobacteria",
+          "value": 15,
+          "has_info": true,
+          "tier": "High",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 17,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Bacilli",
+          "value": 12,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "low",
+          "kIndep": 18,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Clostridia",
+          "value": 8,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "low",
+          "kIndep": 11,
+          "domain": "Bacteria"
+        }
+      ],
+      "Order": [
+        {
+          "name": "Lactobacillales",
+          "value": 11,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "low",
+          "kIndep": 17,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Enterobacterales",
+          "value": 10,
+          "has_info": false,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 10,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Eubacteriales",
+          "value": 10,
+          "has_info": false,
+          "tier": "High",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 10,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Bacillales",
+          "value": 8,
+          "has_info": false,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 7,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Burkholderiales",
+          "value": 7,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "medium",
+          "kIndep": 7,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Cardiobacteriales",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Eggerthellales",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Halanaerobiales",
+          "value": -1,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Oceanospirillales",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        }
+      ],
+      "Family": [
+        {
+          "name": "Enterobacteriaceae",
+          "value": 10,
+          "has_info": true,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 10,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Streptococcaceae",
+          "value": 10,
+          "has_info": true,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 11,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Enterococcaceae",
+          "value": 6,
+          "has_info": true,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 5,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Oscillospiraceae",
+          "value": 6,
+          "has_info": true,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 6,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Bifidobacteriaceae",
+          "value": 5,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "medium",
+          "kIndep": 5,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Pseudomonadaceae",
+          "value": 5,
+          "has_info": false,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 4,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Staphylococcaceae",
+          "value": 5,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 5,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Alcanivoracaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Atopobiaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 3,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Cardiobacteriaceae",
+          "value": -1,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Defluviitaleaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Eggerthellaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Halanaerobiaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Halomonadaceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Nitrobacteraceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Odoribacteraceae",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Porphyromonadaceae",
+          "value": -1,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Barnesiellaceae",
+          "value": -2,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        }
+      ],
+      "Genus": [
+        {
+          "name": "Enterococcus",
+          "value": 5,
+          "has_info": false,
+          "tier": "Moderate",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 4,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Lactobacillus",
+          "value": 5,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "medium",
+          "kIndep": 6,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Streptococcus",
+          "value": 5,
+          "has_info": true,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 6,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Pseudomonas",
+          "value": 4,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 4,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Acinetobacter",
+          "value": 3,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Bifidobacterium",
+          "value": 3,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 3,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Oscillospira",
+          "value": 3,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Parabacteroides",
+          "value": 3,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 3,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Fusobacterium",
+          "value": 2,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Actinomyces",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Adlercreutzia",
+          "value": -1,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Afipia",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Alcanivorax",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Anaerostipes",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Atopobium",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 3,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Barnesiella",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Cardiobacterium",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Chromohalobacter",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Eisenbergiella",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Facklamia",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Faecalitalea",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Gordonibacter",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Mobiluncus",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "low",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Odoribacter",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Porphyromonas",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Rhodotorula",
+          "value": -1,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Fungi"
+        },
+        {
+          "name": "Roseburia",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Rothia",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Ruminococcus",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Shuttleworthella",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Talaromyces",
+          "value": -1,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Fungi"
+        },
+        {
+          "name": "Tyzzerella",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        }
+      ],
+      "Species": [
+        {
+          "name": "Escherichia/Shigella sp.",
+          "value": 3,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 3,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Mediterraneibacter gnavus",
+          "value": 2,
+          "has_info": false,
+          "tier": "Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Fusobacterium nucleatum",
+          "value": 1,
+          "has_info": true,
+          "tier": "Very-Low",
+          "direction": "increased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "bacterium ND3007",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Lachnospira eligens",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Ruminococcus sp.",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "uncultured Lachnospiraceae bacterium",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "uncultured Oscillospiraceae bacterium",
+          "value": -1,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 1,
+          "domain": "Bacteria"
+        },
+        {
+          "name": "Lachnospiraceae bacterium NK4A136",
+          "value": -2,
+          "has_info": false,
+          "tier": "Very-Low",
+          "direction": "decreased",
+          "agreementBin": "high",
+          "kIndep": 2,
+          "domain": "Bacteria"
+        }
+      ]
+    },
+    "organisms": {
+      "Gammaproteobacteria": {
+        "overview": "Gammaproteobacteria are the most consistently enriched bacterial class across microbiome signature studies of endometriosis. All members of this class are gram-negative. LPS is an essential component of the cell envelope in almost all gram-negative bacteria.",
+        "metallome": "Gammaproteobacteria like E. coli produce beta-glucuronidase, deconjugating estrogens in the gut estrobolome. This increases circulating estrogen levels, potentially driving endometriosis, a hyperestrogenic condition, though studies show variable enzyme activity.",
+        "estrobolome": "Nearly all characterized Gammaproteobacteria possess genes for at least one nickel-dependent enzyme, including acireductone dioxygenase (ARD) and glyoxalase I (Glo-I), suggesting that nickel utilization is a widespread feature of this class. [ref]",
+        "bodySite": "Frequently detected in peritoneal fluid (PF), endometrium, lesions, stool"
+      },
+      "Bacilli": {
+        "overview": "Facultative anaerobes. Some strains promote inflammation (Streptococcus, Enterococcus), others (certain Lactobacillus) are protective.",
+        "metallome": "In endometriosis, iron-rich environments from retrograde menstruation favor iron-dependent Bacilli like Streptococcus and Enterococcus, which produce siderophores or utilize heme transport systems to acquire iron. In contrast, Lactobacillus thrives in low-iron conditions and lacks siderophore systems, relying instead on iron sequestration. Thus, when iron is abundant, Lactobacillus loses its competitive advantage, allowing other Bacilli to outgrow it.",
+        "estrobolome": "Enterococcus and Streptococcus contribute to estrogen reactivation via β-glucuronidase. Lactobacillus may have a protective role by stabilizing mucosal barriers and reducing estrogen recirculation.",
+        "bodySite": "Vaginal, endometrial, peritoneal fluid (PF)"
+      },
+      "Clostridia": {
+        "overview": "Diverse group. Some members (e.g. Clostridium spp.) are enriched in endometriosis with pain, while others like Ruminococcus are decreased.",
+        "metallome": "Clostridia are frequently enriched in the endometriosis-associated microbiome, likely due to their ability to exploit elevated levels of iron, nickel, zinc, lead, and cadmium found in endometriotic lesions.  These metals support Clostridial growth by fueling key metabolic enzymes, enhancing sporulation, and activating metal acquisition and detoxification systems, while simultaneously suppressing less metal-tolerant competitors like Lactobacillus.  Iron and nickel enable redox and acetogenic pathways; zinc stabilizes regulatory proteins and virulence factors; and lead and cadmium, though toxic, are easily resisted via efflux and stress-response mechanisms. This metallomic advantage positions Clostridia to thrive in metal-dysregulated environments, suggesting that targeting trace metal bioavailability or microbial metal acquisition pathways could be a viable strategy to restore microbial balance in endometriosis.",
+        "estrobolome": "Members of the Clostridia class, particularly those within Clostridium clusters IV and XIVa (e.g., C. scindens, C. leptum), play a central role in the estrobolome, the collection of microbial genes that metabolize estrogens via deconjugation and signaling modulation. These organisms express β-glucuronidase and sulfatase enzymes that remove glucuronic acid and sulfate groups from conjugated estrogens, enabling their reabsorption in the gut and contributing to elevated systemic estrogen levels. Additionally, C. scindens participates in bile acid transformations, producing secondary bile acids that influence host lipid metabolism, inflammation, and potentially estrogen receptor signaling through FXR pathways.\n\nThese microbial activities reinforce estrogen-driven pathologies, including endometriosis, by maintaining or amplifying systemic estrogen exposure. Elevated Clostridial β-glucuronidase activity has been observed in endometriosis, highlighting the need to consider estrobolomic modulation as a therapeutic target. Reducing Clostridial abundance or inhibiting microbial β-glucuronidase may be a promising adjunctive approach to managing estrogen-dominant conditions.",
+        "bodySite": "Gut, vaginal, peritoneal fluid (PF)"
+      },
+      "Streptococcaceae": {
+        "overview": "Genera like Streptococcus drive inflammatory responses and alter local immunity, potentially facilitating endometrial tissue implantation outside the uterus. This enrichment is associated with lower alpha diversity and higher disease activity.",
+        "metallome": "This family has efficient iron-scavenging systems, benefiting from high iron levels in endometriotic lesions, which perpetuate oxidative damage. Nickel-dependent enzymes in some species link to nickel as a metalloestrogen, while zinc utilization may relate to increased dietary zinc risk, influencing immune modulation and lesion invasion.",
+        "estrobolome": "Streptococcaceae species produce β-glucuronidase enzymes that participate in the estrobolome by hydrolyzing estrogen conjugates, promoting their recirculation. In endometriosis, this leads to elevated systemic estrogens, supporting the growth and invasion of ectopic endometrial tissues, and contributing to hormonal imbalances central to the condition's pathology.",
+        "bodySite": "Streptococcaceae family is increased in cervical, vaginal, and gut microbiomes of endometriosis patients, according to systematic reviews.",
+        "link": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2024.1363455/full"
+      },
+      "Enterobacteriaceae": {
+        "overview": "This family, including genera like Escherichia and Shigella, contributes to dysbiosis, promoting inflammation and oxidative stress that exacerbate lesion growth and pain symptoms. Their presence correlates with disease severity and reduced microbial diversity.",
+        "metallome": "Enterobacteriaceae exhibit robust iron acquisition mechanisms via siderophores, thriving in iron-rich environments like endometriotic lesions from retrograde menstruation. This contributes to iron overload, driving oxidative stress and inflammation. Links to nickel and cadmium tolerance may amplify metalloestrogen effects, synergizing with lead to enhance disease pathogenesis.",
+        "estrobolome": "Members of Enterobacteriaceae, such as E. coli, are key producers of β-glucuronidase in the estrobolome, which deconjugates estrogens in the gut, leading to increased reabsorption and circulating estrogen levels. This hyperestrogenic environment fuels the estrogen-dependent progression of endometriotic lesions, worsening symptoms like pelvic pain and infertility in affected women.",
+        "bodySite": "Enterobacteriaceae are significantly enriched in the gut and reproductive tract microbiomes of women with endometriosis, as shown in multiple studies.",
+        "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9962481/"
+      },
+      "Oscillospiraceae": {
+        "overview": "This family may influence systemic inflammation via gut-endometrium axis, promoting endometriotic lesion development and persistence through immune dysregulation.",
+        "metallome": "Oscillospiraceae are involved in iron homeostasis and may accumulate in iron-rich peritoneal environments, contributing to oxidative stress in lesions. Their metal-binding capabilities, including zinc and cadmium, could interact with metalloestrogens, amplifying lead's synergistic effects on oxidative damage and disease progression.",
+        "estrobolome": "Some Oscillospiraceae genera contribute to the estrobolome by modulating estrogen metabolism through β-glucuronidase activity, potentially increasing estrogen bioavailability. In endometriosis, this enrichment could disrupt hormonal balance, exacerbating the estrogen-driven proliferation of lesions and associated symptoms like dysmenorrhea and chronic pain.",
+        "bodySite": "Oscillospiraceae are enriched in the fecal microbiota of endometriosis patients, as per meta-analyses, linked to reduced gut diversity and altered short-chain fatty acid production",
+        "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12092452/"
+      },
+      "Enterococcaceae": {
+        "overview": "Studies indicate their role in enhancing local inflammation and disrupting microbial balance, which may support the survival and spread of ectopic endometrial cells.",
+        "metallome": "Known for metal resistance, Enterococcaceae thrive in environments with high nickel and cadmium, acting as metalloestrogens. Their iron acquisition supports growth in iron-overloaded lesions, while zinc interactions may counteract or exacerbate antioxidative effects, influencing matrix metalloproteinase activity in lesion invasion",
+        "estrobolome": "Enterococcaceae participate in the estrobolome via estrogen deconjugation, elevating circulating estrogens that stimulate endometriotic tissue growth. This family's enrichment in endometriosis patients may heighten hyperestrogenism, leading to more severe symptoms and complicating fertility issues through altered hormonal signaling pathways.",
+        "bodySite": "Enterococcaceae, including Enterococcus, show increased abundance in deep endometriotic lesions and gut samples, contributing to pathogenic shifts and antibiotic resistance."
+      },
+      "Pseudomonadaceae": {},
+      "Bifidobacteriaceae": {
+        "overview": "Bifidobacteriaceae are increased and decreased in different body sites in Endometriosis.",
+        "metallome": "This family binds heavy metals like cadmium and lead, potentially mitigating metalloestrogen effects, but enrichment could overload systems. Involved in zinc homeostasis, linking to higher dietary zinc risk, and iron chelation that might modulate oxidative stress in endometriotic environments.",
+        "estrobolome": "Bifidobacteriaceae generally reduce β-glucuronidase activity in the estrobolome, aiding estrogen excretion; however, in endometriosis contexts, their increase might indicate compensatory mechanisms or dysregulated metabolism, indirectly influencing estrogen levels and contributing to hormonal imbalances driving disease.",
+        "bodySite": "Studies show Bifidobacteriaceae increased in endometrial microbiomes of endometriosis patients, potentially altering lactate production and pH, which affects pathogen colonization and inflammation. This may reflect site-specific dysbiosis in reproductive tracts.",
+        "link": "https://www.nature.com/articles/s41598-021-98380-3"
+      },
+      "Staphylococcaceae": {
+        "overview": "Genera like Staphylococcus promote chronic inflammation, which facilitates adhesion and invasion of endometrial tissues, correlating with pain and lesion severity.",
+        "metallome": "Staphylococcaceae utilize zinc and iron for growth, thriving in metal-dysregulated lesions; nickel sensitivity links to allergy risks in patients. Cadmium tolerance may enhance oxidative stress, synergizing with lead to promote disease through endocrine disruption and inflammation.",
+        "estrobolome": "Some Staphylococcaceae species express enzymes that modulate estrogen conjugates in the estrobolome, potentially increasing active estrogen forms. In endometriosis, this could amplify estrogen-dependent pathways, exacerbating tissue proliferation and inflammatory responses central to the disorder's progression.",
+        "bodySite": "Staphylococcaceae are enriched in uterine and peritoneal microbiomes in endometriosis, associated with opportunistic infections and biofilm formation.",
+        "link": "https://www.frontiersin.org/journals/endocrinology/articles/10.3389/fendo.2023.1110824/full"
+      },
+      "Eggerthellaceae": {},
+      "Halanaerobiaceae": {},
+      "Odoribacteraceae": {},
+      "Defluviitaleaceae": {},
+      "Atopobiaceae": {},
+      "Alcanivoracaceae": {},
+      "Halomonadaceae": {},
+      "Nitrobacteraceae": {
+        "metallome": "Participate in metal oxidation, including iron; decrease worsens iron dysregulation. Tolerance to heavy metals like cadmium and lead; depletion increases exposure to metalloestrogens, synergizing oxidative stress in endometriotic environments."
+      },
+      "Cardiobacteriaceae": {
+        "overview": "Cardiobacteriaceae are rarely studied but show depletion in endometriosis-associated microbiomes, possibly reducing diversity in oral-gut axes. Their decrease might contribute to unchecked pathogen growth, influencing systemic inflammation relevant to endometriosis pathogenesis.",
+        "metallome": "Cardiobacteriaceae have metal-binding properties; depletion may disrupt iron homeostasis, leading to overload in lesions. Links to nickel sensitivity and cadmium exposure could heighten metalloestrogen effects, contributing to oxidative stress and disease risk.",
+        "estrobolome": "Limited direct role in estrobolome, but depletion may allow overgrowth of estrogen-deconjugating taxa, increasing circulating estrogens. This could worsen the estrogen-dependent nature of endometriosis, promoting tissue growth and inflammatory cascades.",
+        "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12092452/"
+      },
+      "Porphyromonadaceae": {
+        "overview": "Porphyromonadaceae show decreased abundance in gut microbiomes of women with endometriosis, linked to dysbiosis and reduced production of beneficial metabolites. This may lead to heightened permeability and inflammation, indirectly promoting endometrial cell migration and implantation.",
+        "metallome": "Involved in iron and zinc utilization; depletion exacerbates iron overload and dietary zinc risks. Reduced tolerance to cadmium and nickel may increase metalloestrogen impacts, amplifying oxidative damage and synergistic effects with lead in disease.",
+        "estrobolome": "These bacteria contribute to estrogen deconjugation in the estrobolome; depletion disrupts balance, potentially elevating estrogens. In endometriosis, this fosters a pro-estrogenic environment, supporting lesion development and progression through enhanced hormonal stimulation.",
+        "link": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2024.1363455/full"
+      },
+      "Barnesiellaceae": {
+        "overview": "Barnesiellaceae are depleted in fecal samples of endometriosis patients, associated with reduced gut diversity and altered bile acid metabolism. This depletion may impair anti-inflammatory functions, contributing to systemic inflammation that supports endometriotic lesion maintenance.",
+        "metallome": "Barnesiellaceae participate in metal sequestration, including zinc and iron; their decrease may worsen iron accumulation and zinc-associated risks in lesions. Reduced cadmium binding could increase metalloestrogen exposure, synergizing with lead to heighten oxidative stress and pathogenesis.",
+        "estrobolome": "Depletion of Barnesiellaceae, which may inhibit β-glucuronidase producers, could shift the estrobolome toward increased estrogen reabsorption. In endometriosis, this exacerbates hyperestrogenism, enhancing estrogen-driven cell proliferation and invasion in ectopic tissues, worsening disease symptoms.",
+        "bodySite": "Barnesiellaceae are depleted in fecal samples of endometriosis patients, associated with reduced gut diversity and altered bile acid metabolism.",
+        "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9962481/"
+      },
+      "Streptococcus": {
+        "overview": "Streptococcus species are commonly elevated in the endometriosis microbiome, particularly in menstrual and peritoneal environments where iron and other trace metals accumulate.",
+        "metallome": "Efficient iron acquisition via hemolysis and heme-binding proteins; thrives on iron-rich host fluids. Possesses metal efflux systems (P-type ATPases like CadA) conferring cadmium and lead resistance. Encodes import/export regulators for zinc (Adc zinc uptake and CzcD efflux in some species) enabling high Zn tolerance. Detention and mapping of iron and toxic environmental elements in human ovarian endometriosis: A suggested combined role. https://doi.org/10.1016/j.scitotenv.2022.161028",
+        "estrobolome": "The Streptococcus genus is ß-galactosidase positive, and only a few key species exhibit moderate β-glucuronidase activity.  β-glucuronidase positive species include Streptococcus agalactiae (GBS), which is a major microbial association (MMA) in endometriosis.",
+        "bodySite": "Streptococcus was found to be increased in peritoneal, endometrial, and cervical samples from women with endometriosis."
+      },
+      "Lactobacillus": {
+        "overview": "Lactobacillus is disproportionately elevated in the fecal microbiome but depleted in the vaginal tract of women with endometriosis. This inversion of its typical anatomical distribution suggests dysbiosis, impaired mucosal immunity, and a loss of barrier protection in the reproductive tract—factors that may permit the translocation and persistence of pathobionts within the pelvic environment.",
+        "metallome": "Lactobacilli also resist and sequester toxic metals such as iron, cadmium, lead, nickel, and zinc—further enabling survival in the metal-polluted endometriotic milieu. Together, these traits position Lactobacillus not merely as a protective commensal, but as a dual-site modulator of estrogen metabolism, microbial succession, and metal homeostasis within the pathophysiology of endometriosis.\n\nWhile their gut expansion likely reflects adaptive survival in high-metal niches—due to resistance to Fe, Ni, Cd, Pb, and Zn—this adaptation may contribute to zinc-associated MMP activation.",
+        "estrobolome": "Its gut overrepresentation is significant, as Lactobacillus is both β-glucuronidase– and β-galactosidase–positive, indicating a direct role in the estrobolome. This enzymatic activity may enhance enterohepatic recirculation of estrogens, compounding the estrogenic burden that drives lesion growth.",
+        "bodySite": "Lactobacillus exhibits a dysbiotic inversion—enriched in the gut yet depleted in the vaginal tract."
+      },
+      "Enterococcus": {},
+      "Pseudomonas": {},
+      "Acinetobacter": {},
+      "Oscillospira": {},
+      "Parabacteroides": {},
+      "Bifidobacterium": {},
+      "Actinomyces": {},
+      "Rothia": {},
+      "Adlercreutzia": {},
+      "Anaerostipes": {},
+      "Eisenbergiella": {},
+      "Faecalitalea": {},
+      "Gordonibacter": {},
+      "Roseburia": {},
+      "Tyzzerella": {},
+      "Odoribacter": {},
+      "Ruminococcus": {},
+      "Atopobium": {},
+      "Alcanivorax": {},
+      "Chromohalobacter": {},
+      "Mobiluncus": {},
+      "Afipia": {},
+      "Facklamia": {},
+      "Cardiobacterium": {},
+      "Barnesiella": {},
+      "Shuttleworthella": {},
+      "Porphyromonas": {},
+      "Bacteria": {},
+      "Lactobacillales": {},
+      "Eubacteriales": {},
+      "Enterobacterales": {},
+      "Bacillales": {},
+      "Burkholderiales": {},
+      "Eggerthellales": {},
+      "Halanaerobiales": {},
+      "Oceanospirillales": {},
+      "Cardiobacteriales": {},
+      "Bacillota": {},
+      "Pseudomonadota": {},
+      "Escherichia/Shigella sp.": {},
+      "Mediterraneibacter gnavus": {},
+      "Lachnospira eligens": {},
+      "Ruminococcus sp.": {},
+      "bacterium ND3007": {},
+      "uncultured Oscillospiraceae bacterium": {},
+      "uncultured Lachnospiraceae bacterium": {},
+      "Lachnospiraceae bacterium NK4A136": {},
+      "Fusobacterium": {
+        "overview": "Fusobacterium is an anaerobic, Gram-negative genus increasingly implicated in endometriosis. Muraoka et al. (2023, Science Translational Medicine) found Fusobacterium infiltration in the endometrium of 64% of endometriosis patients versus under 10% of controls, where infection activates TGF-beta signaling and drives the transition of quiescent fibroblasts into proliferative TAGLN-positive myofibroblasts. Antibiotic treatment prevented and reduced lesions in a mouse model, nominating Fusobacterium eradication as a candidate therapy.",
+        "bodySite": "Endometrium, endometriotic lesions",
+        "link": "https://doi.org/10.1126/scitranslmed.add1531"
+      },
+      "Fusobacterium nucleatum": {
+        "overview": "Fusobacterium nucleatum is the species behind the endometrial Fusobacterium signal (Muraoka et al. 2023). It is detected in the endometrium far more often in endometriosis than in controls and mechanistically converts endometrial fibroblasts to TAGLN-positive myofibroblasts via TGF-beta, promoting lesion formation; antibiotic eradication reduces lesion number and weight in mice. The species is not resolvable by the 16S surveys that make up most of this corpus, so it enters the signature via a targeted study.",
+        "bodySite": "Endometrium, endometriotic lesions",
+        "link": "https://doi.org/10.1126/scitranslmed.add1531"
+      },
+      "Talaromyces": {
+        "overview": "Talaromyces is a fungal (Ascomycota) genus of the gut mycobiome that was significantly decreased in endometriosis in the ITS2 study of Talwar et al. (2025, Biology of Reproduction; p=0.004). It is one of the less-prevalent genera whose loss, rather than a shift in the dominant fungi, distinguished the endometriosis mycobiome. Fungi of this kind are invisible to 16S sequencing and appear here only because a fungal (ITS2) method was used.",
+        "bodySite": "Gut (stool)",
+        "link": "https://doi.org/10.1093/biolre/ioaf148"
+      },
+      "Rhodotorula": {
+        "overview": "Rhodotorula is a fungal (Basidiomycota) yeast genus of the gut mycobiome, significantly decreased in endometriosis in Talwar et al. (2025; p=0.013). Like Talaromyces, it is a low-prevalence taxon whose depletion helped define the altered mycobiome, and it is only detectable by fungal-aware sequencing (ITS2), not by 16S.",
+        "bodySite": "Gut (stool)",
+        "link": "https://doi.org/10.1093/biolre/ioaf148"
+      }
+    },
+    "studies": [
+      {
+        "title": "Molecular detection of intrauterine microbial colonization in women with endometriosis",
+        "url": "/research-feeds/molecular-detection-of-intrauterine-microbial-colonization-in-women-with-endometriosis"
+      },
+      {
+        "title": "Endometriosis induces gut microbiota alterations in mice",
+        "url": "/research-feeds/endometriosis-induces-gut-microbiota-alterations-in-mice"
+      },
+      {
+        "title": "Inflammatory cytokines IL-6, IL-10, IL-13, TNF-α and peritoneal fluid flora were associated with infertility in patients with endometriosis",
+        "url": "/research-feeds/inflammatory-cytokines-il-6-il-10-il-13-tnf-%ce%b1-and-peritoneal-fluid-flora-were-associated-with-infertility-in-patients-with-endometriosis-2"
+      },
+      {
+        "title": "The Endobiota Study: Comparison of Vaginal, Cervical and Gut Microbiota Between Women with Stage 3/4 Endometriosis and Healthy Controls",
+        "url": "/research-feeds/the-endobiota-study-comparison-of-vaginal-cervical-and-gut-microbiota-between-women-with-stage-3-4-endometriosis-and-healthy-controls"
+      },
+      {
+        "title": "Antibiotic therapy with metronidazole reduces endometriosis disease progression in mice: a potential role for gut microbiota",
+        "url": "/research-feeds/antibiotic-therapy-with-metronidazole-reduces-endometriosis-disease-progression-in-mice-a-potential-role-for-gut-microbiota-2"
+      },
+      {
+        "title": "Molecular detection of microbial colonization in cervical mucus of women with and without endometriosis",
+        "url": "/research-feeds/molecular-detection-of-microbial-colonization-in-cervical-mucus-of-women-with-and-without-endometriosis-2"
+      },
+      {
+        "title": "Effect of endometriosis on the fecal bacteriota composition of mice during the acute phase of lesion formation",
+        "url": "/research-feeds/effect-of-endometriosis-on-the-fecal-bacteriota-composition-of-mice-during-the-acute-phase-of-lesion-formation-2"
+      },
+      {
+        "title": "The Vaginal Microbiome as a Tool to Predict rASRM Stage of Disease in Endometriosis: a Pilot Study",
+        "url": "/research-feeds/the-vaginal-microbiome-as-a-tool-to-predict-rasrm-stage-of-disease-in-endometriosis-a-pilot-study"
+      },
+      {
+        "title": "Microbiome Profile of Deep Endometriosis Patients: Comparison of Vaginal Fluid, Endometrium and Lesion",
+        "url": "/research-feeds/microbiome-profile-of-deep-endometriosis-patients-comparison-of-vaginal-fluid-endometrium-and-lesion"
+      },
+      {
+        "title": "Microbiota composition and distribution along the female reproductive tract of women with endometriosis",
+        "url": "/research-feeds/microbiota-composition-and-distribution-along-the-female-reproductive-tract-of-women-with-endometriosis-2"
+      },
+      {
+        "title": "Correlation of fecal metabolomics and gut microbiota in mice with endometriosis",
+        "url": "/research-feeds/correlation-of-fecal-metabolomics-and-gut-microbiota-in-mice-with-endometriosis-2"
+      },
+      {
+        "title": "Microbiome of the lower genital tract in Chinese women with endometriosis by 16s-rRNA sequencing technique: a pilot study",
+        "url": "/research-feeds/microbiome-of-the-lower-genital-tract-in-chinese-women-with-endometriosis-by-16s-rrna-sequencing-technique-a-pilot-study-2"
+      },
+      {
+        "title": "Associations Between Endometriosis and Gut Microbiota",
+        "url": "/research-feeds/associations-between-endometriosis-and-gut-microbiota"
+      },
+      {
+        "title": "Gut microbiota imbalance and its correlations with hormone and inflammatory factors in patients with stage 3/4 endometriosis",
+        "url": "/research-feeds/gut-microbiota-imbalance-and-its-correlations-with-hormone-and-inflammatory-factors-in-patients-with-stage-3-4-endometriosis"
+      },
+      {
+        "title": "Altered Composition of Microbiota in Women with Ovarian Endometrioma: Microbiome Analyses of Extracellular Vesicles in the Peritoneal Fluid",
+        "url": "/research-feeds/altered-composition-of-microbiota-in-women-with-ovarian-endometrioma-microbiome-analyses-of-extracellular-vesicles-in-the-peritoneal-fluid"
+      },
+      {
+        "title": "The role of the vaginal microbiome in distinguishing female chronic pelvic pain caused by endometriosis/adenomyosis",
+        "url": "/research-feeds/the-role-of-the-vaginal-microbiome-in-distinguishing-female-chronic-pelvic-pain-caused-by-endometriosis-adenomyosis-2"
+      },
+      {
+        "title": "Oral, Vaginal, and Stool Microbial Signatures in Patients With Endometriosis as Potential Diagnostic Non-Invasive Biomarkers: A Prospective Cohort Study",
+        "url": "/research-feeds/oral-vaginal-and-stool-microbial-signatures-in-patients-with-endometriosis-as-potential-diagnostic-non-invasive-biomarkers-a-prospective-cohort-study"
+      },
+      {
+        "title": "Fusobacterium infection facilitates the development of endometriosis through the phenotypic transition of endometrial fibroblasts",
+        "url": "/research-feeds/fusobacterium-infection-facilitates-the-development-of-endometriosis-through-the-phenotypic-transition-of-endometrial-fibroblasts"
+      },
+      {
+        "title": "A role for the gut mycobiome and altered fungal-bacterial interactions in women with endometriosis",
+        "url": "/research-feeds/a-role-for-the-gut-mycobiome-and-altered-fungal-bacterial-interactions-in-women-with-endometriosis"
+      }
+    ],
+    "evidence": {
+      "nStudies": 20,
+      "nExperiments": 46,
+      "methodMix": {
+        "16S": 42,
+        "WMS": 2,
+        "QPCR": 1,
+        "ITS": 1
+      },
+      "domainCoverage": {
+        "Bacteria": {
+          "frac": 0.962,
+          "glyph": "●"
+        },
+        "Archaea": {
+          "frac": 0.505,
+          "glyph": "●"
+        },
+        "Fungi": {
+          "frac": 0.038,
+          "glyph": "○"
+        },
+        "Viruses": {
+          "frac": 0.016,
+          "glyph": "○"
+        }
+      },
+      "methodMonoculture": false,
+      "coverageStrip": "Bacteria ● · Archaea ● · Fungi ○ · Viruses ○"
+    }
+  },
+  "feeds": [
+    {
+      "type": "research-feed",
+      "slug": "fusobacterium-infection-facilitates-the-development-of-endometriosis-through-the-phenotypic-transition-of-endometrial-fibroblasts",
+      "title": "Fusobacterium infection facilitates the development of endometriosis through the phenotypic transition of endometrial fibroblasts",
+      "status": "publish",
+      "excerpt_html": "Retrograde menstruation is a widely accepted cause of endometriosis.",
+      "content_html": "<p><strong>What was studied?</strong></p>\n<p>Retrograde menstruation is a widely accepted cause of endometriosis. However, not all women who experience retrograde menstruation develop endometriosis. Here, we demonstrated a pathogenic role of Fusobacterium in the formation of ovarian endometriosis. In a cohort of women, 64% of patients with endometriosis but &lt;10% of controls were found to have Fusobacterium infiltration in the endometrium. Immunohistochemical and biochemical analyses revealed that activated TGF-beta signaling resulting from Fusobacterium infection of endometrial cells led to the transition from quiescent fibroblasts to transgelin (TAGLN)-positive myofibroblasts, which gained the ability to proliferate, adhere, and migrate in vitro. Fusobacterium inoculation in a syngeneic mouse model of endometriosis resulted in a marked increase in TAGLN-positive myofibroblasts and increased number and weight of endometriotic lesions. Furthermore, antibiotic treatment largely prevented establishment of endometriosis and reduced the number and weight of established endometriotic lesions in the mouse model. Our data support a mechanism for the pathogenesis of endometriosis via Fusobacterium infection and suggest that eradication of this bacterium could be an approach to treat endometriosis.</p>",
+      "published_at": "2023-01-01",
+      "meta": {
+        "feed": {
+          "location": [
+            "Japan"
+          ],
+          "sample_site": [
+            "Endometrium"
+          ],
+          "species": [
+            "Homo sapiens"
+          ],
+          "paper_url": "https://doi.org/10.1126/scitranslmed.add1531",
+          "conditions": [
+            {
+              "label": "Endometriosis",
+              "href": "/conditions/endometriosis/"
+            }
+          ]
+        },
+        "authors": [
+          {
+            "name": "Karen Pendergrass",
+            "orcid": "https://orcid.org/0000-0002-2348-7259",
+            "avatar": "https://secure.gravatar.com/avatar/104bc2e8ba283fda6309c14b2eca02fe9612e8793ed62621c691e83230d4a963?s=96&d=mm&r=g"
+          }
+        ]
+      }
+    },
+    {
+      "type": "research-feed",
+      "slug": "a-role-for-the-gut-mycobiome-and-altered-fungal-bacterial-interactions-in-women-with-endometriosis",
+      "title": "A role for the gut mycobiome and altered fungal-bacterial interactions in women with endometriosis",
+      "status": "publish",
+      "excerpt_html": "Endometriosis is associated with gut dysbiosis, but the fungal component (mycobiome) and its interactions with bacteria are understudied.",
+      "content_html": "<p><strong>What was studied?</strong></p>\n<p>Endometriosis is associated with gut dysbiosis, but the fungal component (mycobiome) and its interactions with bacteria are understudied. We performed ITS2 marker-gene sequencing of stool from women with endometriosis (n=18) and controls (n=31) and integrated it with 16S data from the same cohort. Mycobiome diversity was reduced in endometriosis; the less-prevalent genera Talaromyces (p=0.004) and Rhodotorula (p=0.013) were significantly decreased, whereas abundant genera (Saccharomyces, Penicillium, Candida, Aspergillus, Cladosporium) were not clearly distinguished at genus level. The defining feature was altered fungal-bacterial interkingdom interactions: SparCC co-abundance networks were stronger and rewired in endometriosis, with commensal Saccharomyces and Candida losing interactions present in health. In a murine model, antifungal depletion of gut fungi significantly reduced endometriotic lesion number and size without changing bacterial load, demonstrating a role for gut fungi in disease progression, likely mediated in part through bacteria.</p>",
+      "published_at": "2025-01-01",
+      "meta": {
+        "feed": {
+          "location": [
+            "United States of America"
+          ],
+          "sample_site": [
+            "Feces"
+          ],
+          "species": [
+            "Homo sapiens"
+          ],
+          "paper_url": "https://doi.org/10.1093/biolre/ioaf148",
+          "conditions": [
+            {
+              "label": "Endometriosis",
+              "href": "/conditions/endometriosis/"
+            }
+          ]
+        },
+        "authors": [
+          {
+            "name": "Karen Pendergrass",
+            "orcid": "https://orcid.org/0000-0002-2348-7259",
+            "avatar": "https://secure.gravatar.com/avatar/104bc2e8ba283fda6309c14b2eca02fe9612e8793ed62621c691e83230d4a963?s=96&d=mm&r=g"
+          }
+        ]
+      }
+    }
+  ]
+}

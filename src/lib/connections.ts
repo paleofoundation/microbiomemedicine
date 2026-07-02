@@ -113,6 +113,94 @@ export function autolinkConditions(html: string, conditions: { title: string; hr
   return { html: parts.join(""), linked: [...linked.values()] };
 }
 
+// Ambiguous common words to NOT autolink even though they name an entity (Karen: "lead"
+// is a problem word, "zinc"/"iron"/etc. are fine in this metals/microbiome context).
+const LINK_DENY = new Set(["lead"]);
+
+// Match terms for any concept entity: the base name (minus a trailing "(ABBR)") plus that
+// parenthetical abbreviation. Acronym bases (all-caps, e.g. STOPs, EDTA) and abbreviations
+// match case-sensitively; ordinary names case-insensitively. Bases shorter than 4 chars or
+// on the denylist are dropped to limit noise.
+export function entityTerms(title: string): { term: string; ci: boolean }[] {
+  const paren = title.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  const base = (paren ? paren[1] : title).trim();
+  const terms: { term: string; ci: boolean }[] = [];
+  if (base.length >= 4 && !LINK_DENY.has(base.toLowerCase())) {
+    const core = base.replace(/s$/, "");
+    const acronym = core === core.toUpperCase() && /[A-Z]/.test(core) && /^[A-Z0-9][A-Z0-9.\- ]*$/.test(core);
+    terms.push({ term: base, ci: !acronym });
+    if (acronym && /s$/.test(base)) terms.push({ term: core, ci: false }); // "STOPs" -> also "STOP"
+  }
+  if (paren) {
+    const abbr = paren[2].trim();
+    if (abbr.length >= 3 && !LINK_DENY.has(abbr.toLowerCase())) terms.push({ term: abbr, ci: false });
+  }
+  return terms;
+}
+
+// Generalized autolinker: link the FIRST mention of every concept entity in a page body
+// (all types, not just conditions). Whole-word, body-only (skips existing <a>, headings,
+// and <style>/<script>/<svg>), first-mention-only per entity, multiple entities per run.
+// Entities already linked anywhere in the html are pre-marked done, so we never double-link
+// or override a manual/curated link.
+export function autolinkEntities(
+  html: string,
+  targets: { title: string; href: string; type: string }[],
+  selfHref = ""
+): { html: string; linked: Connection[] } {
+  if (!html || !targets.length) return { html, linked: [] };
+  const self = selfHref.replace(/\/+$/, "").toLowerCase();
+  const apo = (s: string) => escRe(s).replace(/['‘’ʼ]/g, "['‘’ʼ]");
+  const items = targets
+    .filter((t) => t.href.replace(/\/+$/, "").toLowerCase() !== self)
+    .map((t) => ({ t, terms: entityTerms(t.title).map((x) => ({ ...x, re: new RegExp(`\\b${apo(x.term)}\\b`, x.ci ? "i" : "") })) }))
+    .filter((x) => x.terms.length)
+    .sort((a, b) => Math.max(...b.terms.map((x) => x.term.length)) - Math.max(...a.terms.map((x) => x.term.length)));
+  const done = new Set<string>();
+  // Pre-seed: any entity already linked in the html (manual/curated) is left alone.
+  for (const { t } of items) {
+    const h = t.href.replace(/\/+$/, "");
+    if (new RegExp(`href="(?:https?:)?(?://[^/"]+)?${escRe(h)}/?"`, "i").test(html)) done.add(t.href);
+  }
+  const linked = new Map<string, Connection>();
+  const parts = html.split(/(<[^>]+>)/);
+  let aDepth = 0, hDepth = 0, sDepth = 0;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    if (p.startsWith("<")) {
+      if (/^<a\b/i.test(p)) aDepth++;
+      else if (/^<\/a>/i.test(p)) aDepth = Math.max(0, aDepth - 1);
+      else if (/^<h[1-6][\s/>]/i.test(p)) hDepth++;
+      else if (/^<\/h[1-6]>/i.test(p)) hDepth = Math.max(0, hDepth - 1);
+      else if (/^<(style|script|svg|noscript|textarea|code|pre)[\s/>]/i.test(p)) sDepth++;
+      else if (/^<\/(style|script|svg|noscript|textarea|code|pre)>/i.test(p)) sDepth = Math.max(0, sDepth - 1);
+      continue;
+    }
+    if (aDepth > 0 || hDepth > 0 || sDepth > 0 || !p.trim()) continue;
+    const hits: { idx: number; len: number; matched: string; href: string; label: string; type: string }[] = [];
+    for (const { t, terms } of items) {
+      if (done.has(t.href)) continue;
+      for (const term of terms) {
+        const m = term.re.exec(p);
+        if (m) { hits.push({ idx: m.index, len: m[0].length, matched: m[0], href: t.href, label: t.title.replace(/\s*\([^)]*\)\s*$/, "").trim(), type: t.type }); break; }
+      }
+    }
+    if (!hits.length) continue;
+    hits.sort((a, b) => a.idx - b.idx || b.len - a.len);
+    let out = "", pos = 0;
+    for (const h of hits) {
+      if (done.has(h.href) || h.idx < pos) continue;
+      out += p.slice(pos, h.idx) + `<a href="${h.href}">${h.matched}</a>`;
+      pos = h.idx + h.len;
+      done.add(h.href);
+      if (!linked.has(h.href)) linked.set(h.href, { label: h.label, href: h.href, type: h.type });
+    }
+    out += p.slice(pos);
+    parts[i] = out;
+  }
+  return { html: parts.join(""), linked: [...linked.values()] };
+}
+
 // Build the Connections list for a research-feed: a curated meta.connections override
 // wins; otherwise the feed's tagged conditions first, then any other condition linked in
 // the body. Conditions-first, deduped by href, capped at 3.

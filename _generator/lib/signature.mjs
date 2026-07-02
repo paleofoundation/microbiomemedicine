@@ -1,4 +1,5 @@
 import { parseCsvObjects } from "./csv.mjs";
+import { domainOfCell } from "./coverage.mjs";
 
 const LEVEL = { k: "Kingdom", p: "Phylum", c: "Class", o: "Order", f: "Family", g: "Genus", s: "Species" };
 export const LEVEL_ORDER = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"];
@@ -17,12 +18,18 @@ export function aggregateSignatures(csvText) {
     if (!val || !names) continue;
     const seen = new Set();
     for (const lineage of names.split(",")) {
+      // Resolve the biological domain once; collapse the lineage's (possibly two)
+      // k__ tokens to ONE Kingdom node = domain, fixing the historical double-count
+      // where k__Bacteria AND k__Bacillati both scored as separate "kingdoms".
+      const dom = domainOfCell(lineage);
+      let kingdomDone = false;
       for (const el of lineage.trim().split("|")) {
         const m = el.trim().match(/^([kpcofgs])__(.+)$/);
         if (!m) continue;
         const level = LEVEL[m[1]];
-        const name = m[2].trim();
+        let name = m[2].trim();
         if (!level || !name) continue;
+        if (level === "Kingdom") { if (kingdomDone || dom === "Unknown") continue; name = dom; kingdomDone = true; }
         taxonLevel.set(name, level);
         const key = level + "\t" + name;
         if (seen.has(key)) continue;
@@ -81,10 +88,16 @@ export function parseSidebar(csvText) {
 // in the sidebar (= the downloaded export_998 template the human filled in), not the
 // full observed long tail. Score = aggregated net score (verified to match the sidebar's
 // embedded [score]); level = from the MetaPhlAn lineage; has_info = organism detail present.
-export function buildLevels({ scores, taxonLevel, organisms, sidebarScore }) {
+export function buildLevels({ scores, taxonLevel, organisms, sidebarScore, evidence }) {
   const levels = {};
   for (const L of LEVEL_ORDER) levels[L] = [];
   const unleveled = [];
+  // Attach grade sibling fields WITHOUT touching `value` (kept a signed integer so the
+  // export_998 template + parseSidebar integer regex + curated sidebar.csv are untouched).
+  const ev = (name) => {
+    const e = evidence && evidence[name];
+    return e ? { tier: e.tier, direction: e.direction, agreementBin: e.agreementBin, kIndep: e.kIndep, domain: e.domain } : {};
+  };
   if (sidebarScore && sidebarScore.size) {
     // Curated set = the sidebar (filled export_998) taxa; score from aggregation.
     for (const [name, sScore] of sidebarScore) {
@@ -93,7 +106,7 @@ export function buildLevels({ scores, taxonLevel, organisms, sidebarScore }) {
       const agg = scores.get(level + "\t" + name);
       const value = agg !== undefined ? agg : sScore;
       const det = organisms[name];
-      levels[level].push({ name, value, has_info: !!(det && det.overview) });
+      levels[level].push({ name, value, has_info: !!(det && det.overview), ...ev(name) });
     }
   } else {
     // No sidebar yet: auto-curate = every taxon with a non-zero net score (this IS the
@@ -103,7 +116,7 @@ export function buildLevels({ scores, taxonLevel, organisms, sidebarScore }) {
       const [level, name] = key.split("\t");
       if (!levels[level]) continue;
       const det = organisms[name];
-      levels[level].push({ name, value, has_info: !!(det && det.overview) });
+      levels[level].push({ name, value, has_info: !!(det && det.overview), ...ev(name) });
     }
   }
   for (const L of LEVEL_ORDER) levels[L].sort((a, b) => b.value - a.value || a.name.localeCompare(b.name));

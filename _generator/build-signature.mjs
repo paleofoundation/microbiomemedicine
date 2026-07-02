@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { aggregateSignatures, parseSidebar, buildLevels, emitTemplate, LEVEL_ORDER } from "./lib/signature.mjs";
+import { gradeSignatures } from "./lib/grade.mjs";
 import { buildResearchFeeds } from "./lib/feeds.mjs";
 import { parseCsvObjects } from "./lib/csv.mjs";
 
@@ -74,7 +75,13 @@ const hasSidebar = fs.existsSync(sidebarPath);
 const { organisms, sidebarScore } = hasSidebar
   ? parseSidebar(fs.readFileSync(sidebarPath, "utf8"))
   : { organisms: {}, sidebarScore: new Map() };
-const levels = buildLevels({ scores, taxonLevel, organisms, sidebarScore });
+// Evidence grade + detection coverage (methodology-weighted; §3–§4 of docs/EVIDENCE-GRADING.md).
+const { taxonEvidence, conditionEvidence } = gradeSignatures({
+  signaturesCsv: read("signatures.csv"),
+  experimentsCsv: read("experiments.csv"),
+  studiesCsv: read("studies.csv"),
+});
+const levels = buildLevels({ scores, taxonLevel, organisms, sidebarScore, evidence: taxonEvidence });
 delete levels.__unleveled;
 
 // No sidebar yet (or on request) → emit the export_998 template for filling.
@@ -104,7 +111,7 @@ const studiesList = parseCsvObjects(read("studies.csv"))
   .map((t) => ({ title: t, url: urlByTitle.get(t) || "" }))
   .filter((s) => s.url);
 
-const signature = { levels, organisms, studies: studiesList };
+const signature = { levels, organisms, studies: studiesList, evidence: conditionEvidence };
 
 // --- report ---
 console.log(`\n=== ${title} (${slug}) ===`);
@@ -113,6 +120,14 @@ for (const L of LEVEL_ORDER) {
   console.log(`  ${L.padEnd(8)} ${String(levels[L].length).padStart(3)} taxa   ${top}`);
 }
 console.log(`  organisms w/ detail: ${Object.values(organisms).filter((o) => o.overview).length}`);
+console.log(`  detection coverage: ${conditionEvidence.coverageStrip}  (methods: ${Object.entries(conditionEvidence.methodMix).map(([m, n]) => `${m}×${n}`).join(", ")})`);
+{
+  const graded = Object.entries(taxonEvidence);
+  const tierCount = graded.reduce((a, [, e]) => ((a[e.tier] = (a[e.tier] || 0) + 1), a), {});
+  console.log(`  graded taxa: ${graded.length}   tiers: ${["High", "Moderate", "Low", "Very-Low"].map((t) => `${t} ${tierCount[t] || 0}`).join(", ")}`);
+  const genus = (levels.Genus || []).filter((t) => t.tier).slice(0, 6).map((t) => `${t.name} [${t.tier}/${t.agreementBin}]`).join(", ");
+  if (genus) console.log(`  top genus grades: ${genus}`);
+}
 console.log(`  condition Studies list: ${studiesList.length} (linked to /research-feeds/…)`);
 console.log(`  research-feed pages: ${feedRows.length} new to create, ${urlByTitle.size - feedRows.length} already live (reused)`);
 console.log(`  existing content_items slugs known: ${existingSlugs.length}`);

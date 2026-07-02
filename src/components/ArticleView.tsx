@@ -9,15 +9,19 @@ import { ContentAccordions } from "@/components/ContentAccordions";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
 import { applyTextRules } from "@/lib/textRules";
+import { getImageMeta } from "@/lib/imageMeta";
+import { normSrc } from "@/lib/imageClassify";
 import { StudyActions } from "@/components/StudyActions";
 import { FollowButton } from "@/components/FollowButton";
+import { ShareButton } from "@/components/ShareButton";
 import { SectionNav, type NavGroup } from "@/components/SectionNav";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import { PageSnapshot } from "@/components/PageSnapshot";
 import { RightRail } from "@/components/RightRail";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata, buildJsonLd } from "@/lib/seo";
-import { resolveConnections } from "@/lib/connections";
+import { resolveConnections, autolinkEntities } from "@/lib/connections";
+import { getLinkTargets } from "@/lib/linkTargets";
 
 type Heading = { level: number; text: string; id: string };
 type Author = { name: string; orcid?: string | null; avatar?: string | null };
@@ -155,6 +159,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const item = await getItem(section.type, slug);
   if (!item) notFound();
 
+  const images = await getImageMeta();
   const wpHtml = await getWpHtml(item.id);
   if (wpHtml) {
     const wpPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
@@ -164,6 +169,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
         html={wpHtml}
         path={wpPath}
         type={section.type}
+        images={images}
         breadcrumbs={[
           { name: "Home", url: "/" },
           { name: section.label, url: section.type === "post" ? "/" : `/${segment}` },
@@ -176,8 +182,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
   const faqs = getFaqs(html, item.title);
-  const contentHtml = applyTextRules(linkifyClassifications(injectFaqs(html, faqs)));
-  const excerptHtml = applyTextRules(item.excerpt_html || "");
+  let contentHtml = applyTextRules(linkifyClassifications(injectFaqs(html, faqs)), { images });
+  const excerptHtml = applyTextRules(item.excerpt_html || "", { images });
   const toc = tableOfContents(html);
   const refs = referenceCount(html);
   // Identified MMAs = microbes given their own sidebar in the signature (has_info), NOT studies.
@@ -199,15 +205,23 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   // Dedicated left-panel illustration (separate from the featured image).
   const heroImg = typeof meta.hero_image === "string" ? meta.hero_image : null;
   const img = heroImg || stripHost(item.featured_image_url);
+  const heroMeta = img ? images.get(normSrc(img)) : undefined;
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
   const selfPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+  // Autolink the first mention of every concept entity (metals, definitions, microbes,
+  // interventions, conditions…) in the body — sitewide internal-linking rule.
+  contentHtml = autolinkEntities(contentHtml, await getLinkTargets(), selfPath).html;
   const connections = resolveConnections(meta.connections, html, selfPath);
   const jsonLd = buildJsonLd(item, {
     path: selfPath,
     type: section.type,
     authors,
     image: img,
+    imageAlt: heroMeta?.alt,
+    imageCaption: heroMeta?.caption,
+    imageWidth: heroMeta?.width,
+    imageHeight: heroMeta?.height,
     faqs,
     breadcrumbs: [
       { name: "Home", url: "/" },
@@ -227,7 +241,18 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                 <div className="research-hero__left-content" dangerouslySetInnerHTML={{ __html: excerptHtml }} />
               ) : (
                 <>
-                  {img && <img src={img} alt={item.title} className="research-hero__left-image" />}
+                  {img && (
+                    <img
+                      src={img}
+                      alt={heroMeta?.alt || item.title}
+                      className="research-hero__left-image"
+                      width={heroMeta?.width || undefined}
+                      height={heroMeta?.height || undefined}
+                      sizes="(max-width: 768px) 100vw, 150px"
+                      decoding="async"
+                      fetchPriority="high"
+                    />
+                  )}
                   {didYouKnow && (
                     <div className="research-hero__left-content">
                       <p><strong>Did you know?</strong><br />{didYouKnow}</p>
@@ -268,12 +293,8 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                       <img src="/wp-content/themes/rgbcode/static_media/research.webp" alt="" width={18} height={18} /> Interventions
                     </a>
                   )}
-                  {showResearchFeed && (
-                    <a className="research-hero__center-tag" href="/research-feeds">
-                      <img src="/wp-content/themes/rgbcode/static_media/researchfeed_white.webp" alt="" width={18} height={18} /> Research feed
-                    </a>
-                  )}
                   {showResearchFeed && <FollowButton itemId={item.id} />}
+                  <ShareButton />
                 </div>
               )}
               {showStudyActions && (

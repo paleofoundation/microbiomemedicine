@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://microbiomemedicine.com";
-export const SITE_NAME = "Microbiome Signatures";
+export const SITE_NAME = "Microbiome Medicine";
+// Every image on the site is our own original work. This page states the usage/licensing
+// terms and is the target for the ImageObject `license` + `acquireLicensePage` fields, so a
+// single edit here remaps the licensing URL across every page's structured data.
+export const IMAGE_LICENSE_URL = `${SITE_URL}/image-license`;
 
 export type SeoItem = {
   title: string;
@@ -19,12 +23,31 @@ export type SeoOpts = {
   doi?: string;
   journal?: string;
   image?: string | null;
+  imageAlt?: string | null;
+  imageCaption?: string | null;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
   pdfUrl?: string;
 };
 
+// Strip unfinished citation markers ("x" / "[x]") so they never leak into meta
+// descriptions, Scholar citation_abstract, or JSON-LD (which crawlers read). Mirrors
+// the render rule in textRules.ts, but for the plain-text fields built here.
+function stripUnfinishedCites(s: string): string {
+  return s
+    .replace(/<a\b[^>]*(?:rgbc-reference|js-rgbc-scroll-link)[^>]*>\s*\[?\s*x\s*\]?\s*<\/a>/gi, "")
+    .replace(/\[\s*x\s*\]/gi, " ");
+}
 function stripTags(s?: string | null): string | undefined {
   if (!s) return undefined;
-  const t = s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const t = stripUnfinishedCites(s)
+    .replace(/<[^>]+>/g, " ")
+    // Migration artifact: "Overview" heading glued to the start of the excerpt
+    // ("OverviewGraves' Disease ..."). Only matches when glued to a Capital letter.
+    .replace(/\bOverview(?=[A-Z])/g, "")
+    .replace(/\[\s*x\s*\]/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   return t || undefined;
 }
 function abs(u?: string | null): string | undefined {
@@ -75,9 +98,9 @@ export function buildMetadata(item: SeoItem, o: SeoOpts): Metadata {
       publishedTime: item.published_at || undefined,
       modifiedTime: item.modified_at || undefined,
       authors: authors.map((a) => a.name),
-      images: image ? [image] : undefined,
+      images: image ? [{ url: image, alt: o.imageAlt || title }] : undefined,
     },
-    twitter: { card: "summary_large_image", title, description: description || undefined, images: image ? [image] : undefined },
+    twitter: { card: "summary_large_image", title, description: description || undefined, images: image ? [{ url: image, alt: o.imageAlt || title }] : undefined },
     other,
   };
 }
@@ -108,6 +131,33 @@ export function buildJsonLd(
       .map((a) => ({ "@type": "Person", name: a.name, ...(a.orcid ? { identifier: a.orcid, sameAs: a.orcid } : {}) })),
   };
   if (o.doi) main.sameAs = `https://doi.org/${o.doi}`;
+  // ImageObject for the page's representative image (hero/featured) so Google Images +
+  // LLMs get a captioned, attributed, page-representative image. Caption is the same
+  // AI-generated text shown in figcaptions; omitted cleanly when there is no hero.
+  const imgAbs = abs(o.image);
+  if (imgAbs) {
+    // Every image on the site is our own original work, so the hero ImageObject carries full
+    // ownership + licensing metadata. creditText/copyrightNotice/license/acquireLicensePage are
+    // Google's image-license fields — supplying them clears the "missing field" notices in the
+    // Search Console image reports and makes the images eligible for the licensable badge.
+    const copyrightYear = date ? Number(String(date).slice(0, 4)) || undefined : undefined;
+    main.image = {
+      "@type": "ImageObject",
+      contentUrl: imgAbs,
+      url: imgAbs,
+      ...(o.imageCaption ? { caption: stripTags(o.imageCaption) } : {}),
+      ...(o.imageWidth ? { width: o.imageWidth } : {}),
+      ...(o.imageHeight ? { height: o.imageHeight } : {}),
+      representativeOfPage: true,
+      creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      creditText: SITE_NAME,
+      copyrightHolder: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      copyrightNotice: copyrightYear ? `© ${copyrightYear} ${SITE_NAME}` : `© ${SITE_NAME}`,
+      ...(copyrightYear ? { copyrightYear } : {}),
+      license: IMAGE_LICENSE_URL,
+      acquireLicensePage: IMAGE_LICENSE_URL,
+    };
+  }
   const out: Record<string, unknown>[] = [main];
 
   if (o.faqs?.length) {
@@ -116,8 +166,8 @@ export function buildJsonLd(
       "@type": "FAQPage",
       mainEntity: o.faqs.map((f) => ({
         "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
+        name: stripUnfinishedCites(f.q),
+        acceptedAnswer: { "@type": "Answer", text: stripUnfinishedCites(f.a) },
       })),
     });
   }

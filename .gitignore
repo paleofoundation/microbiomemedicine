@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 # migration source data (kept local, not committed)
 _migration/
+
+# local scratch db (empty, not tracked)
+/data.db

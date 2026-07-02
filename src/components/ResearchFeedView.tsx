@@ -5,9 +5,13 @@ import { WpRender } from "@/components/WpRender";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import { Tooltips } from "@/components/Tooltips";
 import { RightRail } from "@/components/RightRail";
-import { autolinkConditions, buildConnections } from "@/lib/connections";
+import { autolinkConditions, autolinkEntities, buildConnections } from "@/lib/connections";
+import { getLinkTargets } from "@/lib/linkTargets";
+import { isLoggedIn } from "@/lib/supabase/server";
 import { applyTextRules } from "@/lib/textRules";
+import { getImageMeta } from "@/lib/imageMeta";
 import { FavoriteStudyButton } from "@/components/FavoriteStudyButton";
+import { ShareButton } from "@/components/ShareButton";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { JsonLd } from "@/components/JsonLd";
 import { buildJsonLd } from "@/lib/seo";
@@ -87,7 +91,11 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
     orcid: a.orcid || AUTHOR_BIOS[a.name]?.orcid || null,
   }));
   const avatars = authors.filter((a) => a.avatar);
-  const { html: contentHtml, linked } = autolinkConditions(applyTextRules(graphsHtml(feed) + (item.content_html || "")), condLinks);
+  const images = await getImageMeta();
+  const loggedIn = await isLoggedIn();
+  const linkedC = autolinkConditions(applyTextRules(graphsHtml(feed) + (item.content_html || ""), { images }), condLinks);
+  const contentHtml = autolinkEntities(linkedC.html, await getLinkTargets(), `/research-feeds/${slug}`).html;
+  const linked = linkedC.linked;
   const connections = buildConnections(meta.connections, conditions, linked);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];
@@ -145,6 +153,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
 
               <div className="research-hero__center-tags">
                 <FavoriteStudyButton itemId={item.id} />
+                <ShareButton />
               </div>
             </div>
 
@@ -223,7 +232,7 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="research-content__center entry-content" data-gated="research-feed" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            <div className="research-content__center entry-content" data-gated={loggedIn ? undefined : "research-feed"} dangerouslySetInnerHTML={{ __html: contentHtml }} />
 
             <RightRail connections={connections} />
           </div>

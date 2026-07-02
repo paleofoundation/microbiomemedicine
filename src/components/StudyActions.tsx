@@ -48,7 +48,7 @@ export function StudyActions({
 
   function copyCite() {
     const a = authors.length ? authors.join(", ") + ". " : "";
-    const cite = `${a}${title}. Microbiome Signatures${year ? `. ${year}` : ""}.${url ? " " + url : ""}`;
+    const cite = `${a}${title}. Microbiome Medicine${year ? `. ${year}` : ""}.${url ? " " + url : ""}`;
     navigator.clipboard?.writeText(cite)
       .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })
       .catch(() => {});

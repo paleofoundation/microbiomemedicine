@@ -25,3 +25,16 @@ export async function createSupabaseServer() {
     }
   );
 }
+
+// Reliable server-side "is this reader signed in?" — reads the auth cookie the same way
+// the dashboard/middleware do. Used to decide the cosmetic research-feed gate server-side,
+// because the client can't read the (httpOnly) session cookie to unlock it itself.
+export async function isLoggedIn(): Promise<boolean> {
+  try {
+    const supabase = await createSupabaseServer();
+    const { data } = await supabase.auth.getUser();
+    return !!data.user;
+  } catch {
+    return false;
+  }
+}

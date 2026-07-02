@@ -12,26 +12,38 @@ import { AccessGate } from "@/components/AccessGate";
 export const metadata: Metadata = {
   metadataBase: new URL("https://microbiomemedicine.com"),
   title: {
-    default: "Microbiome Signatures",
-    template: "%s — Microbiome Signatures",
+    default: "Microbiome Medicine",
+    template: "%s — Microbiome Medicine",
   },
-  openGraph: { siteName: "Microbiome Signatures", type: "website" },
-  twitter: { card: "summary_large_image" },
+  openGraph: {
+    siteName: "Microbiome Medicine",
+    type: "website",
+    // Sitewide default social card; per-page buildMetadata images override it.
+    images: [{ url: "/og-default.webp", width: 1200, height: 630, alt: "Microbiome Medicine" }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og-default.webp"] },
   description:
     "A research-grounded reference on the human microbiome — microbes, conditions, interventions, and the evidence connecting them.",
 };
 
 // Point the header search form at our search route, and the account/membership
-// links at the member dashboard.
+// links at the member dashboard. Also swap the captured logo (both the desktop and mobile
+// <img>, matched by the shared `custom-logo` class) for the on-brand maroon Microbiome
+// Medicine wordmark SVG — the old PNG was the brighter-red pre-rebrand asset.
+const LOGO_IMG =
+  '<img width="1096" height="208" src="/wp-content/uploads/2025/12/microbiome-medicine-logo.svg" class="img-autosize custom-logo" alt="Microbiome Medicine logo" decoding="async" fetchpriority="high" />';
 const headerHtml = HEADER_HTML
   .replace(/action="\/"/g, 'action="/search"')
   .replace(/href="\/auth\/login\/"/g, 'href="/dashboard"')
-  .replace(/href="\/membership-2\/"/g, 'href="/dashboard/subscription"');
+  .replace(/href="\/membership-2\/"/g, 'href="/dashboard/subscription"')
+  .replace(/<img\b[^>]*\bcustom-logo\b[^>]*>/g, LOGO_IMG);
 
-// Wire the footer newsletter forms to our subscribe endpoint.
+// Wire the footer newsletter forms to our subscribe endpoint, and correct the stale brand in
+// the captured footer copyright (we rebranded to Microbiome Medicine / microbiomemedicine.com).
 const footerHtml = FOOTER_HTML
   .replace(/<form class="subscribe[^"]*js-subscribe-form"/g, '$& action="/api/subscribe" method="post"')
-  .replace(/<input type="email" class="subscribe__input"/g, '<input type="email" name="email" class="subscribe__input"');
+  .replace(/<input type="email" class="subscribe__input"/g, '<input type="email" name="email" class="subscribe__input"')
+  .replace("© 2023–2026 MicrobiomeSignatures.com", "© 2023–2026 Microbiome Medicine");
 
 export default function RootLayout({
   children,

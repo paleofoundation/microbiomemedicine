@@ -7,6 +7,8 @@ description: Generate/publish a Microbiome Signature condition page (the radial 
 
 The repo generates a condition's Microbiome Signature + its research-feed study pages from CSVs via `_generator/`. This preserves the exact data model of the original WordPress "Database" CSV-upload flow (Signatures → Sidebar → Studies → Experiments). Validated to reproduce the live endometriosis signature exactly (0 score mismatches).
 
+**Formatting rule (sitewide): PROSE and TABLES only — never lists.** No bulleted/numbered lists (or numbered `<h5>1. …` heading sequences) in body content; use prose for narrative and a canonical `wp-block-table` for structured content. Only the `<ol class="rgbc-references">` bibliography is a list. See [[content-formatting-no-lists]].
+
 ## Inputs — `_generator/samples/<slug>/`
 - `signatures.csv` — raw observations (`Abundance in Group 1` + `MetaPhlAn taxon names`) → net score per taxon + the taxonomy→level map.
 - `sidebar.csv` — per-taxon detail panels + `has_info`. Column 1 is `[score] Taxon`; the remaining columns are the **lens columns = the condition's primer sections** (endo → `overview, metallome, estrobolome, body site, link`; TB → `overview, nutritional immunity, metallomic signature, oxygen ecology, body site, references, link`). `parseSidebar` maps headers generically (nutritional immunity→nutritionalImmunity, metallomic signature→metallomicSignature, oxygen ecology→oxygenEcology, body site→bodySite; plus overview/metallome/estrobolome/references/link). See **Per-organism detail panels** below for how to author them.
@@ -48,3 +50,9 @@ Workflow that scales this: read each taxon's already-researched seed, restructur
 - Migrated pages render verbatim WP HTML; NEW generated pages render via the React templates from `meta`. **Never write `wp_render` rows for generated pages.**
 - Research-feed `content_html` is a 4-section summary (What/Who/Findings/Implications) mechanically seeded from the abstract — refine with an LLM for production quality.
 - The CSV layer is isolated in `_generator/lib/` (`csv.mjs`, `signature.mjs`, `feeds.mjs`); a future repo-folder/PDF-ingested source can replace it without touching page-build logic.
+
+## Images (SEO + LLMO conventions)
+Follow [[image-conventions]] (`docs/IMAGE-CONVENTIONS.md`) for the signature hero + any diagrams:
+- **Format:** SVG for the signature chart/diagrams; WebP for raster art (never new PNG/JPG content). Add raster with `npm run img:convert -- add <src> <kebab-keyword-name>`.
+- **Hero:** set `meta.hero_image` (root-relative) and add an `image_meta` row `{ src, kind:'hero', alt, caption, width, height }` (alt ≤125 chars, medically precise).
+- In-body images get lazy-loading, dimensions, `alt`, and captions automatically via `normalizeImages()` in `src/lib/textRules.ts`; decorative icons keep empty `alt=""`. `ImageObject` + image-sitemap are automatic. Run `npm run img:lint` before publish.

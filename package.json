@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "img:convert": "node scripts/convert-images.mjs",
+    "img:og": "node scripts/convert-images.mjs og",
+    "img:lint": "node scripts/lint-images.mjs",
+    "img:gen-meta": "node scripts/genImageMeta.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
@@ -22,6 +26,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "sharp": "^0.35.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
