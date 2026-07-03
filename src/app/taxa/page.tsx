@@ -7,8 +7,12 @@ export const metadata: Metadata = {
   description: "Every microbial taxon observed across Microbiome Medicine signature studies, with evidence grade, domain, and the conditions it appears in.",
 };
 
+type RawTaxon = TaxonRow & { conditions?: unknown };
+
 export default function Page() {
-  const { taxa, summary } = taxaIndex as { taxa: TaxonRow[]; summary: { nTaxa: number; nConditions: number; nUncurated: number; byDomain: Record<string, number> } };
+  const { taxa: allTaxa, summary } = taxaIndex as { taxa: RawTaxon[]; summary: { nTaxa: number; nConditions: number; nUncurated: number; byDomain: Record<string, number> } };
+  // Ship only the light fields the index table needs; per-condition detail lives on /taxa/[slug].
+  const taxa: TaxonRow[] = allTaxa.map(({ name, slug, level, domain, nConditions, dirPattern, bestTier, curationState }) => ({ name, slug, level, domain, nConditions, dirPattern, bestTier, curationState }));
   return (
     <div className="site-content">
       <main className="main">

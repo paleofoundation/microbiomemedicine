@@ -1,68 +1,95 @@
-// All-taxa index: the taxon-centric transpose of the condition-centric signature
-// pages. Unions every taxon observed across ALL conditions' signatures.csv (not just
-// the curated sidebar set), attaches the grade + domain, and computes a curation-state
-// so taxa that are IN the data but never charted (e.g. Fusobacterium before it was
-// promoted) are surfaced instead of silently dropped. See docs/EVIDENCE-GRADING.md §11.3.
+// All-taxa index: the taxon-centric transpose of the condition pages. Unions every
+// taxon observed across ALL conditions in the database. Two source paths:
+//   • CSV-backed conditions  -> full grade + domain + curation-state (via the grade engine)
+//   • Supabase meta.signature -> name+value per taxon (breadth across the whole DB),
+//                                domain resolved from a name lookup, direction from value sign
+// See docs/EVIDENCE-GRADING.md §11.3.
 
-import { aggregateSignatures, parseSidebar, LEVEL_ORDER } from "./signature.mjs";
+import { aggregateSignatures, parseSidebar } from "./signature.mjs";
 import { gradeSignatures } from "./grade.mjs";
+
+const LEVEL_ORDER = ["Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"];
 
 export function slugifyTaxon(name) {
   return String(name || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-// conditions: [{ slug, title, signaturesCsv, experimentsCsv, studiesCsv, sidebarCsv }]
-export function buildTaxaIndex({ conditions }) {
-  const byKey = new Map(); // "level\tname" -> taxon aggregate
+// Common non-bacterial taxa whose domain can't be inferred from a bare name elsewhere.
+export const DOMAIN_FALLBACK = {
+  Candida: "Fungi", Saccharomyces: "Fungi", Aspergillus: "Fungi", Penicillium: "Fungi",
+  Cladosporium: "Fungi", Talaromyces: "Fungi", Rhodotorula: "Fungi", Malassezia: "Fungi",
+  Mucor: "Fungi", Fusarium: "Fungi", Debaryomyces: "Fungi", Wallemia: "Fungi",
+  Methanobrevibacter: "Archaea", Methanosphaera: "Archaea", Methanomassiliicoccus: "Archaea",
+};
 
-  for (const cond of conditions) {
-    const { scores, taxonLevel } = aggregateSignatures(cond.signaturesCsv);
-    const { taxonEvidence } = gradeSignatures({
-      signaturesCsv: cond.signaturesCsv,
-      experimentsCsv: cond.experimentsCsv,
-      studiesCsv: cond.studiesCsv,
-    });
-    const curatedNames = new Set();
-    if (cond.sidebarCsv) {
-      const { sidebarScore } = parseSidebar(cond.sidebarCsv);
-      for (const n of sidebarScore.keys()) curatedNames.add(n);
-    }
-
-    for (const [key, value] of scores) {
-      if (!value) continue;
-      const [level, name] = key.split("\t");
-      const ev = taxonEvidence[name] || {};
-      let t = byKey.get(key);
-      if (!t) {
-        t = { name, slug: slugifyTaxon(name), level, domain: ev.domain || "Unknown", conditions: [], up: 0, down: 0 };
-        byKey.set(key, t);
-      }
-      if (ev.domain && ev.domain !== "Unknown") t.domain = ev.domain;
-      const curated = curatedNames.has(name);
-      t.conditions.push({
-        slug: cond.slug, title: cond.title, value,
-        direction: ev.direction || (value > 0 ? "increased" : "decreased"),
-        tier: ev.tier || "Very-Low", agreementBin: ev.agreementBin || "low", curated,
-      });
-      if (value > 0) t.up++; else t.down++;
-    }
-  }
-
+// Raw-CSV condition -> normalized taxa list WITH grade + domain + curation-state.
+export function normalizeCsvCondition({ slug, title, signaturesCsv, experimentsCsv, studiesCsv, sidebarCsv }) {
+  const { scores } = aggregateSignatures(signaturesCsv);
+  const { taxonEvidence } = gradeSignatures({ signaturesCsv, experimentsCsv, studiesCsv });
+  const curated = new Set();
+  if (sidebarCsv) { const { sidebarScore } = parseSidebar(sidebarCsv); for (const n of sidebarScore.keys()) curated.add(n); }
   const taxa = [];
-  for (const t of byKey.values()) {
-    const anyCurated = t.conditions.some((c) => c.curated);
-    const dirPattern = t.up && t.down ? "mixed" : t.up ? "increased" : "decreased";
-    // Best (highest) tier this taxon reaches in any condition, for sorting/surfacing.
-    const TIER_RANK = { High: 3, Moderate: 2, Low: 1, "Very-Low": 0 };
-    const bestTier = t.conditions.reduce((b, c) => (TIER_RANK[c.tier] > TIER_RANK[b] ? c.tier : b), "Very-Low");
+  for (const [key, value] of scores) {
+    if (!value) continue;
+    const [level, name] = key.split("\t");
+    const ev = taxonEvidence[name] || {};
     taxa.push({
-      name: t.name, slug: t.slug, level: t.level, domain: t.domain,
-      nConditions: t.conditions.length, dirPattern, bestTier, anyCurated,
-      curationState: anyCurated ? "on-chart" : "in-signatures-not-curated",
-      conditions: t.conditions.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)),
+      level, name, value,
+      direction: ev.direction || (value > 0 ? "increased" : "decreased"),
+      tier: ev.tier || "Very-Low", agreementBin: ev.agreementBin || "low",
+      domain: ev.domain || "Unknown", curated: curated.has(name),
     });
   }
-  // Sort: most-conditions first, then level depth, then name.
+  return { slug, title, taxa };
+}
+
+// Supabase meta.signature.levels -> normalized taxa list (breadth; grade optional).
+export function normalizeSignatureLevels({ slug, title, levels }, domainMap = {}) {
+  const taxa = [];
+  for (const [level, arr] of Object.entries(levels || {})) {
+    if (!Array.isArray(arr) || !LEVEL_ORDER.includes(level)) continue;
+    for (const it of arr) {
+      if (!it || !it.name || !it.value) continue;
+      taxa.push({
+        level, name: it.name, value: it.value,
+        direction: it.direction || (it.value > 0 ? "increased" : "decreased"),
+        tier: it.tier || null, agreementBin: it.agreementBin || null,
+        domain: it.domain || domainMap[it.name] || DOMAIN_FALLBACK[it.name] || "Unknown",
+        curated: true, // it is, by definition, in the rendered (curated) signature set
+      });
+    }
+  }
+  return { slug, title, taxa };
+}
+
+// Union normalized conditions ([{slug,title,taxa:[...]}]) into the taxa index.
+export function buildTaxaIndex({ conditions }) {
+  const byKey = new Map();
+  for (const cond of conditions) {
+    for (const t of cond.taxa) {
+      const key = t.level + "\t" + t.name;
+      let e = byKey.get(key);
+      if (!e) { e = { name: t.name, slug: slugifyTaxon(t.name), level: t.level, domain: "Unknown", conditions: [], up: 0, down: 0 }; byKey.set(key, e); }
+      if (t.domain && t.domain !== "Unknown") e.domain = t.domain;
+      e.conditions.push({ slug: cond.slug, title: cond.title, value: t.value, direction: t.direction, tier: t.tier, curated: t.curated });
+      if (t.value > 0) e.up++; else e.down++;
+    }
+  }
+
+  const TIER_RANK = { High: 3, Moderate: 2, Low: 1, "Very-Low": 0 };
+  const taxa = [];
+  for (const e of byKey.values()) {
+    const anyCurated = e.conditions.some((c) => c.curated);
+    const bestTier = e.conditions.reduce((b, c) => (c.tier && (TIER_RANK[c.tier] ?? -1) > (TIER_RANK[b] ?? -1) ? c.tier : b), null);
+    taxa.push({
+      name: e.name, slug: e.slug, level: e.level, domain: e.domain,
+      nConditions: e.conditions.length,
+      dirPattern: e.up && e.down ? "mixed" : e.up ? "increased" : "decreased",
+      bestTier: bestTier || "—",
+      curationState: anyCurated ? "on-chart" : "in-signatures-not-curated",
+      conditions: e.conditions.sort((a, b) => Math.abs(b.value) - Math.abs(a.value)),
+    });
+  }
   const LVL = Object.fromEntries(LEVEL_ORDER.map((l, i) => [l, i]));
   taxa.sort((a, b) => b.nConditions - a.nConditions || LVL[a.level] - LVL[b.level] || a.name.localeCompare(b.name));
 

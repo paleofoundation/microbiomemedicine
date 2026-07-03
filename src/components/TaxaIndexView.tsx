@@ -6,7 +6,6 @@ export type TaxonRow = {
   name: string; slug: string; level: string; domain: string;
   nConditions: number; dirPattern: string; bestTier: string;
   curationState: string;
-  conditions: { slug: string; title: string; direction: string; tier: string; curated: boolean }[];
 };
 
 const DOMAIN_STYLE: Record<string, { bg: string; fg: string }> = {
@@ -78,12 +77,8 @@ export function TaxaIndexView({ taxa }: { taxa: TaxonRow[] }) {
                 </td>
                 <td style={{ padding: ".5rem .7rem" }}><DomainBadge domain={t.domain} /></td>
                 <td style={{ padding: ".5rem .7rem", color: "#6b7280" }}>{t.level}</td>
-                <td style={{ padding: ".5rem .7rem", whiteSpace: "nowrap" }}>
-                  {t.conditions.map((c, i) => (
-                    <span key={c.slug} title={`${c.title}: ${c.direction}`} style={{ color: "#4b5563" }}>
-                      {i > 0 ? ", " : ""}{c.title} {dirGlyph(c.direction)}
-                    </span>
-                  ))}
+                <td style={{ padding: ".5rem .7rem", whiteSpace: "nowrap", color: "#4b5563" }}>
+                  {t.nConditions} {t.nConditions === 1 ? "condition" : "conditions"} <span style={{ color: "#9ca3af" }}>{dirGlyph(t.dirPattern)}</span>
                 </td>
                 <td style={{ padding: ".5rem .7rem" }}><TierPill tier={t.bestTier} /></td>
                 <td style={{ padding: ".5rem .7rem", color: t.curationState === "on-chart" ? "#166534" : "#b45309", fontSize: ".78rem", whiteSpace: "nowrap" }}>

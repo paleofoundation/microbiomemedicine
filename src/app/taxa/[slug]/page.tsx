@@ -2,16 +2,18 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import taxaIndex from "@/data/taxa-index.json";
-import type { TaxonRow } from "@/components/TaxaIndexView";
 
-const TAXA = (taxaIndex as { taxa: TaxonRow[] }).taxa;
+type FullTaxon = {
+  name: string; slug: string; level: string; domain: string;
+  nConditions: number; bestTier: string;
+  conditions: { slug: string; title: string; direction: string; tier: string | null; curated: boolean }[];
+};
+
+export const revalidate = 3600;
+const TAXA = (taxaIndex as { taxa: FullTaxon[] }).taxa;
 const bySlug = (slug: string) => TAXA.find((t) => t.slug === slug);
 
 type Props = { params: Promise<{ slug: string }> };
-
-export function generateStaticParams() {
-  return TAXA.map((t) => ({ slug: t.slug }));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -81,7 +83,7 @@ export default async function Page({ params }: Props) {
                           <Link href={`/conditions/${c.slug}/`} style={{ color: "#cc3333", textDecoration: "none" }}>{c.title}</Link>
                         </td>
                         <td style={{ padding: ".5rem .7rem" }}>{dirLabel(c.direction)}</td>
-                        <td style={{ padding: ".5rem .7rem" }}>{c.tier}</td>
+                        <td style={{ padding: ".5rem .7rem" }}>{c.tier || "—"}</td>
                         <td style={{ padding: ".5rem .7rem", color: c.curated ? "#166534" : "#b45309" }}>{c.curated ? "yes" : "not yet"}</td>
                       </tr>
                     ))}

@@ -1,14 +1,24 @@
-// Page Snapshot box — canonical ".snapshot" markup, identical to the endometriosis gold
-// standard: a titled box with References (jumps to the references section) and Identified
-// MMAs (opens the signature modal), plus an (i) tooltip explaining MBTI/MMA validation.
-// The hover tooltip is wired by <Tooltips/> (mounted by the page) like every rgbc-tooltip,
-// so there is no question-mark cursor and it matches the verbatim pages exactly.
+// Page Snapshot box — the canonical ".snapshot" hero card. The captured migration CSS
+// flattened it to a translucent-white box with 📄 emoji bullets; the `.snapshot--brand`
+// class (globals.css) restores it to an on-brand red card with a darker header and per-row
+// SVG icons. Optional `stats` (a taxon page's meta.conditions.summary) adds the
+// participants / conditions / evidence rows, Examine "Research Snapshot" style.
 const MBTI_DEF =
   " are validated using a dual-evidence logical framework. First, the intervention must realign the condition’s microbiome signature by increasing beneficial taxa that are consistently depleted and reducing pathogenic taxa that are consistently enriched. Second, the intervention must demonstrate measurable clinical benefit. Concordance of these effects in the same context validates the intervention as an MBTI and supports the clinical relevance of the microbiome signature.";
 
-export function PageSnapshot({ refs, mmas }: { refs: number; mmas: number | null }) {
+export type SnapshotStats = {
+  nConditions: number; nStudies: number; participants: number;
+  enriched: number; depleted: number; mixed: number; tier: string;
+};
+
+const ico = { fill: "none", stroke: "currentColor", strokeWidth: 1.9, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, className: "snapshot__ico", viewBox: "0 0 24 24", "aria-hidden": true };
+const DocIcon = () => (<svg {...ico}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>);
+const PersonIcon = () => (<svg {...ico}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>);
+const GridIcon = () => (<svg {...ico}><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /></svg>);
+
+export function PageSnapshot({ refs, mmas, stats }: { refs: number; mmas: number | null; stats?: SnapshotStats }) {
   return (
-    <div className="snapshot">
+    <div className="snapshot snapshot--brand">
       <header className="snapshot__header">
         <h4 className="snapshot__title">Page Snapshot</h4>
         <span className="research-hero__right-meta-tooltip rgbc-tooltip" data-options="position:left" title=".snapshot__tooltip">
@@ -29,9 +39,20 @@ export function PageSnapshot({ refs, mmas }: { refs: number; mmas: number | null
         <ul className="snapshot__list">
           {refs > 0 && (
             <li className="snapshot__list-item">
-              <a className="snapshot__link" href="#h-references">
-                <span className="js-count-references">{refs}</span> References
-              </a>
+              <DocIcon />
+              <a className="snapshot__link" href="#h-references"><span className="js-count-references">{refs}</span> references on this page</a>
+            </li>
+          )}
+          {stats && (
+            <li className="snapshot__list-item">
+              <PersonIcon />
+              <span>{stats.participants.toLocaleString()} participants in {stats.nStudies} studies</span>
+            </li>
+          )}
+          {stats && (
+            <li className="snapshot__list-item">
+              <GridIcon />
+              <a className="snapshot__link" href="#h-conditions">{stats.nConditions} conditions</a>
             </li>
           )}
           {mmas ? (

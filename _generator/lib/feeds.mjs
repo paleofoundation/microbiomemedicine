@@ -57,7 +57,9 @@ export function abstractToSections(abstract) {
 }
 
 export function sectionsToHtml(sections) {
-  return sections.map(([h, t]) => `<p><strong>${esc(h)}</strong></p>\n<p>${esc(t)}</p>`).join("\n<p> </p>\n");
+  // Canonical research-feed page format: h3 section headings + paragraphs (matches the
+  // migrated WordPress research-feed pages rendered by ResearchFeedView).
+  return sections.map(([h, t]) => `<h3 class="wp-block-heading">${esc(h)}</h3>\n<p class="wp-block-paragraph">${esc(t)}</p>`).join("\n");
 }
 
 // Build research-feed rows (one per study) + a title->internal-url map for the

@@ -54,5 +54,5 @@ export function injectFaqs(html: string, faqs: { q: string; a: string; aHtml?: s
     `<div class="rgbc-faq-block">` +
     faqs.map((f) => `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${escapeHtml(f.q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${f.aHtml || escapeHtml(f.a)}</div></details>`).join("") +
     `</div>`;
-  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1Frequently Asked Questions$2${acc}`);
+  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1FAQs$2${acc}`);
 }

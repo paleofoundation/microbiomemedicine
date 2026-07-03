@@ -1,6 +1,8 @@
 import Link from "next/link";
+import type { ComponentProps } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ConditionsTable } from "@/components/ConditionsTable";
 import { sectionBySegment, getItem, stripHost, getWpHtml, signatureMmaCount } from "@/lib/content";
 import { WpRender } from "@/components/WpRender";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
@@ -117,7 +119,7 @@ function injectFaqs(html: string, faqs: { q: string; a: string }[]): string {
     `<div class="rgbc-faq-block">` +
     faqs.map((f) => `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${escapeHtml(f.q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${escapeHtml(f.a)}</div></details>`).join("") +
     `</div>`;
-  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1Frequently Asked Questions$2${acc}`);
+  return html.replace(/(<h2\b[^>]*id="h-faqs"[^>]*>)[\s\S]*?(<\/h2>)((?:\s*<p[^>]*>\s*<\/p>)*)/i, `$1FAQs$2${acc}`);
 }
 
 const SECTION_ICONS: Record<string, string> = {
@@ -212,6 +214,13 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   // Autolink the first mention of every concept entity (metals, definitions, microbes,
   // interventions, conditions…) in the body — sitewide internal-linking rule.
   contentHtml = autolinkEntities(contentHtml, await getLinkTargets(), selfPath).html;
+  // Taxon pages ship a structured meta.conditions + a <!--CONDITIONS_TABLE--> marker where the
+  // interactive Conditions table mounts. Split the body there and slot the component in; every
+  // other page (no marker) renders exactly as before.
+  const condMarker = "<!--CONDITIONS_TABLE-->";
+  const condData = meta.conditions as ComponentProps<typeof ConditionsTable>["data"] | undefined;
+  const hasCond = !!condData && contentHtml.includes(condMarker);
+  const [condBefore, condAfter] = hasCond ? contentHtml.split(condMarker) : ["", ""];
   const connections = resolveConnections(meta.connections, html, selfPath);
   const jsonLd = buildJsonLd(item, {
     path: selfPath,
@@ -343,7 +352,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                 )}
                 {updated && (<div className="research-hero__right-meta-item"><p>Last Updated: {updated}</p></div>)}
               </div>
-              {(refs > 0 || mmas) && <PageSnapshot refs={refs} mmas={mmas} />}
+              {(refs > 0 || mmas || condData) && <PageSnapshot refs={refs} mmas={mmas} stats={condData?.summary} />}
               {authors.map((a, i) => {
                 const b = AUTHOR_BIOS[a.name];
                 return b ? (
@@ -376,7 +385,15 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
           <div className="research-content__wrapper">
             <SectionNav groups={buildNavGroups(toc, hasSignature)} />
 
-            <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            {hasCond ? (
+              <div className="research-content__center entry-content">
+                <div dangerouslySetInnerHTML={{ __html: condBefore }} />
+                <ConditionsTable data={condData!} />
+                {condAfter && <div dangerouslySetInnerHTML={{ __html: condAfter }} />}
+              </div>
+            ) : (
+              <div className="research-content__center entry-content" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            )}
 
             <RightRail connections={connections} />
           </div>

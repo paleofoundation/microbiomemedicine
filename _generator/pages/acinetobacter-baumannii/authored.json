@@ -1,0 +1,380 @@
+{
+  "22009990": {
+    "excerpt": "Fusobacterium sequences were enriched in colorectal carcinomas while Bacteroidetes and Firmicutes were depleted, across whole-genome sequencing, quantitative PCR, and 16S rDNA analyses.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study characterized the microbiota of colorectal carcinoma to assess whether specific microbial community changes are associated with the tumor microenvironment. It used a genomics-first approach, profiling tumor tissue against matched normal tissue and validating candidate organisms with independent molecular methods."
+      ],
+      [
+        "Who was studied?",
+        "The discovery set consisted of whole genome sequences from nine colorectal tumor/normal tissue pairs. Findings were then validated in 95 carcinoma/normal DNA pairs using quantitative PCR and 16S rDNA sequence analysis, with additional in situ confirmation by fluorescence in situ hybridization (FISH)."
+      ],
+      [
+        "What were the most important findings?",
+        "Fusobacterium sequences were enriched in carcinomas relative to matched normal tissue, a result confirmed by quantitative PCR and 16S rDNA sequencing, whereas the Bacteroidetes and Firmicutes phyla were depleted in tumors. Fusobacteria were also directly visualized within colorectal tumors by FISH, supporting their physical presence in the tumor tissue."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that colorectal cancer is associated with distinct alterations in the tumor microbiota, notably Fusobacterium enrichment. Because this is an observational, association-based analysis, causation is not established, and the authors state that the precise role of Fusobacteria in colorectal carcinoma pathogenesis requires further investigation."
+      ]
+    ]
+  },
+  "25012901": {
+    "excerpt": "Clinically healthy smokers harbored a more diverse, pathogen-rich, commensal-poor, and more anaerobic subgingival microbiome than never-smokers, resembling a disease-associated community despite the absence of periodontal disease.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined whether cigarette smoking shapes the subgingival (below the gumline) bacterial community during states of clinical periodontal health, as a possible mechanism by which smoking raises the risk of periodontitis. Subgingival plaque was profiled by 16S pyrotag sequencing, combining the V1-V3 and V7-V9 regions of the 16S rRNA gene into a composite data set analyzed with the QIIME pipeline against the Greengenes database."
+      ],
+      [
+        "Who was studied?",
+        "The sample comprised 200 systemically and periodontally healthy adults aged 21 to 40 years, recruited as current smokers and never-smokers at The Ohio State University (USA) and Newcastle University (UK). The two groups were frequency-matched for age, gender, race/ethnicity, education, and socioeconomic status, and sequencing yielded about 1.58 million denoised, chimera-depleted sequences classified into 572 species-level operational taxonomic units (s-OTUs), with 155 (plus or minus 27) s-OTUs per person."
+      ],
+      [
+        "What were the most important findings?",
+        "Subgingival profiles differed between smokers and never-smokers at all taxonomic levels, with distinct clustering of communities by smoking status on principal coordinate analysis (P less than 0.001, ANOSIM), an effect that superseded ethnicity. Smokers showed a significantly higher Shannon diversity index (4.85 versus 4.35, P=0.01) with lower between-subject variance (P=0.0002), along with higher abundances of anaerobes and lower abundances of aerobes (P=0.02); 67 of 128 genera and 172 s-OTUs differed significantly, with the smoker community enriched for periodontal and systemic pathogens and depleted of health-compatible commensals."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that smoking is associated with a pathogen-rich, commensal-poor, anaerobic subgingival microbiome that resembles a disease-associated community even in clinically healthy mouths, potentially priming the oral environment for a future ecological shift toward periodontitis. Because the design is observational and cross-sectional, these results indicate association rather than causation."
+      ]
+    ]
+  },
+  "28538949": {
+    "excerpt": "The follicular skin microbiome in hidradenitis suppurativa differed significantly from that of healthy controls in both lesional and nonlesional skin, with Propionibacterium depleted in HS and a distinct Porphyromonas and Peptoniphilus community (type IV) present only in HS lesions.",
+    "sections": [
+      [
+        "What was studied?",
+        "This case-control study investigated the follicular skin microbiome in hidradenitis suppurativa (HS), a chronic inflammatory follicular skin disease of enigmatic pathogenesis. Punch biopsy specimens were profiled by next-generation sequencing to compare the microbial communities of HS skin with those of healthy controls."
+      ],
+      [
+        "Who was studied?",
+        "The microbiome was characterized in 30 patients with HS (mean age 46.9 years, 63% female) and 24 healthy controls (mean age 32.2 years, 54% female) recruited at Zealand University Hospital in Roskilde, Denmark, between October 2014 and August 2016, with no participant having taken systemic or topical antibiotics within the prior month. HS biopsies were taken from lesional skin (axilla or groin) and nonlesional skin, control biopsies from the axilla only, and each biopsied nodule contained at least one visible hair follicle. Sequencing targeted the bacterial 16S and eukaryotic 18S ribosomal RNA genes."
+      ],
+      [
+        "What were the most important findings?",
+        "The skin microbiome in HS differed significantly from that of healthy controls in both lesional and nonlesional skin. Five microbiome types were identified: Corynebacterium species (type I), Acinetobacter and Moraxella species (type II), Staphylococcus epidermidis (type III), Porphyromonas and Peptoniphilus species (type IV), and Propionibacterium acnes (type V); HS lesional skin consisted predominantly of type I or type IV, and type IV was not detected in any healthy control. Several taxa, including Propionibacterium, showed significantly higher relative abundance in healthy controls than in HS skin."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that these findings suggest a link between a dysbiotic cutaneous microbiome and HS, with depletion of Propionibacterium potentially contributing to the pathogenesis. Because this is an observational case-control design, the results indicate association rather than causation, and the older age of HS patients relative to controls is a potential confounder."
+      ]
+    ]
+  },
+  "29196767": {
+    "excerpt": "Age and sex collectively shape the healthy conjunctival microbiome, with young and old adults differing significantly in bacterial composition, metabolic functions, and antibiotic resistance gene abundance, while men and women differed only in beta diversity.",
+    "sections": [
+      [
+        "What was studied?",
+        "This observational study characterized how age and sex influence the ocular surface (conjunctival) microbiome in healthy adults. The authors profiled bacterial community composition, metabolic functions, and antibiotic resistance genes using metagenomic shotgun sequencing."
+      ],
+      [
+        "Who was studied?",
+        "Ocular surface microbiome samples were collected from the inferior bulbar conjunctiva of 90 healthy adults (48 young and 42 old) at Zhongshan Ophthalmic Center in Guangzhou, China. Sequencing was performed by metagenomic shotgun sequencing rather than 16S amplicon sequencing, and per the MeSH indexing the participants spanned young adulthood through 80 years and older."
+      ],
+      [
+        "What were the most important findings?",
+        "Male and female groups differed only in the beta diversity (between-sample composition) of their bacterial communities. In contrast, young and old adult groups showed significant differences in bacterial composition, metabolic functions, and the abundance of antibiotic resistance genes. The abstract does not report specific differentially abundant taxa or their direction of change."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that age and sex collectively shape the conjunctival microbiome and may alter immune homeostasis of the ocular surface through changes in its commensal microbes. As a cross-sectional observational study, these results describe associations rather than causation."
+      ]
+    ]
+  },
+  "29513935": {
+    "excerpt": "Even in the absence of periodontitis, the subgingival microbiome of rheumatoid arthritis patients was significantly shifted toward inflammophilic and citrulline-producing organisms, with 41.9% of the community differing in abundance from controls.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study characterized the subgingival (below-the-gumline) plaque microbiome in periodontally healthy people with and without rheumatoid arthritis (RA), specifically to isolate the effect of RA itself from the confounding effect of periodontitis that limits most prior work. Bacterial biodiversity and microbial co-occurrence (network) patterns were compared between the two groups."
+      ],
+      [
+        "Who was studied?",
+        "The sample comprised 41 periodontally healthy adults: 22 with RA and 19 non-RA controls. Subgingival plaque was collected and the 16S rRNA gene was sequenced on the Illumina MiSeq platform, with data analyzed through the QIIME and PhyloToAST pipelines. Periodontal measures (such as probing depth and clinical attachment level) differed slightly but were described as clinically inconsequential between groups."
+      ],
+      [
+        "What were the most important findings?",
+        "Microbiomes clustered significantly by RA status (unweighted and weighted UniFrac, p=0.001, Adonis test); of 558 OTUs identified from about 3.96 million sequences, 229 (41.9%) differed in abundance and 105 (19%) in membership. RA plaque was enriched for obligate anaerobes, while the expected classical pathogens Porphyromonas gingivalis and Aggregatibacter actinomycetemcomitans were not significantly different, consistent with a periodontally healthy cohort; RA networks formed a highly connected intergeneric hub (versus sparse networks in controls), and the citrulline-producing organism Cryptobacterium curtum showed roughly 100-fold greater abundance and 39-fold greater odds of detection in RA. Predictive metagenomics (PICRUSt) implicated arachidonic acid and ether/ester lipid metabolism pathways as central to this clustering."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that RA is associated with an oral microbiome enriched for pro-inflammatory and citrulline-producing (pro-antigenic) organisms, which may contribute to the generation of autoantigenic citrullinated peptides in RA. Because the design is observational (case-control), these results indicate association rather than causation; the authors call for longitudinal studies to establish directionality and to identify potential driver species that could serve as biomarkers."
+      ]
+    ]
+  },
+  "30081953": {
+    "excerpt": "The gut microbiota of postmenopausal breast cancer patients showed higher microbial diversity and 45 differentially abundant species (38 enriched, including Escherichia coli, Klebsiella, Prevotella amnii, and Enterococcus gallinarum) compared with matched controls, whereas premenopausal patients showed no significant compositional differences.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study used shotgun metagenomic sequencing to compare the composition and functional capacity of the gut microbiota between breast cancer patients and healthy controls, stratified by menopausal status. It examined both taxonomic profiles (species and genus abundance, alpha and beta diversity, enterotypes) and functional features (KEGG modules, virulence factors, and pathogen-host interaction genes)."
+      ],
+      [
+        "Who was studied?",
+        "Fecal samples were collected from 133 women at Guangxi Medical University in Nanning, China: 18 premenopausal breast cancer patients, 25 premenopausal healthy controls, 44 postmenopausal breast cancer patients, and 46 postmenopausal healthy controls. Patients were treatment-naive (no prior chemotherapy, radiation, or surgery), cases and controls were matched for age, BMI, and ethnicity, and DNA was sequenced on the Illumina HiSeq platform (yielding about 6.78 million high-quality reads per sample)."
+      ],
+      [
+        "What were the most important findings?",
+        "In postmenopausal women, microbial diversity was higher in patients than controls (species number p=0.003, Chao1 p=0.007, beta diversity p<0.001), and 45 species differed significantly: 38 were enriched in patients (including Escherichia coli, Klebsiella sp., Prevotella amnii, and Enterococcus gallinarum) and 7 were reduced (including Eubacterium eligens and Lactobacillus vaginalis, both butyrate-associated). Premenopausal patients and controls showed no significant difference in species abundance, and patient metagenomes were enriched in genes for lipopolysaccharide biosynthesis, iron transport, the PTS system, secretion systems, and beta-oxidation, while a random forest classifier distinguished postmenopausal patients from controls with an AUC of 85.5 percent (95% CI 77.57 to 93.47)."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that the composition and function of the gut microbial community differ between postmenopausal breast cancer patients and controls, potentially reflecting altered host immunity and metabolic balance (for example via estrogen metabolism and low-grade inflammation). Because this is an observational case-control design, the findings represent association and not causation, and the authors state that cause and effect cannot be determined, though the change in treatment-naive patients relative to matched controls appears reproducible."
+      ]
+    ]
+  },
+  "31231345": {
+    "excerpt": "Gastric cancer tissue carried a richer, more connected mucosal community than paired non-cancer tissue, with oral bacteria enriched in tumors and lactic-acid bacteria depleted.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study compared the mucosa-associated bacterial community of gastric cancer tissue with each patient's own adjacent non-cancer tissue, using paired samples to control for host genetics and environment, and profiled composition, co-occurrence networks, and predicted functions by 16S rRNA (V4 to V5) sequencing."
+      ],
+      [
+        "Who was studied?",
+        "124 gastric mucosa samples (cancer plus paired adjacent non-cancer) from 62 gastric adenocarcinoma patients who underwent subtotal gastrectomy at the First Hospital of China Medical University (2012 to 2014), median age 60, excluding anyone recently treated with antibiotics, proton-pump inhibitors, probiotics, chemotherapy, or radiotherapy."
+      ],
+      [
+        "What were the most important findings?",
+        "Tumor tissue showed higher microbial richness and diversity than non-cancer tissue, with a denser co-occurrence network. Proteobacteria dominated both groups but were relatively lower in cancer, while Firmicutes, Bacteroidetes, Actinobacteria, and Fusobacteria rose. LEfSe flagged 49 differentially abundant taxa (LDA above 3): 33 enriched in cancer, largely oral bacteria such as Peptostreptococcus, Streptococcus, and Fusobacterium, and 16 enriched in non-cancer tissue, largely lactic-acid bacteria. Predicted purine-metabolism and denitrification functions were enriched in the cancer community."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The results point to translocated oral bacteria, rather than Helicobacter pylori alone, as a feature of the gastric-cancer microenvironment and a possible contributor to or marker of carcinogenesis. As a cross-sectional tissue study, it establishes association rather than causation."
+      ]
+    ]
+  },
+  "31434623": {
+    "excerpt": "Patients with mild cognitive impairment showed gut microbiota alterations closely resembling those of Alzheimer's disease, including reduced microbial diversity and increased Escherichia, suggesting dysbiosis is already present before dementia onset.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study characterized the gut (fecal) and blood microbiota of patients with Alzheimer's disease (AD) and mild cognitive impairment (MCI) compared with normal controls, testing the hypothesis that dysbiosis begins in the MCI predementia stage. The goal was to determine whether microbiota changes could serve as early diagnostic biomarkers before the onset of dementia."
+      ],
+      [
+        "Who was studied?",
+        "The study enrolled patients with AD, patients with MCI, and normal controls, with diagnoses based on symptoms and neuroimaging (AD biomarkers were not used). Fecal and blood samples were profiled using 16S rRNA gene sequencing, and a diagnostic model was applied to a set of 30 MCI patients."
+      ],
+      [
+        "What were the most important findings?",
+        "Patients with AD and MCI had decreased microbial diversity, and 11 genera in feces and 11 genera in blood differed between AD and controls, while no genus-level differences were detected between AD and MCI. Escherichia was increased at the genus level in both fecal and blood samples from AD and MCI patients, and a fecal diagnostic model using all differing genera correctly identified 93% (28 of 30) of MCI patients."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that gut microbiota alterations occur before AD onset and are already detectable in MCI, offering potential diagnostic biomarkers for early detection of dementia. Because this is an observational study, the findings represent association rather than causation, and the authors note that diagnoses lacked AD biomarker confirmation and that longitudinal prospective studies are needed to link microbiota changes to dementia progression."
+      ]
+    ]
+  },
+  "32673387": {
+    "excerpt": "Meibum from patients with meibomian gland dysfunction harbored a distinct microbial community that was enriched for Campylobacter coli, Campylobacter jejuni, and Enterococcus faecium and for type IV secretion virulence, yet had lower community richness and fewer pathogen types than healthy controls.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study used shotgun metagenomic sequencing to compare the microbial communities of three ocular surface sites (meibum, eyelid skin, and conjunctiva) between patients with meibomian gland dysfunction (MGD) and healthy controls. The goal was to characterize taxonomic composition, resident pathogens, and functional and virulence features associated with MGD."
+      ],
+      [
+        "Who was studied?",
+        "The cohort was 76 Chinese Han volunteers recruited at the Dry Eye Center of the Eye Hospital of Wenzhou Medical University, comprising 61 treatment-naive MGD patients and 15 healthy controls, sampled between April and September 2017. After quality control, 117 metagenome datasets were analyzed (58 meibum, 44 eyelid skin, and 15 conjunctiva), generated by whole-genome amplification and paired-end Illumina HiSeq shotgun sequencing (2 x 150 bp)."
+      ],
+      [
+        "What were the most important findings?",
+        "The MGD meibum microbiome had lower community richness (chao1) than controls while diversity indices (Shannon, Simpson) were similar, and its significant taxonomic changes were largely shared with eyelid skin but not conjunctiva. MGD meibum carried fewer pathogens on average than controls (mean 13 vs 36, p = 0.0014), yet Campylobacter coli, Campylobacter jejuni, and Enterococcus faecium were strongly enriched in MGD meibum (positive rates of about 57%, 51%, and 47% versus 0% in controls, with abundance more than 16-fold higher). Functional profiling showed increased carbohydrate and lipid metabolism enzymes, a microbial capacity to degrade benzoate, and an approximately fivefold increase in the type IV secretion system virulence factor (p = 0.017)."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that MGD meibum contains distinct microbiota with stronger immune-evasive virulence, characterizing microbial community changes associated with MGD disease status. Because this is an observational case-control comparison, the results indicate association rather than causation, and the authors call for validation in larger and more geographically diverse populations."
+      ]
+    ]
+  },
+  "34252627": {
+    "excerpt": "Dental plaque from periodontitis patients showed enrichment of the phyla Synergistetes and Spirochaetes plus positively selected antibiotic resistance and virulence genes, many carried by respiratory tract pathogens, suggesting a gene-level link between periodontitis and respiratory infection.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study used metagenomic shotgun sequencing to compare the composition, diversity, and functional gene content of the subgingival dental plaque microbiota between periodontitis patients and periodontally healthy individuals. It specifically profiled antibiotic resistance genes (ARGs) and virulence genes (VirGs) and tested them for signatures of positive selection (Ka/Ks ratio greater than 1)."
+      ],
+      [
+        "Who was studied?",
+        "A total of 30 periodontitis patients and 15 periodontally healthy adults were recruited in Wenzhou, China; all were previously untreated for periodontitis and free of diabetes, hypertension, hepatitis, prosthetic appliances, and recent antibiotic use. Because of low DNA yield, plaque samples were pooled in groups of five, yielding 6 periodontitis and 3 control specimens sequenced on an Illumina HiSeq 2500, and results were cross-checked against a previously published plaque dataset (Wang et al., SRA SRP033553)."
+      ],
+      [
+        "What were the most important findings?",
+        "At the phylum level, Bacteroidetes was dominant, while Synergistetes and Spirochaetes were significantly enriched in patients (Wilcoxon rank sum test, p = 0.024 for each), and at the species level patients showed higher alpha diversity (Shannon index p = 0.024, Pielou index p = 0.048). Functional annotation found 22 eggNOG terms enriched in patients (10 transposase-related) along with drug-efflux and virulence pathways (MATE efflux, ABC transporter, bacterial invasion of epithelial cells, bacterial toxins), whereas fatty acid synthesis pathways were enriched in controls. ARGs and VirGs in patients carried significantly higher minor allele frequencies of non-synonymous SNPs, and 5 of 12 positively selected ARGs and VirGs were found in respiratory tract pathogen genomes, with 91.8% of background VirGs bearing at least one non-synonymous SNP also originating from respiratory tract pathogens."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that periodontitis involves shifted microbial composition and enrichment of positively selected antibiotic resistance and virulence genes, many belonging to respiratory tract pathogens, providing gene-level evidence for a possible association between periodontitis and respiratory infection. Because the design is observational and based on pooled samples, the findings represent association rather than causation, and the authors call for animal models and functional assays to confirm mechanisms."
+      ]
+    ]
+  },
+  "36090083": {
+    "excerpt": "Term small-for-gestational-age (SGA) infants had significantly lower gut microbial diversity than appropriate-for-gestational-age (AGA) infants across the first week of life, with enrichment of opportunistic pathogens and depletion of candidate probiotic genera, and several of these features tracked with 6-month neurodevelopmental scores.",
+    "sections": [
+      [
+        "What was studied?",
+        "This single-center prospective cohort study characterized the fecal gut microbiota of term small-for-gestational-age (SGA) infants during the first week of life and tested whether early microbiota features were associated with neurodevelopmental outcomes at 6 months of age. Fecal samples were collected on postnatal days 1, 3, 5, and 7, and neurodevelopment was screened at 6 months with the Ages and Stages Questionnaires-3 (ASQ-3), covering communication, gross motor, fine motor, problem-solving, and personal-social domains."
+      ],
+      [
+        "Who was studied?",
+        "A total of 162 term neonates (gestational age 37 to 42 weeks) at Peking University First Hospital born between June 2020 and June 2021 were enrolled: 41 SGA infants (25.3%) and 121 appropriate-for-gestational-age (AGA) control infants (74.7%), all mixed-fed (breast milk plus formula). Fecal microbiota was profiled by 16S rRNA gene amplicon sequencing (Illumina NovaSeq 6000, clustered into OTUs at 97% identity against the SILVA138 database). Of the SGA infants, 38 of 41 (92.7%) completed the 6-month follow-up."
+      ],
+      [
+        "What were the most important findings?",
+        "Alpha diversity was significantly lower in SGA than AGA infants on day 1 across the Chao1, ACE, observed-species, Simpson, and Shannon indices, and remained lower on days 3, 5, and 7 for Chao1, ACE, and observed species (all P<0.05), with NMDS and ANOSIM showing significant community-composition differences on all four days. At the genus level, SGA infants showed higher relative abundances of opportunistic or conditionally pathogenic taxa (for example Serratia, Citrobacter, Ralstonia, Halomonas, and Akkermansia on various days) and lower abundances of candidate probiotic or commensal genera such as Lactiplantibacillus, Parabacteroides, and Ileibacterium, alongside lower phylum-level Actinobacteria (days 3 and 7). Regarding neurodevelopment, higher alpha diversity on day 3 was associated with poorer communication scores; day-7 communication scores correlated positively with two differentially abundant taxa (r=0.875, P=0.004 and r=0.886, P=0.003), while gross motor scores correlated negatively with a day-7 taxon (r=-0.736, P=0.037) and fine motor scores correlated negatively with a day-1 taxon (r=-0.412, P=0.041)."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that term SGA infants have reduced early gut microbial diversity and enrichment of pathogenic or conditionally pathogenic bacteria, and that specific taxa and alpha diversity may be linked to 6-month neurodevelopmental outcomes, suggesting possible targets for clinical intervention. Because this is an observational cohort, the reported relationships are associations rather than evidence of causation, and the authors note single-center design, use of a screening (not diagnostic) neurodevelopmental tool, and small SGA sample as limitations requiring confirmation in larger multicenter studies."
+      ]
+    ]
+  },
+  "36171758": {
+    "excerpt": "Diversity, composition, and function of the bovine respiratory microbiome differed markedly by geographic location and by sampling niche, and long-distance transportation raised the relative abundance of bovine respiratory disease (BRD) associated pathogens in the nasopharynx.",
+    "sections": [
+      [
+        "What was studied?",
+        "This work re-analyzed three previously published shotgun metagenomic datasets (NCBI SRA accessions PRJNA687519, PRJNA724913, and PRJNA395911) to test how geographic location, respiratory sampling niche, and transportation stress shape the cattle (bovine) respiratory microbiome and its predicted function. The authors examined microbial diversity, composition, co-occurrence networks, and KEGG functional profiles, and assessed which opportunistic pathogens shifted after transportation in relation to bovine respiratory disease (BRD)."
+      ],
+      [
+        "Who was studied?",
+        "A total of 145 respiratory samples were analyzed from feedlot calves aged 5 to 6 months across three geographic locations: Saskatoon (Canada), the cities of Qiqihaer and Guangan (China), and Alberta (Canada). Samples spanned two niches, comprising 130 nasopharyngeal swabs and 15 bronchoalveolar lavage (lung) samples, the latter collected at necropsy from calves that died of BRD. Sequencing used the Illumina HiSeq platform (shotgun metagenomics), yielding an average of 3,374,490 clean reads per sample, with taxonomy assigned via RefSeq and function via the KEGG Orthology database."
+      ],
+      [
+        "What were the most important findings?",
+        "Nasopharyngeal alpha diversity (Shannon index) was higher in the China samples (Qiqihaer and Guangan) than in the Saskatoon nasopharynx or the Alberta lung, and composition clustered distinctly by location (for example, ANOSIM R = 0.99, p = 0.001 between Saskatoon and China). Of high-quality reads, 96.72 percent were bacterial across 27 phyla; the Saskatoon nasopharynx was dominated by Proteobacteria (91.19 percent), whereas the China nasopharynx was more balanced (Proteobacteria 48.49 and 61.94 percent, Firmicutes 24.26 and 17.68 percent, Actinobacteria 14.90 and 9.40 percent, Bacteroidetes 6.59 and 6.98 percent) and the Alberta lung was dominated by Proteobacteria (58.27 percent), Firmicutes (17.03 percent), Tenericutes (14.27 percent), and Bacteroidetes (8.41 percent). Long-distance transportation significantly reduced nasopharyngeal richness at unloading and after adaptive feeding and increased BRD-associated pathogens after feedlot arrival, whereas short-distance transportation did not; the 15 BRD lung samples separated into four clusters dominated by different pathogens."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that geography, sampling niche, and transportation (especially long-distance shipping) are important factors shaping the bovine respiratory microbiome and BRD, and that distinct pathogen-dominated lung clusters may reflect different subtypes of BRD pathogenesis. Because this is an observational re-analysis of existing metagenomic datasets, the results describe associations rather than causation, and the authors note the small number of lung samples as a limitation."
+      ]
+    ]
+  },
+  "36719190": {
+    "excerpt": "Peutz-Jeghers syndrome patients carried a distinct gut microbiome marked by enrichment of Escherichia coli and depletion of the butyrate-producing commensal Faecalibacterium prausnitzii, with F. prausnitzii further reduced in patients who had experienced intussusception.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study characterized the gut (fecal) microbiome of patients with Peutz-Jeghers syndrome (PJS), a rare hereditary polyposis disorder, and tested whether microbiome changes track with intussusception, its most urgent gastrointestinal complication. Researchers profiled taxonomic composition by 16S rRNA gene sequencing and added shotgun metagenomics on a subset to assess functional (metabolic pathway) changes."
+      ],
+      [
+        "Who was studied?",
+        "The cohort was a Chinese family group of 168 PJS patients (average age 26) and 68 cohabiting healthy family members, of whom 106 patients had experienced at least one intussusception and 57 had not. 16S rRNA sequencing targeted the V3-V4 region in all 236 participants, and shotgun metagenomic sequencing was performed on a representative subset of 61 PJS patients (35 with and 26 without intussusception) and 27 healthy family members. The design was observational and cross-sectional, and people who had taken antibiotics within the prior 3 months were excluded."
+      ],
+      [
+        "What were the most important findings?",
+        "Alpha diversity did not differ significantly between groups, but PJS patients showed greater person-to-person beta-diversity variability and separated from controls on ordination. PJS gut communities were enriched in potentially harmful and mucin-degrading taxa (Escherichia-Shigella, Klebsiella, Fusobacterium, Veillonella, and Akkermansia), with Escherichia coli the most abundant enriched species, and were depleted of commensal butyrate and lactate producers (Faecalibacterium, Subdoligranulum, and Lactobacillus); Faecalibacterium prausnitzii showed the most pronounced decline (P=0.0358 versus controls) and was further reduced in patients with intussusception (P=0.0129). Functionally, propanoate metabolism was enriched in PJS (P=0.0243) and further enriched with intussusception (P=0.0233), with E. coli the major contributor and the genes for methylglyoxal synthase and phosphate acetyltransferase decreased, and a random forest model of 20 genera distinguished patients with versus without intussusception with an AUC of 0.79."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that PJS is accompanied by a distinct gut microbiome signature that is linked to intussusception, suggesting the microbiome could serve as a noninvasive biomarker for gastrointestinal surveillance and may be involved in disease pathogenesis. Because the study was cross-sectional, these are associations rather than proof of causation, and the authors call for prospective and animal-model studies to confirm the findings, noting age, geographic, and dietary differences between groups as limitations."
+      ]
+    ]
+  },
+  "36975828": {
+    "excerpt": "Ovarian tumors sorted into immune-enriched and immune-deficient subtypes carried significantly different intratumoral microbiome profiles, and a 32-microbe signature predicted patient survival (C-index 0.727), pointing to a link between tumor-resident bacteria, antitumor immunity, and prognosis.",
+    "sections": [
+      [
+        "What was studied?",
+        "This computational study asked whether the intratumoral microbiome of ovarian cancer (specifically ovarian serous cystadenocarcinoma) is associated with the tumor immune microenvironment and with patient prognosis. The intratumoral microbiome was reconstructed from the nonhuman reads within bulk tumor RNA-sequencing data rather than from dedicated 16S or shotgun metagenomic sequencing, and was paired with immune-cell profiling of the same tumors. The bioinformatic associations were then followed by in vitro macrophage experiments."
+      ],
+      [
+        "Who was studied?",
+        "The analysis used RNA-sequencing, clinical, and survival data from 373 patients with ovarian cancer in The Cancer Genome Atlas (TCGA), a predominantly late-stage cohort (about 94 percent stage III/IV) with a mean age near 59 to 60 years. Microbial reads were extracted from the RNA-seq data (reads not aligning to the human genome), classified with the Kraken2 and Bracken pipeline, and decontaminated before analysis. Tumors were split by 29 functional gene expression signatures into an immune-deficient subtype (clust1, n=182) and an immune-enriched subtype (clust2, n=191)."
+      ],
+      [
+        "What were the most important findings?",
+        "The immune-enriched subtype had higher CD8 T-cell and M1 macrophage infiltration, higher tumor mutational burden, and better overall survival (P=0.009), progression-free survival (P=0.032), disease-specific survival (P=0.009), and disease-free interval (P=0.004). Microbial alpha-diversity did not differ significantly between subtypes, but beta-diversity did (P=0.02), with 58 species enriched in the immune-deficient subtype and 11 in the immune-enriched subtype; 736 species were flagged as potential prognostic markers, and a LASSO-Cox model of 32 microbes stratified survival with a C-index of 0.727. M1 macrophages were associated with five species and were weakly negatively correlated with the microbial risk score (r=-0.146, P=0.021), and one bacterium was shown in vitro to inhibit macrophage migration."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that intratumoral microbiota differ between immune-enriched and immune-deficient ovarian tumors and act as an independent predictor of prognosis that interacts with host immune gene expression, suggesting tumor microbiome profiling could help stratify patients and that microbiome-directed strategies might complement antitumor therapy. Because the design is an observational, RNA-seq-derived analysis of an existing cohort, these are associations rather than causal effects. The authors note that the causal relationships and mechanisms require further validation and that the microbial findings should be confirmed by metagenomic sequencing or PCR."
+      ]
+    ]
+  },
+  "37798293": {
+    "excerpt": "Two doses of the BNT162b2 mRNA vaccine raised anti-SARS-CoV-2 IgA and IgG in breast milk (peaking one week after the second dose) and dynamically shifted the breast milk microbiota without depleting beneficial Bifidobacterium species.",
+    "sections": [
+      [
+        "What was studied?",
+        "This prospective longitudinal study examined whether the BNT162b2 mRNA COVID-19 vaccine changes the human breast milk microbiota and how baseline and post-vaccination microbiota composition relates to vaccine-induced anti-SARS-CoV-2 antibody levels in breast milk. Breast milk was sampled at four timepoints (pre-vaccination, one week post-first dose, one week post-second dose, and one month post-second dose), with spike/RBD-specific IgA and IgG measured by ELISA and bacteria profiled by sequencing."
+      ],
+      [
+        "Who was studied?",
+        "Forty-nine lactating mothers in Hong Kong who received two doses of BNT162b2 between June and August 2021 were recruited, with 44 participants (175 samples) retained after quality control; the median age was 36 years and samples were self-collected at home. The breast milk microbiota was characterized by 16S rRNA amplicon sequencing of the V3-V4 regions on an Illumina MiSeq platform, and an independent pre-pandemic cohort of 110 unvaccinated Chinese lactating mothers served as an external control."
+      ],
+      [
+        "What were the most important findings?",
+        "Spike-specific IgA and IgG were unchanged after the first dose but rose one week after the second dose (IgA OD 0.116 to 0.198, IgG OD 0.058 to 0.216, p < 0.001), after which IgA returned to baseline by one month while IgG remained elevated. Bacterial Chao1 richness increased between pre-vaccination and one week post-first dose (p = 0.044) and beta diversity shifted after vaccination, changes not seen in the unvaccinated cohort (which instead declined); 109 species were differentially abundant across timepoints, Firmicutes was relatively higher and Proteobacteria lower in low-IgA mothers, baseline Shannon diversity was higher in high-IgA mothers (p = 0.046), and Bifidobacterium abundance did not significantly change after vaccination. A random forest model using baseline microbial features predicted high one-week post-second-dose IgA with an AUC of 0.72 (95% CI 0.58 to 0.85)."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that baseline breast milk microbiota composition and its post-vaccination changes are associated with vaccine-conferred antibody levels, and that BNT162b2 vaccination of lactating mothers does not significantly reduce probiotic species such as Bifidobacterium, supporting the safety of vaccination during lactation. Because this is a small observational cohort with a non-contemporaneous control group, the reported microbiota-antibody links are associations rather than proof of causation, and larger studies including infant outcomes are needed to confirm them."
+      ]
+    ]
+  },
+  "37905804": {
+    "excerpt": "The upper respiratory tract microbiome differed in a variant-specific way, with Omicron patients resembling healthy controls more closely than Delta patients, and species-level composition predicted Delta, Omicron, and control groups with about 90 percent accuracy.",
+    "sections": [
+      [
+        "What was studied?",
+        "The study characterized the upper respiratory tract (URT) microbiome, meaning the combined nasal and oral bacterial communities, in patients infected with the SARS-CoV-2 Delta versus Omicron variant compared with healthy controls. The authors aimed to identify variant-specific microbiome signatures, since prior work had compared COVID-19 patients to controls but had not examined how distinct variants shape the URT microbiome."
+      ],
+      [
+        "Who was studied?",
+        "The cohort comprised 43 COVID-19 patients (24 Delta and 19 Omicron) and 19 healthy controls from Eastern India, with samples collected in 2021 to 2022 (average age about 36 years in patients and 33 in controls). URT swabs were profiled by next-generation sequencing of the V3 to V4 variable regions of the 16S rRNA gene on the Illumina NovaSeq 6000 platform, yielding 12,172 amplicon sequence variants across 34 phyla, 924 genera, and 1,429 species."
+      ],
+      [
+        "What were the most important findings?",
+        "COVID-19 patients showed significantly lower intra-individual (alpha) diversity and higher inter-individual (beta) diversity than controls, with Proteobacteria dominant in patients (73.57 percent versus 22.24 percent) and genera such as Pseudomonas, Klebsiella, Enterobacter, and Acinetobacter enriched, while control-associated commensals including Streptococcus, Veillonella, Prevotella, Neisseria, and Bifidobacterium were depleted. Delta patients had lower diversity and greater dysbiosis than Omicron patients, and nine control-associated species declined in a consistent trend of control greater than Omicron greater than Delta. A random forest classifier built on core species distinguished the three groups with roughly 90 percent (plus or minus 0.5 percent) accuracy (class error 0 percent for controls, 18 percent for Omicron, 14 percent for Delta)."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that different SARS-CoV-2 variants are associated with variant-specific URT microbiome signatures, with the newer Omicron variant more closely resembling the healthy control microbiome than the older Delta variant, which may inform host-microbiome interaction research and future nasal probiotic strategies. Because this is an observational, cross-sectional comparison in a modest sample, the results reflect association rather than causation and, as the authors note, sample size is a limitation."
+      ]
+    ]
+  },
+  "39610673": {
+    "excerpt": "Asthmatic patients showed significantly greater nasal microbiome alpha diversity than controls, and meta-analysis across two ancestry cohorts identified 11 microbial species associated with asthma.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined whether the nasal microbiome differs between people with and without asthma, using meta-transcriptomic (RNA-seq) analysis of two large, independent public datasets. Nasal airway epithelial brushing RNA-seq reads underwent quality control and host read removal, and remaining microbial reads were annotated with Kraken2 (Bracken abundances), followed by alpha and beta diversity analysis, differential abundance analysis with DESeq2 (controlling for age and sex), and a fixed-effects meta-analysis combining the two cohorts."
+      ],
+      [
+        "Who was studied?",
+        "Two case-control cohorts were analyzed: GALA II, comprising 694 children of Puerto Rican heritage (441 asthmatic, 253 healthy control; median ages 13.6 and 14.1 years), and CAAPA, comprising 562 individuals of African ancestry (265 asthmatic, 297 control; mean ages 30.0 and 29.0 years). Sequencing was RNA-seq (meta-transcriptomics) from nasal airway epithelium brushings, with taxonomic profiling to the species level."
+      ],
+      [
+        "What were the most important findings?",
+        "Asthmatic patients had significantly higher nasal microbiome alpha diversity in GALA II (Shannon median 0.0600 vs 0.0562, Inverse Simpson 1.02 vs 1.01, Fisher 5.92 vs 5.66, and lower Berger-Parker 0.992 vs 0.993, all p < 0.001 or near it), with partial replication in CAAPA (Berger-Parker and Inverse Simpson significant, Shannon and Fisher not). Beta diversity differed significantly by asthma status in GALA II (PERMANOVA) but not in CAAPA (p = 0.265). Differential abundance analysis found 20 species associated with asthma in GALA II (15 enriched, 5 depleted) and 9 in CAAPA (only 1 enriched), with the meta-analysis identifying 11 significant species (7 enriched in asthmatics), and the authors note associations involving Mycobacterium-complex and nontuberculous mycobacterial species."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The authors conclude that larger, meta-transcriptomic datasets support increased nasal microbiome alpha diversity in asthma and reveal species-level associations, some not previously reported, that may inform asthma pathogenesis and future therapeutic research. Because both datasets are case-control (observational), these are associations rather than causal relationships, and the authors caution that the small absolute differences in diversity and inconsistent beta diversity limit clinical interpretation, calling for prospective and functional studies."
+      ]
+    ]
+  },
+  "39880843": {
+    "excerpt": "The healthy gut viral-bacterial correlation network was largely lost in schizophrenia, and the co-occurring metabolites concentrated in bile-acid and eicosanoid inflammatory pathways.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study profiled the fecal virome, bacteriome, and blood metabolome together in schizophrenia, testing whether gut viruses (mainly bacteriophages) shape the disease-associated bacterial community and whether those shifts reach the host through circulating metabolites."
+      ],
+      [
+        "Who was studied?",
+        "Forty-nine first-episode schizophrenia patients, most drug-naive or treated for fewer than five days, and 49 age-, sex-, and BMI-matched healthy controls at West China Hospital, Sichuan University (2021 to 2022). Fecal shotgun sequencing covered 95 participants and untargeted plasma metabolomics 92, with age, sex, BMI, and medication days controlled."
+      ],
+      [
+        "What were the most important findings?",
+        "Bacterial beta-diversity separated patients from controls at the family, genus, and species levels while alpha-diversity did not differ, and combining MaAsLin2 with ANCOM-BC flagged 7, 14, and 45 differentially abundant taxa respectively. The healthy viral-bacterial transkingdom correlation network was largely lost in schizophrenia, and the co-occurring metabolites were enriched in bile-acid and eicosanoid pathways linked to inflammation. A serial-mediation model supported a gut viruses to bacteria to metabolites to schizophrenia chain, with metabolites carrying most of the indirect effect."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The results frame schizophrenia-associated dysbiosis as a virome-bacteriome-metabolome system rather than a bacterial shift alone, and highlight bile-acid and eicosanoid (COX and prostaglandin) metabolism as microbiota-linked, potentially treatable inflammatory routes. As a small cross-sectional study, it establishes associations and candidate biomarkers, not causation."
+      ]
+    ]
+  }
+}
