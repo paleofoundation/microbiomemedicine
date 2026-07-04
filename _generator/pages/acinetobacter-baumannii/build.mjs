@@ -265,14 +265,16 @@ H += `<!--CONDITIONS_TABLE-->`;
 
 // ---------- FAQs (baked in the render-faithful .rgbc-faq-block format) ----------
 H += `<h2 class="wp-block-heading" id="h-faqs">FAQs</h2>`;
+// Taxon-specific, search-style FAQs with proper inline cite() citations (answers are HTML).
 const FAQ = [
-  ["Is Acinetobacter baumannii part of the healthy human microbiome?", "Not as a stable resident. A. baumannii is an opportunistic, low-carriage organism most at home on hospital surfaces and in critically ill patients. When it shows up as a low-abundance taxon in gut, skin, milk, or ocular studies, that is an ecological association, not evidence of infection or of normal colonization."],
-  ["Does finding A. baumannii in a gut or milk study mean a dangerous infection?", "No. A differential-abundance signal reflects a shift in a community profile, not invasive disease. It also carries real detection uncertainty: short-read methods struggle to distinguish A. baumannii from close Acinetobacter relatives, and the genus is a common low-biomass contaminant, so several such calls are best read as 'Acinetobacter, plausibly baumannii.'"],
-  ["Why is A. baumannii so hard to treat, and where does the microbiome angle come in?", "It combines a highly plastic, resistance-acquiring genome with intrinsic low permeability and efflux, and carbapenem-resistant strains are a WHO critical priority. The microbiome-medicine angle is nutritional immunity: it depends on pirating iron, zinc, and manganese from the host, and withholding those metals (zinc limitation even reverses carbapenem resistance) is an exploitable weakness."],
+  ["How dangerous is Acinetobacter baumannii?", `For healthy people it is rarely a threat; for critically ill and immunocompromised patients it is serious, causing ventilator-associated pneumonia, bloodstream, and wound infections with reported mortality near 35 percent.${cite("antunes")} Carbapenem-resistant strains are a WHO critical-priority pathogen and among the leading causes of antimicrobial-resistance deaths worldwide.${cite("who", "gram")} A low-abundance signal in a microbiome study is not the same as an infection.`],
+  ["How is Acinetobacter baumannii treated?", `Treatment is susceptibility-guided and managed by clinicians, using agents such as sulbactam-based combinations, polymyxins, and cefiderocol, because resistance to most antibiotic classes is common.${cite("antunes", "who")} This page covers the organism's biology and its microbiome associations, not a treatment protocol. One microbiome-relevant angle: withholding zinc can re-sensitize resistant strains to carbapenems.${cite("hood")}`],
+  ["Is Acinetobacter baumannii part of the normal gut microbiome?", `Not as a stable resident. It is an opportunistic, low-carriage organism most at home on hospital surfaces and in critically ill patients.${cite("antunes")} When it appears as a low-abundance taxon in gut, skin, milk, or ocular studies, that is an ecological association, and it carries real detection uncertainty because short-read methods struggle to separate it from close Acinetobacter relatives.${cite("harding")}`],
+  ["Why is Acinetobacter baumannii so hard to kill?", `It pairs a highly plastic, resistance-acquiring genome with intrinsic low membrane permeability and efflux, plus extreme desiccation tolerance that lets it persist on dry surfaces for weeks.${cite("antunes", "harding")} Its rare weak point is its appetite for metals: it depends on pirating host iron, zinc, and manganese, which makes nutritional immunity, and in one landmark case personalized phage therapy, an exploitable target.${cite("gaddy", "schooley")}`],
 ];
 H += `<div class="rgbc-faq-block">`;
 for (const [q, a] of FAQ) {
-  H += `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${esc(q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${esc(a)}</div></details>`;
+  H += `<details class="rgbc-faq-item"><summary><span class="rgbc-faq-icon"></span><span class="rgbc-faq-q">${esc(q)}</span></summary><div class="rgbc-faq-a"><strong>Quick answer:</strong> ${a}</div></details>`;
 }
 H += `</div>`;
 
@@ -348,7 +350,7 @@ for (const k of order) {
 H += `</ol>`;
 for (const k of order) {
   const r = R[k];
-  H += `<div class="tooltip wiki-ref-${k}"><div class="tooltip__header">Reference [${numByKey.get(k)}]</div><div class="tooltip__content"><p>${esc(r.name)}</p><p><em>${esc(r.authors)} ${esc(r.date)}</em></p><a href="${r.url}" target="_blank">View source</a></div></div>`;
+  H += `<div class="tooltip rgbc-reference-tooltip wiki-ref-${k}"><div class="tooltip__content rgbc-reference-tooltip__content"><p>${esc(r.authors)}</p><a href="${r.url}" target="_blank">${esc(r.name)}</a><p>${esc(r.date)}</p></div></div>`;
 }
 
 // ================================= meta + emit ==========================================

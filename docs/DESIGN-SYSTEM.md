@@ -176,8 +176,21 @@ author (default Karen Pendergrass).
 - **Tables:** `<figure class="wp-block-table"><table class="has-fixed-layout">…</table></figure>`;
   red `thead`; metal names in `<span class="has-inline-color has-vivid-red-color">`.
 - **Citations:** inline `<sup><a class="rgbc-reference rgbc-tooltip js-rgbc-scroll-link" …>[n]</a>`
-  (first-appearance numbering, dedupe) + `<ol class="rgbc-references">` list + hidden
-  `.tooltip.wiki-ref-KEY` cards. External source URLs live ONLY here, never as inline blue links.
+  (first-appearance numbering, dedupe) + `<ol class="rgbc-references">` list + hidden hover
+  cards. External source URLs live ONLY here, never as inline blue links.
+- **Citation hover card (exact, from `_migration/endo-live.html` `.rgbc-reference-tooltip`):**
+  ```html
+  <div class="tooltip rgbc-reference-tooltip wiki-<hash>">
+    <div class="tooltip__content rgbc-reference-tooltip__content">
+      <p>Authors, et al.</p>
+      <a href="<DOI>" target="_blank">Paper title.</a>   <!-- title hyperlinked to the DOI -->
+      <p>Journal. (date)</p>
+      <a class="rgbc-reference-tooltip__btn btn btn--rounded" href="/research-feeds/<slug>/">Read Review</a>
+    </div></div>
+  ```
+  The card is authors → title-linked-to-DOI → journal/date → optional "Read Review" button (only
+  when the study has our internal review page; OMIT it for foundational refs that lack one). Do
+  NOT use a "Reference [n]" header or a "View source" link — that was a wrong hand-rolled format.
 - **FAQs:** heading "FAQs"; `.rgbc-faq-block` › `.rgbc-faq-item` `<details>` with the chevron icon
   and "Quick answer:". **FAQs are page-specific**, written around the questions people actually
   search for that entity (e.g. "Is X good or bad?", "What causes high X?", "How do you lower X?").

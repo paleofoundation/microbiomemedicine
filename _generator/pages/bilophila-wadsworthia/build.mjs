@@ -330,7 +330,7 @@ for (const k of order) {
 H += `</ol>`;
 for (const k of order) {
   const r = R[k];
-  H += `<div class="tooltip wiki-ref-${k}"><div class="tooltip__header">Reference [${numByKey.get(k)}]</div><div class="tooltip__content"><p>${esc(r.name)}</p><p><em>${esc(r.authors)} ${esc(r.date)}</em></p><a href="${r.url}" target="_blank">View source</a></div></div>`;
+  H += `<div class="tooltip rgbc-reference-tooltip wiki-ref-${k}"><div class="tooltip__content rgbc-reference-tooltip__content"><p>${esc(r.authors)}</p><a href="${r.url}" target="_blank">${esc(r.name)}</a><p>${esc(r.date)}</p></div></div>`;
 }
 
 // ================================= meta + emit ==========================================

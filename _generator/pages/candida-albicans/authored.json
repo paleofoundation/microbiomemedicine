@@ -1,0 +1,338 @@
+{
+  "27007700": {
+    "excerpt": "Obese school-aged children showed significantly lower abundance of Akkermansia muciniphila, Faecalibacterium prausnitzii, Bacteroides/Prevotella, and both Candida and Saccharomyces yeasts than normal-weight peers.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study evaluated gut microbiota biodiversity in school-aged children, examining both bacterial and fungal (mycobiome) communities. Fecal samples were analyzed using 16S rRNA amplification with denaturing gradient gel electrophoresis (DGGE) and sequencing, and real-time PCR was used to quantify the most representative microbial species and genera. The design compared microbial community composition between obese and normal-weight children to look for differences linked to obesity."
+      ],
+      [
+        "Who was studied?",
+        "The study included 28 obese children (mean age 10.03 years) and 33 age- and sex-matched normal-weight children. Obesity status was defined according to WHO criteria using BMI z-scores. This was a case-control design comparing the two pediatric groups directly."
+      ],
+      [
+        "What were the most important findings?",
+        "Bacterial DGGE profiles showed high biodiversity overall, with no significant correlation to BMI z-score groups, while fungal (yeast) species richness was lower than bacterial richness. Sequencing identified Eubacterium rectale, Saccharomyces cerevisiae, Candida albicans, and Candida glabrata as present across all samples, with Debaryomyces hansenii found only in two obese children. Obese children showed significantly lower abundance of Akkermansia muciniphila, Faecalibacterium prausnitzii, the Bacteroides/Prevotella group, Candida spp., and Saccharomyces spp. compared to normal-weight children."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest that pediatric obesity is associated with reduced abundance of specific beneficial bacteria and yeasts, including Candida and Saccharomyces species, rather than simply altered bacterial diversity overall. This points to the fungal component of the gut microbiome, alongside bacteria, as potentially relevant to childhood obesity and warranting further investigation. Because this is a case-control study, it establishes association rather than causation, and larger studies would be needed to confirm whether these microbial shifts contribute to or result from obesity."
+      ]
+    ]
+  },
+  "28701186": {
+    "excerpt": "A pilot ITS-sequencing study found Candida and Aspergillus in 100% of 30 subjects but no significant mycobiome differences between periodontitis and healthy oral samples.",
+    "sections": [
+      [
+        "What was studied?",
+        "This pilot study characterized the oral fungal microbiome, or mycobiome, using pan-fungal internal transcribed spacer (ITS) gene sequencing of DNA from oral wash samples. The researchers aimed to describe the composition of oral fungi and to compare it between people with periodontal disease and people with good oral health. This addresses a gap in the literature, since the oral mycobiome had not been well characterized relative to oral diseases like periodontitis."
+      ],
+      [
+        "Who was studied?",
+        "The study included 30 adult subjects: 15 with periodontal disease and 15 with good oral health. Oral wash samples were collected from each participant and used to extract DNA for ITS gene sequencing. This is a small, pilot-scale human cohort rather than a large population sample."
+      ],
+      [
+        "What were the most important findings?",
+        "Across all samples, at least 81 fungal genera and 154 fungal species were identified. Candida and Aspergillus were the most frequently detected genera, each found in 100% of participants, followed by Penicillium, Schizophyllum, Rhodotorula, and Gibberella. Candida and Aspergillus were also the most abundant genera overall (median relative abundance of 21% and 44%, respectively), with Aspergillus niger the single most abundant species. Despite genus Candida's prior association with periodontal disease, this study found no significant differences in overall mycobiome diversity, composition, or taxon-level relative abundance between the periodontitis group and the healthy group."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest that Candida and Aspergillus are core, highly prevalent members of the healthy oral mycobiome, not exclusive markers of periodontal disease. Because overall fungal community composition did not differ significantly between diseased and healthy subjects, this pilot data argues against a simple, strong link between global oral mycobiome shifts and periodontitis. The results support further, larger studies to clarify whether specific fungal taxa, including Candida, play a more subtle or context-dependent role in periodontal disease."
+      ]
+    ]
+  },
+  "31247001": {
+    "excerpt": "Saliva-based shotgun metatranscriptomic profiling identified oral microbial and phage signatures that distinguished early stage Parkinson's disease from healthy controls with 84.5% accuracy.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined the oral microbiome in early stage Parkinson's disease (PD) using shotgun metatranscriptomic profiling of saliva samples. The researchers profiled both microbial RNA and host mRNA to identify sensitive and specific biomarkers of oral microbiome changes tied to early PD. Prior work in this area had focused mainly on fecal microbiome profiles and patients with more advanced disease, so this study targeted an earlier disease stage and a different body site."
+      ],
+      [
+        "Who was studied?",
+        "The study included 48 subjects with PD and 36 age- and gender-matched healthy controls. All participants completed detailed assessments of motor, cognitive, balance, autonomic, and chemosensory (smell and taste) function to characterize disease stage. Saliva samples were then collected from these subjects for microbial RNA and host mRNA sequencing."
+      ],
+      [
+        "What were the most important findings?",
+        "Overall alpha and beta diversity did not differ between PD subjects and healthy controls. However, specific microbial taxa did differ between groups, primarily bacteria but also yeast and phage. Nearly half of these findings echoed prior fecal microbiome studies in PD, while others were novel candidates for detecting early stage disease. A diagnostic model using as few as 11 taxonomic features achieved a cross-validated area under the ROC curve of 0.90 and an overall accuracy of 84.5%."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "These findings suggest the oral microbiome, assessed noninvasively through saliva, may offer robust biomarkers for detecting Parkinson's disease at an early stage. The involvement of yeast alongside bacteria and phage points to a broader oral microbial community shift in PD that extends beyond bacterial taxa alone. Because saliva sampling is simpler than fecal sampling, this approach could support more accessible early screening tools pending validation in larger cohorts."
+      ]
+    ]
+  },
+  "32024712": {
+    "excerpt": "In ART-treated people with HIV, oral bacterial diversity tracked immune markers while oral fungal diversity was reduced in plaque from teeth with more severe periodontitis.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined the relationship between oral and gut microbial diversity and chronic systemic inflammation in people living with HIV (PLWH) who were on antiretroviral therapy (ART) and had prevalent severe periodontitis. Researchers profiled bacterial communities using 16S rRNA sequencing and fungal communities using internal transcribed spacer (ITS) sequencing at oral (plaque, saliva) and gastrointestinal sites. They then used linear mixed-effect regression and differential abundance analyses to link clinical characteristics and immune markers to microbial diversity and community composition."
+      ],
+      [
+        "Who was studied?",
+        "The cohort consisted of 52 ART-treated people living with HIV, described as primarily postmenopausal women, who had prevalent severe periodontitis. Samples were collected from oral sites (plaque and saliva) and the gastrointestinal tract within this cohort. The abstract does not provide further demographic detail beyond ART status, HIV status, sex composition, and periodontitis status."
+      ],
+      [
+        "What were the most important findings?",
+        "Bacterial alpha-diversity in plaque, saliva, and gut samples was each associated with different immunological markers of inflammation and immune dysfunction. Lipopolysaccharide-positive (LPS+) bacteria, previously linked to inflammatory outcomes, were enriched at oral sites in patients with severe periodontitis. In contrast, mycobial (fungal) diversity was not associated with soluble or cellular biomarkers of immune stimulation or T cell dysfunction. Fungal alpha-diversity was reduced in plaque taken from teeth with higher levels of periodontal disease severity."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest that oral bacterial communities, particularly LPS-producing taxa associated with periodontitis, may contribute to the chronic immune activation seen in ART-treated PLWH, independent of viral suppression. Because bacterial but not fungal diversity tracked with immune markers, oral bacterial dysbiosis and periodontal disease may be a more direct driver of systemic inflammation than the oral mycobiome in this population. This points to periodontal health as a potential target for reducing residual inflammation in people with HIV on ART."
+      ]
+    ]
+  },
+  "32656096": {
+    "excerpt": "Shotgun metagenomics found lower Firmicutes/Lactobacillus and higher Gardnerella, Prevotella, Actinobacteria and viral abundance in the vaginal microbiome of HPV16-positive women, yielding validated predictive biomarkers.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined how the vaginal microbiome differs in women with persistent HPV16 infection compared to HPV-negative women, since HPV16 is a known causal driver of cervical cancer. The researchers used shotgun metagenomic sequencing to characterize both the taxonomic composition and the functional (metabolic) profile of cervicovaginal samples. They aimed to identify microbial and gene-based markers that distinguish HPV16-positive from HPV16-negative women."
+      ],
+      [
+        "Who was studied?",
+        "The discovery cohort consisted of 27 HPV16-positive women and 25 age-matched HPV-negative controls who provided vaginal samples for shotgun metagenomic sequencing. Findings were then tested with qPCR in an independent validation cohort of 88 HPV16-positive women and 81 controls for two gene markers, and in a subset of 45 HPV16-positive women and 53 controls for six species markers. All participants were adult women assessed for HPV16 status."
+      ],
+      [
+        "What were the most important findings?",
+        "HPV16-positive women had lower relative abundance of Firmicutes, including the genus Lactobacillus and Aerococcus, and significantly higher levels of Actinobacteria, Fusobacteria, and viral phyla. Seventy-seven genera, including Gardnerella, Peptostreptococcus, and Prevotella, were enriched in HPV16-positive women. Panels of 12 genes, 17 genera, and 7 species biomarkers showed strong predictive power for identifying HPV16-positive individuals, with reported performance metrics of 0.861, 0.819, and 0.918."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest that a Lactobacillus-depleted, dysbiotic vaginal microbiome characterized by Gardnerella, Prevotella, and related taxa is associated with HPV16 infection status. The validated gene, genus, and species biomarker panels raise the possibility of microbiome-based tools to help identify or monitor HPV16 infection alongside existing testing. This work also supports further investigation into whether vaginal microbiome composition contributes functionally to HPV16 persistence and cervical cancer risk."
+      ]
+    ]
+  },
+  "33754037": {
+    "excerpt": "Gastric cancer tissue showed a distinct fungal microbiome, with Candida albicans significantly enriched compared to adjacent noncancerous tissue.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined the fungal microbiome (mycobiome) in gastric cancer, using ITS rDNA gene sequencing to compare fungal communities between cancer lesions and adjacent noncancerous stomach tissue. Researchers analyzed operational taxonomic units (OTUs) and performed species identification, alpha and beta diversity analyses, and FUNGuild functional annotation. The goal was to characterize how fungal composition and ecology differ in gastric cancer tissue and to identify potential fungal biomarkers."
+      ],
+      [
+        "Who was studied?",
+        "The study drew on tissue samples from 45 gastric cancer cases collected in Shenyang, China. Each case contributed paired samples: a cancer lesion and adjacent noncancerous tissue, allowing within-patient comparison. No further demographic details (age, sex distribution) are given in the abstract."
+      ],
+      [
+        "What were the most important findings?",
+        "Gastric cancer tissue showed a significant fungal imbalance compared to noncancerous tissue, with principal component analysis revealing separate clusters for the two groups and lower overall OTU abundance in the cancer group. At the genus level, 15 fungal biomarkers distinguished the groups: Candida and Alternaria were enriched in gastric cancer, while Saitozyma and Thermomyces were decreased. Using both Welch's t test and the Wilcoxon rank sum test, Candida albicans was confirmed as significantly elevated in gastric cancer tissue."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "These findings support a role for nonbacterial, fungal components, particularly Candida albicans, in gastric carcinogenesis, an angle that has been underexplored relative to bacterial infection. The identification of specific fungal genera as biomarkers suggests the mycobiome could eventually contribute to diagnostic or risk-stratification tools for gastric cancer. The results also point to Candida albicans overgrowth as a feature worth investigating further as either a marker of, or contributor to, the tumor microenvironment."
+      ]
+    ]
+  },
+  "34248903": {
+    "excerpt": "Dental plaque and oral swabs give distinct bacterial and fungal profiles, with Candida dubliniensis and C. tropicalis enriched in swabs from children with severe early childhood caries.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study compared two oral sampling methods, supragingival dental plaque and oral swabs, to see which better predicts severe early childhood caries (S-ECC) versus caries-free status. Researchers used next generation sequencing of the V4-16S rRNA gene (bacteria) and the ITS1 rRNA gene (fungi) to characterize the microbiome and mycobiome at each site. They then applied machine learning to build classification models from the resulting sequencing data."
+      ],
+      [
+        "Who was studied?",
+        "The cohort consisted of 80 children under 72 months of age, recruited in a cross-sectional design. Of these, 40 children had severe early childhood caries and 40 were caries-free controls. Both dental plaque and oral swab samples were collected from each child, allowing paired comparison of the two sampling sites within the same population."
+      ],
+      [
+        "What were the most important findings?",
+        "Dental plaque and oral swab samples showed significantly different alpha and beta diversity for both bacterial and fungal microbiomes. The cariogenic bacterium Streptococcus mutans was more abundant in dental plaque than in oral swabs among children with S-ECC. The fungal species Candida dubliniensis and C. tropicalis were more abundant in oral swab samples from children with S-ECC compared to caries-free controls, and these fungal taxa ranked among the top 20 features for classifying S-ECC status and for distinguishing sample type within the S-ECC group."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest that sampling site meaningfully changes which microbial and fungal signals are detected, so plaque and swab samples are not interchangeable for caries research. The prominence of Candida dubliniensis and C. tropicalis in oral swabs points to a fungal, not just bacterial, contribution to severe early childhood caries that could be missed if only plaque is sampled. Combining sampling-site-aware sequencing with machine learning may improve early prediction models for pediatric caries risk."
+      ]
+    ]
+  },
+  "36621696": {
+    "excerpt": "Nontreated plaque psoriasis patients show reversed Firmicutes/Bacteroidetes ratios and enriched Escherichia coli compared to healthy controls and their own partners.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined whether gut microbiome composition differs in people with nontreated plaque psoriasis compared with people without the condition. The researchers used metagenomic gene sequencing of fecal samples to compare microbial taxa and functional gene pathways across groups. They also compared psoriasis patients directly against their own healthy spouses, a design meant to control for shared household and dietary exposures. Gene functional analysis was performed to see whether specific microbial pathways were altered alongside compositional shifts."
+      ],
+      [
+        "Who was studied?",
+        "The study included 32 nontreated plaque psoriasis patients, 15 unrelated healthy controls, and 17 healthy spouses of the patients (healthy couples). Fecal samples from these three cohorts were analyzed by metagenomic sequencing. The abstract does not specify age, sex distribution, or geographic origin of participants."
+      ],
+      [
+        "What were the most important findings?",
+        "The relative abundance of intestinal microbiota in the psoriasis group differed from both healthy controls and the patients' own healthy partners, though overall microbial diversity was similar across all three groups. At the phylum level, the relative abundances of Firmicutes and Bacteroidetes were reversed in psoriasis patients, and Escherichia coli was significantly enriched compared with both comparison groups. Functional gene analysis showed ribosome pathway genes upregulated, while flagellar assembly and bacterial chemotaxis pathways were downregulated in the psoriasis cohort. Additionally, microbiota composition differed between patients with severe psoriasis and those with milder disease, suggesting a relationship between gut dysbiosis and disease severity."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "These findings strengthen the case for a link between intestinal flora and psoriasis, including a possible relationship between microbial dysbiosis and disease severity. Using patients' own healthy spouses as a comparison group helps address some of the conflicting results in prior psoriasis microbiome research. The authors note that further, more meaningful experiments are needed to clarify the mechanisms underlying this association."
+      ]
+    ]
+  },
+  "37119437": {
+    "excerpt": "Tongue-coating fungal sequencing found increased richness and altered mycobiome composition in COVID-19 patients, with Candida among the enriched opportunistic genera used to build a diagnostic classifier.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study characterized the oral fungal microbiota, or mycobiome, in patients with COVID-19 and in recovered patients. Researchers used internal transcribed spacer (ITS) sequencing on tongue coating specimens to profile fungal communities. They compared fungal richness, diversity, and composition across COVID-19 patients, suspected cases, recovered patients, and controls, and examined correlations between distinct fungi and bacteria."
+      ],
+      [
+        "Who was studied?",
+        "The cohort included 71 COVID-19 patients, 36 suspected cases (SCs), 22 recovered COVID-19 patients, 36 SCs who recovered, and 132 controls, all from Henan. Tongue coating specimens were collected from each group for fungal sequencing. The study also used training, testing, and independent cohorts to validate a diagnostic classifier built from the sequencing data."
+      ],
+      [
+        "What were the most important findings?",
+        "Oral fungal richness was increased in COVID-19 patients compared to controls, and beta diversity analysis showed distinct fungal community structures between the two groups. The ratio of Ascomycota to Basidiomycota was higher in COVID-19 patients, and opportunistic genera including Candida, Saccharomyces, and Simplicillium were increased. A classifier built from two fungal biomarkers distinguished COVID-19 patients from controls across training, testing, and independent cohorts, and correctly identified SCs with positive SARS-CoV-2 IgG antibodies as COVID-19 patients."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest the oral mycobiome, including enrichment of opportunistic fungi such as Candida, may play a role in COVID-19 pathophysiology. Fungal biomarkers from tongue coating samples show potential as a noninvasive diagnostic tool for identifying COVID-19 cases, including those missed by other testing approaches. The documented correlations between oral fungi and bacteria point to cross-kingdom microbial interactions that merit further investigation in respiratory viral infection."
+      ]
+    ]
+  },
+  "37700874": {
+    "excerpt": "Shotgun metagenomics found children with allergic asthma or rhinitis had higher gut microbial diversity, altered Firmicutes/Bacteroidetes ratios, and distinct genus-level shifts versus healthy controls.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined whether the gut microbiome differs in young children with airway allergic disease compared with healthy children. Researchers used high-throughput metagenomic shotgun gene sequencing on fecal samples to characterize the gut microbiota at both the phylum and genus levels. The goal was to identify unique gut microbial features associated with allergic asthma and allergic rhinitis in children."
+      ],
+      [
+        "Who was studied?",
+        "The study included three groups of children: those with allergic asthma (n = 23), those with allergic rhinitis (n = 18), and healthy controls (n = 19). Fecal samples were collected from each child for shotgun metagenomic analysis. No further demographic details, such as age range or geographic location, are given in the abstract."
+      ],
+      [
+        "What were the most important findings?",
+        "Children with allergic asthma and allergic rhinitis showed increased gut microbial richness and diversity compared with healthy controls, with Simpson and Shannon diversity indices significantly elevated in the asthma group. Principal coordinates analysis showed that gut microbial community clustering in both allergic groups differed significantly from healthy controls, though asthma and rhinitis groups did not differ significantly from each other. At the phylum level, Firmicutes was enriched and Bacteroidetes was reduced in both allergic groups, while at the genus level Corynebacterium, Streptococcus, Dorea, Actinomyces, Bifidobacterium, Blautia, and Rothia were significantly enriched in the allergic children. The abstract does not mention Candida, fungi, yeast, or the mycobiome."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings support a link between gut microbiome composition and airway allergic disease in children, suggesting the gut-lung axis may play a role in asthma and rhinitis development. The shared microbial alterations across asthma and rhinitis groups suggest a common underlying gut dysbiosis pattern rather than disease-specific signatures. These bacterial taxa could serve as candidate biomarkers or targets for future microbiome-directed strategies in pediatric airway allergic disease, pending further mechanistic and validation studies."
+      ]
+    ]
+  },
+  "38686186": {
+    "excerpt": "Metagenomic profiling of tongue coating microbiota distinguished colorectal cancer patients from healthy controls with an AUC of 0.915, driven by species like Atopobium rimae and Streptococcus sanguinis.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study characterized the tongue coating microbiome in relation to colorectal cancer (CRC) using metagenomic shotgun sequencing. The researchers compared microbial species diversity and functional pathways across tongue coating samples from cancer patients, precancerous polyp patients, and healthy individuals. They also examined whether distinguishable tongue fur types could be defined by the microbial communities present. A random forest model was built and tested to see whether tongue coating microbiome data could predict CRC status."
+      ],
+      [
+        "Who was studied?",
+        "The study included 90 participants divided into three equal groups of 30: patients with colorectal cancer, patients with colorectal polyps, and healthy controls. Tongue coating samples were collected directly from each participant for metagenomic sequencing. No further demographic details are given in the abstract."
+      ],
+      [
+        "What were the most important findings?",
+        "CRC samples showed greater species diversity than the other groups, along with a more prominent nucleoside and nucleotide biosynthesis pathway. Distinct species combinations across participants formed three separable tongue fur types. Using tongue coating microbiome profiling, a random forest model achieved an AUC of 0.915 in distinguishing CRC patients from controls, with Atopobium rimae, Streptococcus sanguinis, and Prevotella oris identified as key differentiating species."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "This is described as the first study to link tongue coating microbiome composition to colorectal cancer, suggesting the tongue could serve as a convenient, non-invasive sampling site for CRC-related biomarkers. The high discriminatory accuracy (AUC 0.915) points to potential diagnostic or screening applications based on tongue coating microbiota. The identification of distinct fur types also offers a new framework for understanding oral microbial community structure in relation to systemic disease. No mention of Candida, fungi, or the mycobiome appears in this abstract."
+      ]
+    ]
+  },
+  "39528484": {
+    "excerpt": "A large salivary metagenomic study found oral microbiome composition discriminates autism spectrum disorder from neurotypical siblings and correlates with cognitive impairment.",
+    "sections": [
+      [
+        "What was studied?",
+        "This cross-sectional study examined whether the oral microbiome, sampled through saliva, carries markers linked to autism spectrum disorder (ASD). Researchers used whole-genome sequencing to characterize salivary microbiome composition and compared it between children with ASD and their neurotypical siblings. They also tested whether microbiome features tracked with cognitive impairment, measured by Full-Scale Intelligence Quotient (IQ), and examined microbial strain sharing between children and parents. A functional enrichment analysis further explored whether specific microbial enzyme pathways distinguished the two groups."
+      ],
+      [
+        "Who was studied?",
+        "The study drew on more than 7000 whole-genome sequenced salivary samples from 2025 US families that included children diagnosed with ASD. Each family contributed samples from an ASD-diagnosed child alongside a neurotypical sibling, allowing within-family comparison. Parents were also sampled so that microbiome strain sharing between children and parents could be assessed."
+      ],
+      [
+        "What were the most important findings?",
+        "Oral microbiome composition discriminated ASD children from their neurotypical siblings with an AUC of 0.66, based on 108 differentiating species (q < 0.005). The relative abundance of these species was highly correlated with cognitive impairment as measured by IQ. Children with ASD and IQ below 70 showed lower microbiome strain sharing with their parents compared to neurotypical siblings (p < 10-6). Functional enrichment analysis pointed to enzymes from the serotonin, GABA, and dopamine degradation pathways as contributors to the distinct microbial community differences between ASD and neurotypical samples."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "These findings provide substantial, large-scale support for investigating oral microbiome biomarkers in ASD, particularly ones linked to neurotransmitter-degrading microbial pathways. Because diet and oral hygiene measures showed only minor effects on microbiome composition, the ASD and IQ associations may still reflect unmeasured lifestyle differences between groups rather than the microbiome alone. The authors are careful to note that causal relationships could not be established from this cross-sectional design. Even so, the scale of the dataset strengthens the case for the oral microbiome as a feasible, non-invasive avenue for future ASD biomarker research."
+      ]
+    ]
+  },
+  "39572530": {
+    "excerpt": "Schizophrenia patients show reduced oral fungal diversity with a shift from Candida toward Malassezia that tracks with elevated pro-inflammatory cytokines.",
+    "sections": [
+      [
+        "What was studied?",
+        "This cross-sectional study examined the oral fungal microbiota (mycobiome) in patients with schizophrenia compared to healthy controls. Researchers sampled tongue coating and used internal transcribed spacer 1 (ITS1) amplicon sequencing to characterize fungal communities. They also measured host immune markers with multiplex immunoassays to see whether fungal changes tracked with systemic inflammation."
+      ],
+      [
+        "Who was studied?",
+        "The study enrolled 118 Chinese patients with schizophrenia and 97 age-matched healthy controls. Fungal profiling was based on tongue coating samples from these participants. The abstract does not report additional demographic details such as sex distribution or illness duration."
+      ],
+      [
+        "What were the most important findings?",
+        "Schizophrenia patients had reduced oral fungal richness and significant differences in overall fungal community composition (beta-diversity) compared to healthy controls. Within the fungal community, two mycotypes emerged: a Candida-dominant type and a Malassezia-dominant type, with schizophrenia patients showing increased Malassezia and decreased Candida relative to controls. Patients also showed immune dysfunction, with elevated pro-inflammatory cytokines (IL-6, TNF-alpha) and chemokines (MIP-1alpha, MCP-1); the Malassezia mycotype correlated positively with these inflammatory markers, while the Candida mycotype correlated negatively with them."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings suggest oral fungal dysbiosis, marked by a shift away from Candida toward Malassezia, may be linked to the systemic immune dysregulation seen in schizophrenia. Because these mycotypes tracked oppositely with inflammatory cytokines, oral fungal profiling could serve as a non-invasive diagnostic biomarker candidate for schizophrenia. The results also point toward the oral mycobiome as a potential axis connecting microbial dysbiosis to neuroimmune dysfunction, warranting further mechanistic and longitudinal study."
+      ]
+    ]
+  },
+  "39694919": {
+    "excerpt": "Islet cell transplantation increased gut fungal Candida albicans abundance, which drove M1 macrophage polarization and islet inflammation in T2D models.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study examined the pancreatic (islet) inflammation that occurs after islet cell transplantation (ICT) in type 2 diabetes (T2D), and whether chitooligosaccharides (COS) could reduce that inflammation. The researchers focused on how ICT affects the gut mycobiome (fungal community) and how resulting changes in fungal abundance influence macrophage polarization. They tested whether COS, previously shown to modulate immunity and gut microecology, could correct these changes and relieve islet inflammation."
+      ],
+      [
+        "Who was studied?",
+        "Fecal samples from an ICT patient population undergoing islet cell transplantation for diabetes were analyzed using 18S rDNA gene sequencing to profile gut fungal communities. The findings were then validated using human flora-associated T2D (HMA-T2D) mouse models, in which mice were colonized with human-derived gut microbiota. No specific patient sample size is given in the abstract."
+      ],
+      [
+        "What were the most important findings?",
+        "ICT significantly decreased the alpha diversity of gut fungi, altered fungal community structure, and increased the abundance of Candida albicans. This Candida albicans expansion promoted M1 (pro-inflammatory) macrophage polarization, which drove islet inflammation. Oligosaccharides were screened for the ability to regulate macrophage polarization and inhibit Candida albicans growth, and COS was validated in HMA-T2D mice as able to alleviate this inflammation and regulate gut microbiota."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings identify gut fungal dysbiosis, specifically Candida albicans overgrowth, as a contributor to macrophage-driven islet inflammation after transplantation, a mechanism that could undermine islet graft survival. This suggests the gut mycobiome is a relevant target for improving outcomes in islet cell transplantation for diabetes. Chitooligosaccharides emerge as a candidate intervention that may protect transplanted islets by correcting fungal dysbiosis and shifting macrophage polarization away from a pro-inflammatory state."
+      ]
+    ]
+  },
+  "40108637": {
+    "excerpt": "A 123-woman South African metaproteomic study found Candida dominating the vaginal mycobiome, with Candida proteins declining and Malassezia and Conidiobolus proteins rising in bacterial vaginosis.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study used metaproteomics (liquid chromatography-tandem mass spectrometry) to characterize the female genital tract mycobiome, the community of fungi living in the vagina. The researchers aimed to define which fungal genera are present and what functional biological processes they carry out. They also examined how the fungal protein profile shifts between different bacterial vaginosis (BV) states, since fungal communities have been understudied relative to bacteria in this niche."
+      ],
+      [
+        "Who was studied?",
+        "The study sampled 123 young, reproductive-age women from South Africa, a population noted to be at increased risk for female genital tract diseases such as bacterial vaginosis and sexually transmitted infections. Lateral vaginal wall swabs were collected from these women for mass spectrometry analysis. The abstract describes this as the first large-scale metaproteomic study of the vaginal mycobiome in this population."
+      ],
+      [
+        "What were the most important findings?",
+        "Across the 123 women, 39 different fungal genera were identified, with Candida dominating the mycobiome at 53.2% relative abundance. Fungal composition changed at the protein, genus, and functional level depending on BV status. In women with bacterial vaginosis, Malassezia and Conidiobolus proteins increased in abundance while Candida proteins decreased."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "The findings show that the vaginal mycobiome, and Candida specifically, shifts in relationship to bacterial vaginosis rather than existing independently of bacterial disturbance. This suggests fungal communities, including less commonly studied genera like Malassezia and Conidiobolus, may play an active role in genital tract mucosal health when the bacterial component is disrupted. Incorporating mycobiome and functional protein data alongside bacterial profiling could improve understanding of BV and related genital tract disease risk in young South African women."
+      ]
+    ]
+  },
+  "40825855": {
+    "excerpt": "A defined, metabolically competent microbial consortium reproduced fine-flavour cocoa fermentation, confirmed by omics and a trained tasting panel.",
+    "sections": [
+      [
+        "What was studied?",
+        "This study investigated how cocoa (Theobroma cacao L.) bean fermentation shapes the flavour of premium chocolate. The researchers examined how abiotic factors, pH and temperature, interact with microbiota composition, including both bacteria and fungi, during spontaneous fermentation. Using genome-resolved metagenomics, they identified the metabolic traits underlying key flavour attributes, then tested whether a defined microbial consortium could reproduce those attributes under controlled conditions."
+      ],
+      [
+        "Who was studied?",
+        "The study population was not human or animal subjects but cocoa bean fermentation samples collected from Colombian farms. From these samples, the researchers characterized the natural fermentation microbial community and then constructed a defined, metabolically competent microbial consortium for controlled experiments. A trained tasting panel was also used to evaluate the resulting chocolate's flavour attributes."
+      ],
+      [
+        "What were the most important findings?",
+        "pH, temperature, and microbiota composition, spanning both bacteria and fungi, were found to influence the key flavour attributes of premium chocolate. Genome-resolved metagenomics showed that the metabolic traits required for developing chocolate's flavour profile are redundantly distributed across multiple members of the fermentation microbial community. Using a defined microbial consortium, the researchers confirmed, through omics, metabolic network analysis, and the trained tasting panel, that fine flavour attributes of chocolate could be reproduced under controlled fermentation conditions."
+      ],
+      [
+        "What are the greatest implications of this study?",
+        "These findings provide a basis for designing defined fermentation starters that can robustly and reproducibly generate fine chocolate flavour characteristics. This could reduce the unpredictability inherent in spontaneous fermentation and give producers more direct control over premium chocolate quality. The approach also demonstrates how genome-resolved metagenomics and metabolic network modeling can translate a complex natural bacterial and fungal community into a controlled, engineered fermentation process."
+      ]
+    ]
+  }
+}
