@@ -113,7 +113,7 @@ export function buildResearchFeeds({ studiesCsv, experimentsCsv, conditionLabel,
         title,
         status: "publish",
         excerpt_html: firstSentence(s["Abstract"]) || title,
-        content_html: sectionsToHtml(abstractToSections(s["Abstract"])),
+        content_html: sectionsToHtml(abstractToSections(s["Abstract"]) || [["What was studied?", title]]),
         published_at: s["Year"] ? `${s["Year"].trim()}-01-01` : null,
         meta: { feed, authors: author ? [author] : [] },
       });

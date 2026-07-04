@@ -6,6 +6,7 @@ export type DrawerStudy = {
   title: string; journal: string; year: string; design: string;
   participants: number; site: string; method: string;
   direction: "enriched" | "depleted"; grade: string; paper: string; caveats: string[];
+  url?: string; // our internal research-feed summary page (/research-feeds/<slug>)
 };
 export type DrawerRow = {
   condition: string; direction: "enriched" | "depleted" | "mixed";
@@ -29,13 +30,12 @@ function KV({ k, v }: { k: string; v: string }) {
 }
 
 function StudyCard({ s, primary }: { s: DrawerStudy; primary: boolean }) {
+  // We reviewed every study behind these signatures, so the study name links to our own
+  // research-feed summary page (internal) and sits BELOW the summary, not above it.
+  const href = s.url || s.paper;
+  const internal = !!s.url;
   return (
     <div className="mbio-study">
-      {s.paper ? (
-        <a className="mbio-study__title" href={s.paper} target="_blank" rel="noreferrer">{s.title}</a>
-      ) : (
-        <span className="mbio-study__title">{s.title}</span>
-      )}
       {primary && (
         <div className="mbio-study__band"><span className="mbio-study__band-title">Study Summary</span></div>
       )}
@@ -50,6 +50,11 @@ function StudyCard({ s, primary }: { s: DrawerStudy; primary: boolean }) {
       </div>
       {s.caveats.length > 0 && (
         <div className="mbio-study__caveat">{s.caveats.map((c) => c.charAt(0).toUpperCase() + c.slice(1)).join(". ")}.</div>
+      )}
+      {href ? (
+        <a className="mbio-study__title mbio-study__title--below" href={href} {...(internal ? {} : { target: "_blank", rel: "noreferrer" })}>{s.title}</a>
+      ) : (
+        <span className="mbio-study__title mbio-study__title--below">{s.title}</span>
       )}
     </div>
   );

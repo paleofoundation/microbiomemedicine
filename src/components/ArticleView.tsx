@@ -183,7 +183,11 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const html = item.content_html || "";
-  const faqs = getFaqs(html, item.title);
+  // Generated pages (taxon/condition) bake a real .rgbc-faq-block with authored, taxon-specific
+  // FAQs. Only auto-build FAQs for pages that LACK one (older migrated pages with an empty FAQ
+  // section). Auto-building over a real block duplicated it and re-escaped entities + citations
+  // into plain text (e.g. &ldquo; shown literally, [1] no longer a superscript link).
+  const faqs = html.includes("rgbc-faq-block") ? [] : getFaqs(html, item.title);
   let contentHtml = applyTextRules(linkifyClassifications(injectFaqs(html, faqs)), { images });
   const excerptHtml = applyTextRules(item.excerpt_html || "", { images });
   const toc = tableOfContents(html);

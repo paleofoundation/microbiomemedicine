@@ -152,7 +152,7 @@ const conds = [...byCond.values()].map((g) => {
     participants: (+o.n0 || 0) + (+o.n1 || 0),
     site: o.site, method: o.seq + (o.region ? " V" + o.region : ""),
     direction: o.direction === "increased" ? "enriched" : "depleted",
-    grade: gradeLetter(o.w), paper: o.paper, caveats: perStudyCaveats(o),
+    grade: gradeLetter(o.w), paper: o.paper, url: "/research-feeds/" + slugify(o.title), caveats: perStudyCaveats(o),
   }));
   const nStudies = studies.length;
   const participants = studies.reduce((s, x) => s + x.participants, 0);
@@ -204,7 +204,7 @@ H += P(`<em>A. baumannii</em> relies on a persistence-and-acquisition toolkit ra
 H += `<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr><th>Virulence factor</th><th>Description and role</th></tr></thead><tbody>`
   + `<tr><td>${mred("OmpA (outer-membrane protein A)")}</td><td>The most abundant surface protein; targets host mitochondria and the nucleus to trigger epithelial-cell death, and contributes to adherence, serum resistance, and biofilm.${cite("choi", "harding")}</td></tr>`
   + `<tr><td>${mred("Polysaccharide capsule (K locus)")}</td><td>Shields against complement, desiccation, and phagocytosis; a principal determinant of virulence and environmental survival.${cite("harding")}</td></tr>`
-  + `<tr><td>${mred("Biofilm & Csu pili")}</td><td>Chaperone&ndash;usher pili build biofilm on catheters and dry surfaces, conferring desiccation and antibiotic tolerance.${cite("harding")}</td></tr>`
+  + `<tr><td>${mred("Biofilm & Csu pili")}</td><td>Chaperone–usher pili build biofilm on catheters and dry surfaces, conferring desiccation and antibiotic tolerance.${cite("harding")}</td></tr>`
   + `<tr><td>${mred("Phospholipases C/D")}</td><td>Hydrolyze host membrane lipids, supporting serum resistance and cytotoxicity.${cite("harding")}</td></tr>`
   + `<tr><td>${mred("Lipooligosaccharide (LOS)")}</td><td>Endotoxin driving immune activation; LOS modification (or its loss) underlies colistin resistance.${cite("harding")}</td></tr>`
   + `<tr><td>${mred("Acinetobactin siderophore")}</td><td>High-affinity iron piracy from transferrin/lactoferrin; genetically required for full virulence in cell, insect, and mouse models.${cite("gaddy")}</td></tr>`
@@ -214,7 +214,7 @@ H += `<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr>
 
 // Metallomics (table) — the metallome-first lens
 H += `<h3 class="wp-block-heading" id="h-metallomics"><strong>Metallomics</strong></h3>`;
-H += P(`How <em>A. baumannii</em> acquires and manages each metal at the host&ndash;pathogen interface. The host defends by <em>withholding</em> iron, zinc, and manganese (nutritional immunity); <em>A. baumannii</em> carries a dedicated countermeasure for each, and these systems are among its most druggable dependencies.`);
+H += P(`How <em>A. baumannii</em> acquires and manages each metal at the host–pathogen interface. The host defends by <em>withholding</em> iron, zinc, and manganese (nutritional immunity); <em>A. baumannii</em> carries a dedicated countermeasure for each, and these systems are among its most druggable dependencies.`);
 H += `<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr><th>Metal / ion</th><th>Key features in <em>A. baumannii</em></th></tr></thead><tbody>`
   + `<tr><td>${mred("Iron (Fe)")}</td><td>The master nutrient. The <em>acinetobactin</em> siderophore system (bas/bau/bar loci) strips iron from host transferrin and lactoferrin; disabling it sharply attenuates virulence.${cite("gaddy")} The host counters with lactoferrin, transferrin, and hepcidin-driven iron sequestration.</td></tr>`
   + `<tr><td>${mred("Zinc (Zn)")}</td><td>The high-affinity ZnuABC importer resists calprotectin-mediated zinc starvation.${cite("hood")} Therapeutically pivotal: zinc limitation reverses carbapenem resistance in MDR isolates, a direct metallome-to-resistance link.${cite("hood")}</td></tr>`
@@ -254,11 +254,11 @@ H += `<details class="wp-block-details is-layout-flow"><summary><span style="col
 
 // ---------- Conditions (data-derived) ----------
 H += `<h2 class="wp-block-heading" id="h-conditions">Conditions</h2>`;
-H += P(`Where <em>A. baumannii</em> (NCBI:txid${TAXON.taxid}) appears as a differentially abundant taxon across the Microbiome Medicine corpus. Each row aggregates every experiment in which the organism moved in a given condition; <em>direction</em> is its change in the case/exposure group, and <em>grade</em> is the strongest single study's methodology weight (A&middot;D&middot;S&middot;C&middot;R), the same engine that grades every signature on this site.`);
+H += P(`Where <em>A. baumannii</em> (NCBI:txid${TAXON.taxid}) appears as a differentially abundant taxon across the Microbiome Medicine corpus. Each row aggregates every experiment in which the organism moved in a given condition; <em>direction</em> is its change in the case/exposure group, and <em>grade</em> is the strongest single study's methodology weight (A·D·S·C·R), the same engine that grades every signature on this site.`);
 H += P(`Across <strong>${conds.length}</strong> conditions and <strong>${new Set(obs.map((o) => o.pmid)).size}</strong> studies, the signal is genuinely mixed: enriched in ${nEnriched}, depleted in ${nDepleted}, and direction-conflicting in ${nMixed}. Because the directions disagree as often as they agree, the <em>aggregate</em> evidence tier for <em>A. baumannii</em> is <strong>Low</strong> (directional agreement 0.32): it is a broadly detected, context-dependent taxon, not a consistent marker of any one disease.`);
 // Detection caveat — microbiomemedicine brand note (light-red tint + brand-red rule, NOT
 // the magenta heavy-metal-index style).
-H += `<div class="mbio-note"><p><span class="mbio-note__lead">Detection note.</span> Species-level &ldquo;<em>A. baumannii</em>&rdquo; calls are inherently uncertain: short-read 16S and even shotgun profilers struggle to separate <em>A. baumannii</em> from its close relatives in the <em>Acinetobacter calcoaceticus-baumannii</em> complex, and environmental <em>Acinetobacter</em> is a common low-biomass and reagent contaminant. Several conditions below come from low-biomass sites (milk, conjunctiva, blood, tumor tissue) where a species-level assignment should be read as &ldquo;<em>Acinetobacter</em>, plausibly <em>baumannii</em>,&rdquo; not a confirmed identification. This is why the aggregate tier stays Low despite many observations.</p></div>`;
+H += `<div class="mbio-note"><p><span class="mbio-note__lead">Detection note.</span> Species-level “<em>A. baumannii</em>” calls are inherently uncertain: short-read 16S and even shotgun profilers struggle to separate <em>A. baumannii</em> from its close relatives in the <em>Acinetobacter calcoaceticus-baumannii</em> complex, and environmental <em>Acinetobacter</em> is a common low-biomass and reagent contaminant. Several conditions below come from low-biomass sites (milk, conjunctiva, blood, tumor tissue) where a species-level assignment should be read as “<em>Acinetobacter</em>, plausibly <em>baumannii</em>,” not a confirmed identification. This is why the aggregate tier stays Low despite many observations.</p></div>`;
 // The interactive Conditions table (grade gradient · direction · effect arrows · evidence →
 // study drawer) mounts here, rendered by <ConditionsTable data={meta.conditions}/>.
 H += `<!--CONDITIONS_TABLE-->`;

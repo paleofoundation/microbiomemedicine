@@ -356,6 +356,8 @@ figure.rgbc-figure img { display: block; max-width: 100%; height: auto; }
 .mbio-study { margin-bottom: 1.4rem; }
 .mbio-study__title { font-family: var(--font-serif); font-size: 1.05rem; color: var(--color-primary); line-height: 1.35; text-decoration: none; display: block; }
 .mbio-study__title:hover { text-decoration: underline; }
+/* When the study name links to our internal review, it sits below the Study Summary. */
+.mbio-study__title--below { margin-top: 0.95rem; }
 .mbio-study__band { background: #f6eeee; border-left: 4px solid var(--color-primary); border-radius: 8px; padding: 0.65rem 0.95rem; margin: 0.85rem 0 0.6rem; }
 .mbio-study__band-title { font-family: var(--font-serif); color: var(--color-primary); font-size: 1.05rem; }
 .mbio-kv { margin: 0.4rem 0 0; }
