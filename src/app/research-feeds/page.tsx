@@ -4,7 +4,11 @@ import { RF_CATEGORY_ORDER, RF_CATEGORIES } from "@/theme/researchFeedCategories
 import { ArchiveView } from "@/components/ArchiveView";
 
 export const revalidate = 3600;
-export const metadata: Metadata = { title: "Research Feeds" };
+export const metadata: Metadata = {
+  title: "Research Feeds",
+  description: "Curated summaries of microbiome research.",
+  alternates: { canonical: "/research-feeds" },
+};
 
 type Props = { searchParams: Promise<{ mode?: string }> };
 

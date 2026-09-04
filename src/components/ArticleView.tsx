@@ -316,7 +316,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                   title={item.title}
                   authors={authors.map((a) => a.name)}
                   year={updated ? updated.slice(0, 4) : undefined}
-                  url={`https://microbiomemedicine.com/${segment}/${slug}/`}
+                  url={`https://microbiomemedicine.com/${segment}/${slug}`}
                 />
               )}
             </div>

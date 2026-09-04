@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { canonicalPath, canonicalUrl, NOINDEX_PAGE_SLUGS } from "@/lib/seoIndexing";
+import { sectionBySegment } from "@/lib/content";
 
 export const SITE_URL = "https://microbiomemedicine.com";
 export const SITE_NAME = "Microbiome Medicine";
+export const NOINDEX_ROBOTS: Metadata["robots"] = { index: false, follow: false };
 // Every image on the site is our own original work. This page states the usage/licensing
 // terms and is the target for the ImageObject `license` + `acquireLicensePage` fields, so a
 // single edit here remaps the licensing URL across every page's structured data.
@@ -58,12 +61,15 @@ function abs(u?: string | null): string | undefined {
 
 // Metadata: title/description + canonical + OpenGraph + Twitter + Google Scholar citation_* tags.
 export function buildMetadata(item: SeoItem, o: SeoOpts): Metadata {
-  const title = item.seo_title || item.title;
+  const rawTitle = item.seo_title || item.title;
+  const title = rawTitle.replace(/\s+[-–—|]\s+Microbiome Medicine\s*$/i, "").trim() || rawTitle;
   const description = item.seo_description || stripTags(item.excerpt_html);
   const image = abs(o.image);
   // Google Scholar prefers slash-separated dates (YYYY/MM/DD).
   const date = (item.published_at || item.modified_at || "").slice(0, 10).replace(/-/g, "/");
-  const canonical = abs(o.path) || SITE_URL;
+  const path = canonicalPath(o.path);
+  const canonical = canonicalUrl(path);
+  const noindex = path !== "/" && NOINDEX_PAGE_SLUGS.has(path.slice(1));
   // Authorless pages are authored by Karen (site rule), so Scholar always gets an author.
   const authors = o.authors?.length ? o.authors : [{ name: "Karen Pendergrass" }];
   const citationAbstract = stripTags(item.seo_description) || stripTags(item.excerpt_html);
@@ -88,11 +94,12 @@ export function buildMetadata(item: SeoItem, o: SeoOpts): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: o.path },
+    alternates: { canonical },
+    robots: noindex ? NOINDEX_ROBOTS : undefined,
     openGraph: {
       title,
       description: description || undefined,
-      url: o.path,
+      url: canonical,
       siteName: SITE_NAME,
       type: "article",
       publishedTime: item.published_at || undefined,
@@ -110,7 +117,7 @@ export function buildJsonLd(
   item: SeoItem,
   o: SeoOpts & { faqs?: { q: string; a: string }[]; breadcrumbs?: { name: string; url: string }[] }
 ): Record<string, unknown>[] {
-  const url = SITE_URL + o.path;
+  const url = canonicalUrl(o.path);
   const date = item.published_at || item.modified_at || undefined;
   const scholarly = ["research-feed", "theory"].includes(o.type);
   const medical = ["condition", "microbe", "metal", "definition", "intervention", "supplement"].includes(o.type);
@@ -175,8 +182,17 @@ export function buildJsonLd(
     out.push({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      itemListElement: o.breadcrumbs.map((b, i) => ({ "@type": "ListItem", position: i + 1, name: b.name, item: SITE_URL + b.url })),
+      itemListElement: o.breadcrumbs.map((b, i) => ({ "@type": "ListItem", position: i + 1, name: b.name, item: canonicalUrl(b.url) })),
     });
   }
   return out;
+}
+
+export function buildArchiveMetadata(segment: string, titleOverride?: string): Metadata {
+  const s = sectionBySegment(segment);
+  return {
+    title: titleOverride || s?.label || segment,
+    description: s?.blurb,
+    alternates: { canonical: canonicalUrl(`/${segment}`) },
+  };
 }

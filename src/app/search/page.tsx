@@ -1,15 +1,20 @@
+import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
-import { SECTIONS } from "@/lib/content";
+import { contentPath } from "@/lib/content";
+import { NOINDEX_ROBOTS } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Search",
+  robots: NOINDEX_ROBOTS,
+  alternates: { canonical: "/search" },
+};
 
 type Props = { searchParams: Promise<{ q?: string; s?: string }> };
 type Item = { type?: string; slug: string; title: string; excerpt_html?: string | null };
 
-const SEGMENT_BY_TYPE: Record<string, string> = Object.fromEntries(SECTIONS.map((s) => [s.type, s.segment]));
 function pathFor(type: string, slug: string): string {
-  const seg = SEGMENT_BY_TYPE[type];
-  return seg ? `/${seg}/${slug}` : `/${slug}`;
+  return contentPath(type, slug);
 }
 
 // Badge label per content type (matches the original search results page).
@@ -86,13 +91,17 @@ export default async function SearchPage({ searchParams }: Props) {
   // mentions the term, exactly like the original WordPress ?s= results.
   let results: Item[] = [];
   if (q) {
-    const { data } = await supabase
-      .from("content_items")
-      .select("type,slug,title,excerpt_html")
-      .eq("status", "publish")
-      .textSearch("search_tsv", q, { type: "websearch", config: "english" })
-      .limit(100);
-    results = (data as Item[]) || [];
+    try {
+      const { data } = await supabase
+        .from("content_items")
+        .select("type,slug,title,excerpt_html")
+        .eq("status", "publish")
+        .textSearch("search_tsv", q, { type: "websearch", config: "english" })
+        .limit(100);
+      results = (data as Item[]) || [];
+    } catch {
+      results = [];
+    }
   }
 
   if (q) {

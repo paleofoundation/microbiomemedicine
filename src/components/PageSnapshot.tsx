@@ -29,7 +29,7 @@ export function PageSnapshot({ refs, mmas, stats }: { refs: number; mmas: number
         <div className="tooltip snapshot__tooltip">
           <div className="tooltip__content">
             <p>
-              <a href="/definition/microbiome-targeted-interventions-mbtis/">Microbiome-targeted interventions (MBTIs)</a>
+              <a href="/definition/microbiome-targeted-interventions-mbtis">Microbiome-targeted interventions (MBTIs)</a>
               {MBTI_DEF}
             </p>
           </div>

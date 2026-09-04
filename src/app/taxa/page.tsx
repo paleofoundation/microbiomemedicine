@@ -5,6 +5,8 @@ import taxaIndex from "@/data/taxa-index.json";
 export const metadata: Metadata = {
   title: "All Taxa Index",
   description: "Every microbial taxon observed across Microbiome Medicine signature studies, with evidence grade, domain, and the conditions it appears in.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/taxa" },
 };
 
 type RawTaxon = TaxonRow & { conditions?: unknown };

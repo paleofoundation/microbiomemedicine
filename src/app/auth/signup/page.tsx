@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
-export const metadata: Metadata = { title: "Join the Waitlist" };
+export const metadata: Metadata = {
+  title: "Join the Waitlist",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/auth/signup" },
+};
 
 // The signup page (same form as the modal). Linked from the right-rail
 // "Join the Roundtable" box; replaces the old 404'd /auth/signup.

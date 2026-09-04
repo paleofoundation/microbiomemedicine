@@ -17,7 +17,10 @@ import { ShareButton } from "@/components/ShareButton";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import type { Connection } from "@/lib/connections";
 
-export const metadata = { title: "Acinetobacter baumannii taxon page (preview)" };
+export const metadata = {
+  title: "Acinetobacter baumannii taxon page (preview)",
+  robots: { index: false, follow: false },
+};
 
 type Heading = { level: number; text: string; id: string };
 const html = (demo as { content_html: string }).content_html;

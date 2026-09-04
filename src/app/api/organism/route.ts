@@ -56,12 +56,18 @@ export async function GET(req: Request) {
   const name = searchParams.get("name");
   if (!slug || !name) return NextResponse.json({ html: null });
 
-  const { data } = await supabase
-    .from("content_items")
-    .select("meta")
-    .eq("slug", slug)
-    .limit(1)
-    .maybeSingle();
+  let data: { meta?: unknown } | null = null;
+  try {
+    const res = await supabase
+      .from("content_items")
+      .select("meta")
+      .eq("slug", slug)
+      .limit(1)
+      .maybeSingle();
+    data = res.data as { meta?: unknown } | null;
+  } catch {
+    return NextResponse.json({ html: null });
+  }
 
   const meta = (data?.meta || {}) as {
     signature?: { details?: Record<string, string>; organisms?: Record<string, Organism> };

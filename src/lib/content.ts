@@ -34,11 +34,37 @@ export const SECTIONS: Section[] = [
   { segment: "theories-hypotheses", type: "theory", label: "Novel Theories and Hypotheses", nav: "Theories", blurb: "Emerging theories and hypotheses." },
 ];
 
+// Routed types that are not in the public header/footer nav (SECTIONS). Adding
+// them here restores /validation/:slug without inventing a nav item.
+export const EXTRA_SECTIONS: Section[] = [
+  {
+    segment: "validation",
+    type: "validation",
+    label: "Validation",
+    nav: "Validation",
+    blurb: "Microbiome-targeted intervention validation reports.",
+  },
+];
+
 export const sectionBySegment = (segment: string): Section | undefined =>
-  SECTIONS.find((s) => s.segment === segment);
+  SECTIONS.find((s) => s.segment === segment) ?? EXTRA_SECTIONS.find((s) => s.segment === segment);
 
 export const segmentForType = (type: string): string =>
-  SECTIONS.find((s) => s.type === type)?.segment ?? type;
+  SECTIONS.find((s) => s.type === type)?.segment ??
+  EXTRA_SECTIONS.find((s) => s.type === type)?.segment ??
+  type;
+
+export const INDEXABLE_TYPES = new Set<string>([
+  "post",
+  "page",
+  ...SECTIONS.map((s) => s.type),
+  ...EXTRA_SECTIONS.map((s) => s.type),
+]);
+
+export function contentPath(type: string, slug: string): string {
+  if (type === "post" || type === "page") return `/${slug}`;
+  return `/${segmentForType(type)}/${slug}`;
+}
 
 // Verbatim captured WordPress content region for a page (pixel-exact rendering).
 export const getWpHtml = cache(async (id: number): Promise<string | null> => {
@@ -137,7 +163,7 @@ export const allConditionLinks = cache(async (): Promise<{ title: string; href: 
     .select("slug,title")
     .eq("type", "condition")
     .eq("status", "publish");
-  return (data ?? []).map((c) => ({ title: String((c as { title: string }).title).trim(), href: `/conditions/${(c as { slug: string }).slug}/` }));
+  return (data ?? []).map((c) => ({ title: String((c as { title: string }).title).trim(), href: `/conditions/${(c as { slug: string }).slug}` }));
 });
 
 export const sampleByType = cache(async (type: string, limit = 6) => {

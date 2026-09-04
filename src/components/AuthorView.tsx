@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { segmentForType } from "@/lib/content";
+import { contentPath } from "@/lib/content";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { AuthorSocials } from "@/components/AuthorSocials";
 
@@ -22,8 +22,7 @@ const PAGE_SIZE = 24;
 
 type Post = { type: string; slug: string; title: string; excerpt_html: string | null; modified_at: string | null };
 
-const hrefFor = (type: string, slug: string): string =>
-  type === "post" || type === "page" ? `/${slug}/` : `/${segmentForType(type)}/${slug}/`;
+const hrefFor = (type: string, slug: string): string => contentPath(type, slug);
 
 async function authorPosts(name: string, page: number): Promise<{ posts: Post[]; total: number }> {
   const from = (page - 1) * PAGE_SIZE;
@@ -39,7 +38,8 @@ async function authorPosts(name: string, page: number): Promise<{ posts: Post[];
 
 export async function authorMetadata(slug: string): Promise<Metadata> {
   const a = AUTHORS[slug];
-  return a ? { title: a.name } : {};
+  if (!a) return {};
+  return { title: a.name, alternates: { canonical: `/author/${slug}` } };
 }
 
 function Paginator({ slug, page, totalPages }: { slug: string; page: number; totalPages: number }) {

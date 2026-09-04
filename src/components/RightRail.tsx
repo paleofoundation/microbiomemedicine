@@ -30,7 +30,7 @@ export function RightRail({ connections = [] }: { connections?: Connection[] }) 
               exclusive invitations to roundtable conferences.
             </p>
             <div className="research-content__right-banner-note">
-              <p><a href="/auth/signup/">Join the Waitlist</a> and help shape the future of microbiome medicine.</p>
+              <p><a href="/auth/signup">Join the Waitlist</a> and help shape the future of microbiome medicine.</p>
             </div>
           </div>
         </div>

@@ -3,7 +3,10 @@
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import demo from "@/data/endo-signature-demo.json";
 
-export const metadata = { title: "Signature grade demo" };
+export const metadata = {
+  title: "Signature grade demo",
+  robots: { index: false, follow: false },
+};
 
 type Sig = {
   levels: Record<string, { name: string; value: number; has_info?: boolean; tier?: string; direction?: string; agreementBin?: string; domain?: string }[]>;

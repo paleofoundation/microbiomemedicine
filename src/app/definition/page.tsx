@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { ArchiveView } from "@/components/ArchiveView";
+import { buildArchiveMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
-export const metadata: Metadata = { title: "Definitions" };
+export const metadata: Metadata = buildArchiveMetadata("definition");
 
 type Props = { searchParams: Promise<{ page?: string }> };
 

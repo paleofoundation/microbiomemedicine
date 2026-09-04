@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { SECTIONS } from "@/lib/content";
+import { contentPath } from "@/lib/content";
 
 // Live autocomplete for the homepage hero search (the WordPress front.js search
 // plugin that populated `.js-search-result` doesn't run in the rebuild). Returns
@@ -46,10 +46,8 @@ const rank = (type: string): number => {
 
 // Mirror the /search page's pathFor: only types mapped to a URL segment get a
 // prefix; everything else (posts, pages) lives at the site root.
-const SEGMENT_BY_TYPE: Record<string, string> = Object.fromEntries(SECTIONS.map((s) => [s.type, s.segment]));
 function hrefFor(type: string, slug: string): string {
-  const seg = SEGMENT_BY_TYPE[type];
-  return seg ? `/${seg}/${slug}` : `/${slug}`;
+  return contentPath(type, slug);
 }
 
 export async function GET(req: Request) {
@@ -60,14 +58,18 @@ export async function GET(req: Request) {
   // Escape ilike wildcards in the user term so they match literally.
   const term = q.replace(/[\\%_]/g, (c) => `\\${c}`);
 
-  const { data } = await supabase
-    .from("content_items")
-    .select("type,slug,title")
-    .eq("status", "publish")
-    .ilike("title", `%${term}%`)
-    .limit(200);
-
-  const rows = (data as Row[]) || [];
+  let rows: Row[] = [];
+  try {
+    const { data } = await supabase
+      .from("content_items")
+      .select("type,slug,title")
+      .eq("status", "publish")
+      .ilike("title", `%${term}%`)
+      .limit(200);
+    rows = (data as Row[]) || [];
+  } catch {
+    return NextResponse.json({ items: [] });
+  }
   rows.sort((a, b) => {
     const r = rank(a.type) - rank(b.type);
     if (r !== 0) return r;
