@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sectionBySegment, getItem, getWpHtml, allConditionLinks } from "@/lib/content";
+import { canonicalItemPath, redirectIfUncanonicalSlug } from "@/lib/canonicalSlug";
 import { WpRender } from "@/components/WpRender";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import { Tooltips } from "@/components/Tooltips";
@@ -58,6 +59,8 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   if (!section) notFound();
   const item = await getItem(section.type, slug);
   if (!item) notFound();
+  redirectIfUncanonicalSlug("research-feeds", slug, item.slug);
+  const selfPath = canonicalItemPath("research-feeds", item.slug);
 
   const meta = (item.meta || {}) as Record<string, unknown>;
   const feed = (meta.feed || {}) as Feed;
@@ -73,13 +76,13 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
       <WpRender
         item={item}
         html={linkedHtml}
-        path={`/research-feeds/${slug}`}
+        path={selfPath}
         type="research-feed"
         connectionsOverride={buildConnections(meta.connections, conditions, linked)}
         breadcrumbs={[
           { name: "Home", url: "/" },
           { name: "Research Feeds", url: "/research-feeds" },
-          { name: item.title, url: `/research-feeds/${slug}` },
+          { name: item.title, url: selfPath },
         ]}
       />
     );
@@ -94,20 +97,20 @@ export async function ResearchFeedView({ slug }: { slug: string }) {
   const images = await getImageMeta();
   const loggedIn = await isLoggedIn();
   const linkedC = autolinkConditions(applyTextRules(graphsHtml(feed) + (item.content_html || ""), { images }), condLinks);
-  const contentHtml = autolinkEntities(linkedC.html, await getLinkTargets(), `/research-feeds/${slug}`).html;
+  const contentHtml = autolinkEntities(linkedC.html, await getLinkTargets(), selfPath).html;
   const linked = linkedC.linked;
   const connections = buildConnections(meta.connections, conditions, linked);
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const doi = feed.paper_url?.match(/doi\.org\/(.+)$/)?.[1];
   const jsonLd = buildJsonLd(item, {
-    path: `/research-feeds/${slug}`,
+    path: selfPath,
     type: "research-feed",
     authors,
     doi,
     breadcrumbs: [
       { name: "Home", url: "/" },
       { name: "Research Feeds", url: "/research-feeds" },
-      { name: item.title, url: `/research-feeds/${slug}` },
+      { name: item.title, url: selfPath },
     ],
   });
 

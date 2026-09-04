@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ConditionsTable } from "@/components/ConditionsTable";
 import { sectionBySegment, getItem, stripHost, getWpHtml, signatureMmaCount } from "@/lib/content";
+import { canonicalItemPath, redirectIfUncanonicalSlug } from "@/lib/canonicalSlug";
 import { WpRender } from "@/components/WpRender";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
@@ -160,11 +161,12 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const section = sectionBySegment(segment) ?? { segment: "", type: "post", label: "Blog", nav: "Blog", blurb: "" };
   const item = await getItem(section.type, slug);
   if (!item) notFound();
+  redirectIfUncanonicalSlug(section.type === "post" ? "" : segment, slug, item.slug);
 
   const images = await getImageMeta();
   const wpHtml = await getWpHtml(item.id);
   if (wpHtml) {
-    const wpPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+    const wpPath = canonicalItemPath(section.type === "post" ? "" : segment, item.slug);
     return (
       <WpRender
         item={item}
@@ -214,7 +216,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
   const heroMeta = img ? images.get(normSrc(img)) : undefined;
   const updated = item.modified_at ? item.modified_at.slice(0, 10) : null;
   const avatars = authors.filter((a) => a.avatar);
-  const selfPath = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+  const selfPath = canonicalItemPath(section.type === "post" ? "" : segment, item.slug);
   // Autolink the first mention of every concept entity (metals, definitions, microbes,
   // interventions, conditions…) in the body — sitewide internal-linking rule.
   contentHtml = autolinkEntities(contentHtml, await getLinkTargets(), selfPath).html;
@@ -280,7 +282,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                 <ol className="breadcrumb__wrapper">
                   <li className="breadcrumb__item"><Link className="breadcrumb__link" href="/">Home</Link></li>
                   <li className="breadcrumb__item"><Link className="breadcrumb__link" href={section.type === "post" ? "/" : `/${segment}`}>{section.label}</Link></li>
-                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={section.type === "post" ? `/${slug}` : `/${segment}/${slug}`}>{item.title}</Link></li>
+                  <li className="breadcrumb__item"><Link className="breadcrumb__link" href={selfPath}>{item.title}</Link></li>
                   <li className="breadcrumb__item"><span className="breadcrumb_last"><span className="badge">✓ Evidence based</span></span></li>
                 </ol>
               </nav>
@@ -316,7 +318,7 @@ export async function ArticleView({ segment, slug }: { segment: string; slug: st
                   title={item.title}
                   authors={authors.map((a) => a.name)}
                   year={updated ? updated.slice(0, 4) : undefined}
-                  url={`https://microbiomemedicine.com/${segment}/${slug}`}
+                  url={`https://microbiomemedicine.com${selfPath}`}
                 />
               )}
             </div>
@@ -414,6 +416,6 @@ export async function articleMetadata(segment: string, slug: string): Promise<Me
   const meta = (item.meta || {}) as Record<string, unknown>;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const image = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
-  const path = section.type === "post" ? `/${slug}` : `/${segment}/${slug}`;
+  const path = canonicalItemPath(section.type === "post" ? "" : segment, item.slug);
   return buildMetadata(item, { path, type: section.type, authors, image });
 }

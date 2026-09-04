@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/about-us", permanent: true },
       { source: "/author/karen", destination: "/author/kmfp84gmail-com", permanent: true },
       { source: "/author/karen-pendergrass", destination: "/author/kmfp84gmail-com", permanent: true },
+      { source: "/author/:slug/page/:n", destination: "/author/:slug?page=:n", permanent: true },
       { source: "/membership-2", destination: "/membership", permanent: true },
       { source: "/microbiome-signatures-home-new", destination: "/", permanent: true },
       { source: "/category/conditions", destination: "/conditions", permanent: true },

@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { supabase } from "./supabase";
+import { asciiSlug, slugLookupVariants, slugSearchToken, slugsEquivalent } from "./slugs";
 
 export type ListItem = {
   id: number;
@@ -62,14 +63,19 @@ export const INDEXABLE_TYPES = new Set<string>([
 ]);
 
 export function contentPath(type: string, slug: string): string {
-  if (type === "post" || type === "page") return `/${slug}`;
-  return `/${segmentForType(type)}/${slug}`;
+  const s = asciiSlug(slug) || slug;
+  if (type === "post" || type === "page") return `/${s}`;
+  return `/${segmentForType(type)}/${s}`;
 }
 
 // Verbatim captured WordPress content region for a page (pixel-exact rendering).
 export const getWpHtml = cache(async (id: number): Promise<string | null> => {
-  const { data } = await supabase.from("wp_render").select("html").eq("id", id).maybeSingle();
-  return (data?.html as string | undefined) ?? null;
+  try {
+    const { data } = await supabase.from("wp_render").select("html").eq("id", id).maybeSingle();
+    return (data?.html as string | undefined) ?? null;
+  } catch {
+    return null;
+  }
 });
 
 // Internal-link/image URLs were already made root-relative on import; this also
@@ -110,28 +116,45 @@ export const listAllResearchFeeds = cache(async (): Promise<FeedItem[]> => {
   return out;
 });
 
+async function fetchPublishedBySlug(type: string | null, slug: string): Promise<ContentItem | null> {
+  try {
+    let q = supabase.from("content_items").select("*").eq("slug", slug).eq("status", "publish");
+    q = type ? q.eq("type", type) : q.in("type", ["post", "page"]);
+    const { data } = await q.order("type").limit(1).maybeSingle();
+    return (data as ContentItem | null) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchPublishedBySlugToken(type: string | null, slug: string): Promise<ContentItem | null> {
+  const token = slugSearchToken(slug);
+  if (!token) return null;
+  try {
+    let q = supabase.from("content_items").select("*").eq("status", "publish").ilike("slug", `%${token}%`).limit(25);
+    q = type ? q.eq("type", type) : q.in("type", ["post", "page"]);
+    const { data } = await q;
+    const rows = (data ?? []) as ContentItem[];
+    return rows.find((r) => slugsEquivalent(r.slug, slug)) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export const getItem = cache(async (type: string, slug: string) => {
-  const { data } = await supabase
-    .from("content_items")
-    .select("*")
-    .eq("type", type)
-    .eq("slug", slug)
-    .eq("status", "publish")
-    .maybeSingle();
-  return (data as ContentItem | null) ?? null;
+  for (const candidate of slugLookupVariants(slug)) {
+    const hit = await fetchPublishedBySlug(type, candidate);
+    if (hit) return hit;
+  }
+  return fetchPublishedBySlugToken(type, slug);
 });
 
 export const getRootBySlug = cache(async (slug: string) => {
-  const { data } = await supabase
-    .from("content_items")
-    .select("*")
-    .in("type", ["post", "page"])
-    .eq("slug", slug)
-    .eq("status", "publish")
-    .order("type")
-    .limit(1)
-    .maybeSingle();
-  return (data as ContentItem | null) ?? null;
+  for (const candidate of slugLookupVariants(slug)) {
+    const hit = await fetchPublishedBySlug(null, candidate);
+    if (hit) return hit;
+  }
+  return fetchPublishedBySlugToken(null, slug);
 });
 
 // "Identified MMAs" = the microbes important enough to be given their own sidebar

@@ -60,6 +60,12 @@ test("www /?s= is one hop to apex /search?q=", () => {
   assert.equal(d.status, 301);
 });
 
+test("bare DOI paths redirect to search", () => {
+  const d = decideCanonical(CANONICAL_HOST, "/10.1177/2042018810367984", "", SITE_ORIGIN);
+  assert.equal(d.redirect, `${SITE_ORIGIN}/search?q=10.1177%2F2042018810367984`);
+  assert.equal(d.status, 301);
+});
+
 test("noindex paths cover private, search, demo, and leftover WP slugs", () => {
   assert.equal(isNoindexPath("/search"), true);
   assert.equal(isNoindexPath("/search/"), true);

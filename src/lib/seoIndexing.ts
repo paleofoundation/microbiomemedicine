@@ -104,14 +104,20 @@ export function decideCanonical(
   const forceApex = shouldForceApex(host);
   const base = forceApex ? SITE_ORIGIN : origin.replace(/\/$/, "");
 
-  if (canonicalPath(pathname) === "/" && params.has("s")) {
+  const path = canonicalPath(pathname);
+  if (path === "/" && params.has("s")) {
     const dest = new URL("/search", `${base}/`);
     const q = (params.get("s") || "").trim();
     if (q) dest.searchParams.set("q", q);
     return { redirect: dest.toString(), status: 301 };
   }
 
-  const path = canonicalPath(pathname);
+  if (/^\/10\.\d+/.test(path)) {
+    const dest = new URL("/search", `${base}/`);
+    dest.searchParams.set("q", path.slice(1));
+    return { redirect: dest.toString(), status: 301 };
+  }
+
   const slashWrong = pathHasExtraSlash(pathname);
   if (!forceApex && !slashWrong) return { redirect: null };
 

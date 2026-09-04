@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { SECTIONS, stripHost, INDEXABLE_TYPES, contentPath } from "@/lib/content";
 import { SITE_URL } from "@/lib/seo";
 import { NOINDEX_PAGE_SLUGS, canonicalUrl } from "@/lib/seoIndexing";
+import { asciiSlug } from "@/lib/slugs";
 
 export const revalidate = 86400;
 
@@ -32,6 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }[]) {
       if (!INDEXABLE_TYPES.has(r.type)) continue;
       if (!r.slug || NOINDEX_PAGE_SLUGS.has(r.slug)) continue;
+      if (!asciiSlug(r.slug)) continue;
       const path = contentPath(r.type, r.slug);
       const url = canonicalUrl(path);
       if (seen.has(url)) continue;

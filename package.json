@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test src/lib/seoIndexing.test.ts",
+    "test": "node --experimental-strip-types --test src/lib/*.test.ts",
     "img:convert": "node scripts/convert-images.mjs",
     "img:og": "node scripts/convert-images.mjs og",
     "img:lint": "node scripts/lint-images.mjs",

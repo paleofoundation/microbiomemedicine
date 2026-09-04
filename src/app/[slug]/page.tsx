@@ -4,6 +4,7 @@ import { getRootBySlug, getWpHtml, stripHost } from "@/lib/content";
 import { ArticleView } from "@/components/ArticleView";
 import { WpRender } from "@/components/WpRender";
 import { buildMetadata } from "@/lib/seo";
+import { canonicalItemPath, redirectIfUncanonicalSlug } from "@/lib/canonicalSlug";
 
 export const revalidate = 3600;
 
@@ -16,13 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = (item.meta || {}) as Record<string, unknown>;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   const image = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
-  return buildMetadata(item, { path: `/${slug}`, type: item.type, authors, image });
+  return buildMetadata(item, { path: canonicalItemPath("", item.slug), type: item.type, authors, image });
 }
 
 export default async function RootContentPage({ params }: Props) {
   const { slug } = await params;
   const item = await getRootBySlug(slug);
   if (!item) notFound();
+  redirectIfUncanonicalSlug("", slug, item.slug);
 
   // Captured WordPress content (imported posts + static pages) renders verbatim via WpRender.
   // STOP pages and imported posts carry their full hero, "Did you know?", Update History, and
@@ -34,11 +36,11 @@ export default async function RootContentPage({ params }: Props) {
       <WpRender
         item={item}
         html={wpHtml}
-        path={`/${slug}`}
+        path={canonicalItemPath("", item.slug)}
         type={item.type === "post" ? "post" : "page"}
         breadcrumbs={[
           { name: "Home", url: "/" },
-          { name: item.title, url: `/${slug}` },
+          { name: item.title, url: canonicalItemPath("", item.slug) },
         ]}
       />
     );
