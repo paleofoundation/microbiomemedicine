@@ -3,7 +3,7 @@ import { HOME_HTML } from "@/theme/homeMain";
 
 export const revalidate = 3600;
 export const metadata: Metadata = {
-  alternates: { canonical: "https://microbiomemedicine.com/" },
+  alternates: { canonical: "https://microbiomemedicine.com" },
 };
 
 // Original homepage markup: make old-host URLs relative and point search at /search.

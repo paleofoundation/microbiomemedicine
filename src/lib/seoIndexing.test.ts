@@ -18,7 +18,7 @@ test("canonicalPath strips trailing slashes except root", () => {
 });
 
 test("canonicalUrl is apex https with no extra slash", () => {
-  assert.equal(canonicalUrl("/"), `${SITE_ORIGIN}/`);
+  assert.equal(canonicalUrl("/"), SITE_ORIGIN);
   assert.equal(canonicalUrl("/conditions/endometriosis/"), `${SITE_ORIGIN}/conditions/endometriosis`);
 });
 

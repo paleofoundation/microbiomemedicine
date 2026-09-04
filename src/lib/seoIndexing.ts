@@ -68,7 +68,9 @@ export function canonicalPath(pathname: string): string {
 
 export function canonicalUrl(pathname: string): string {
   const p = canonicalPath(pathname);
-  return p === "/" ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${p}`;
+  // Next.js emits the homepage canonical without a trailing slash; match that so
+  // sitemap + <link rel=canonical> stay identical.
+  return p === "/" ? SITE_ORIGIN : `${SITE_ORIGIN}${p}`;
 }
 
 export function pathHasExtraSlash(pathname: string): boolean {
