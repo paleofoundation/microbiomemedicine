@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { listAllResearchFeeds, type FeedItem } from "@/lib/content";
+import { asciiSlug } from "@/lib/slugs";
 import { RF_CATEGORY_ORDER, RF_CATEGORIES } from "@/theme/researchFeedCategories";
 import { ArchiveView } from "@/components/ArchiveView";
 
@@ -72,7 +73,7 @@ export default async function Page({ searchParams }: Props) {
                     </summary>
                     <div className="rgbc-content__details-content rgbc-content__details-content--grid">
                       {items.map((f) => (
-                        <a key={f.slug} href={`/research-feeds/${f.slug}`}>
+                        <a key={f.slug} href={`/research-feeds/${asciiSlug(f.slug) || f.slug}`}>
                           <p>{f.title}</p>
                           <div className="rgbc-content__details-meta">
                             <small className="rgbc-content__details-date">{fmtDate(f.modified_at)}</small>

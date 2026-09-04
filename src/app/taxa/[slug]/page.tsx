@@ -85,7 +85,7 @@ export default async function Page({ params }: Props) {
                     {t.conditions.map((c) => (
                       <tr key={c.slug} style={{ borderBottom: "1px solid #f1f2f4" }}>
                         <td style={{ padding: ".5rem .7rem" }}>
-                          <Link href={`/conditions/${c.slug}/`} style={{ color: "#cc3333", textDecoration: "none" }}>{c.title}</Link>
+                          <Link href={`/conditions/${c.slug}`} style={{ color: "#cc3333", textDecoration: "none" }}>{c.title}</Link>
                         </td>
                         <td style={{ padding: ".5rem .7rem" }}>{dirLabel(c.direction)}</td>
                         <td style={{ padding: ".5rem .7rem" }}>{c.tier || "—"}</td>

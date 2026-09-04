@@ -3,11 +3,11 @@
 // matching definition pages are created (e.g. Herbal, Pharmaceutical, Diet, Supplement,
 // Biophysical Interventions do not exist as definitions yet).
 const CLASSIFICATION_LINKS: Record<string, string> = {
-  "Drug Repurposing": "/definition/drug-repurposing/",
-  Prebiotics: "/definition/prebiotics/",
-  Prebiotic: "/definition/prebiotics/",
-  Postbiotics: "/definition/postbiotics/",
-  "Fecal Microbiota Transplantation": "/definition/fecal-microbiota-transplantation-fmt/",
+  "Drug Repurposing": "/definition/drug-repurposing",
+  Prebiotics: "/definition/prebiotics",
+  Prebiotic: "/definition/prebiotics",
+  Postbiotics: "/definition/postbiotics",
+  "Fecal Microbiota Transplantation": "/definition/fecal-microbiota-transplantation-fmt",
 };
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

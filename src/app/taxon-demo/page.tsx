@@ -61,9 +61,9 @@ const [beforeCond, afterCond] = html.includes(COND_MARKER) ? html.split(COND_MAR
 const conditionsData = (demo.meta as { conditions?: ComponentProps<typeof ConditionsTable>["data"] }).conditions;
 // Global rule: max 3 right-rail connections.
 const connections: Connection[] = [
-  { label: "Iron", href: "/metals/iron/", type: "metal" },
-  { label: "Zinc", href: "/metals/zinc/", type: "metal" },
-  { label: "Lactoferrin", href: "/interventions/lactoferrin/", type: "intervention" },
+  { label: "Iron", href: "/metals/iron", type: "metal" },
+  { label: "Zinc", href: "/metals/zinc", type: "metal" },
+  { label: "Lactoferrin", href: "/interventions/lactoferrin", type: "intervention" },
 ];
 
 export default function Page() {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { sectionBySegment, listByType, type ListItem } from "@/lib/content";
+import { asciiSlug } from "@/lib/slugs";
 
 export async function ArchiveView({ segment }: { segment: string; page?: number }) {
   const section = sectionBySegment(segment);
@@ -58,7 +59,7 @@ export async function ArchiveView({ segment }: { segment: string; page?: number 
                   </div>
                   {groups.get(L)!.map((it) => (
                     <div key={it.id} className="rgbc-archive__post">
-                      <a className="rgbc-archive__link" href={`/${segment}/${it.slug}`}>{it.title}</a>
+                      <a className="rgbc-archive__link" href={`/${segment}/${asciiSlug(it.slug) || it.slug}`}>{it.title}</a>
                     </div>
                   ))}
                 </div>

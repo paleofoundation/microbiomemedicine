@@ -48,14 +48,18 @@ const DIRECTORY: { type: string; seg: string; label: string }[] = [
 ];
 
 async function sample(type: string): Promise<Item[]> {
-  const { data } = await supabase
-    .from("content_items")
-    .select("slug,title")
-    .eq("type", type)
-    .eq("status", "publish")
-    .order("title")
-    .limit(12);
-  return (data as Item[]) || [];
+  try {
+    const { data } = await supabase
+      .from("content_items")
+      .select("slug,title")
+      .eq("type", type)
+      .eq("status", "publish")
+      .order("title")
+      .limit(12);
+    return (data as Item[]) || [];
+  } catch {
+    return [];
+  }
 }
 
 const Magnifier = () => (

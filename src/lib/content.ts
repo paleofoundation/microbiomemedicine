@@ -86,14 +86,18 @@ export const stripHost = (url: string | null | undefined): string | null =>
 export const listByType = cache(
   async (type: string, page = 1, pageSize = 48) => {
     const from = (page - 1) * pageSize;
-    const { data, count } = await supabase
-      .from("content_items")
-      .select("id,slug,title,excerpt_html,featured_image_url", { count: "exact" })
-      .eq("type", type)
-      .eq("status", "publish")
-      .order("title")
-      .range(from, from + pageSize - 1);
-    return { items: (data ?? []) as ListItem[], total: count ?? 0, page, pageSize };
+    try {
+      const { data, count } = await supabase
+        .from("content_items")
+        .select("id,slug,title,excerpt_html,featured_image_url", { count: "exact" })
+        .eq("type", type)
+        .eq("status", "publish")
+        .order("title")
+        .range(from, from + pageSize - 1);
+      return { items: (data ?? []) as ListItem[], total: count ?? 0, page, pageSize };
+    } catch {
+      return { items: [] as ListItem[], total: 0, page, pageSize };
+    }
   }
 );
 
@@ -102,16 +106,20 @@ export type FeedItem = { slug: string; title: string; excerpt_html: string | nul
 // All research-feed items (for the category-grouped view); pages past the 1000-row cap.
 export const listAllResearchFeeds = cache(async (): Promise<FeedItem[]> => {
   const out: FeedItem[] = [];
-  for (let from = 0; from < 4000; from += 1000) {
-    const { data } = await supabase
-      .from("content_items")
-      .select("slug,title,excerpt_html,modified_at")
-      .eq("type", "research-feed")
-      .eq("status", "publish")
-      .range(from, from + 999);
-    if (!data || data.length === 0) break;
-    out.push(...(data as FeedItem[]));
-    if (data.length < 1000) break;
+  try {
+    for (let from = 0; from < 4000; from += 1000) {
+      const { data } = await supabase
+        .from("content_items")
+        .select("slug,title,excerpt_html,modified_at")
+        .eq("type", "research-feed")
+        .eq("status", "publish")
+        .range(from, from + 999);
+      if (!data || data.length === 0) break;
+      out.push(...(data as FeedItem[]));
+      if (data.length < 1000) break;
+    }
+  } catch {
+    return out;
   }
   return out;
 });
@@ -181,21 +189,32 @@ export function referenceCount(html: string): number {
 // All published condition pages as {title, href} — for internally linking condition
 // mentions in research-feed bodies + populating the Connections sidebar.
 export const allConditionLinks = cache(async (): Promise<{ title: string; href: string }[]> => {
-  const { data } = await supabase
-    .from("content_items")
-    .select("slug,title")
-    .eq("type", "condition")
-    .eq("status", "publish");
-  return (data ?? []).map((c) => ({ title: String((c as { title: string }).title).trim(), href: `/conditions/${(c as { slug: string }).slug}` }));
+  try {
+    const { data } = await supabase
+      .from("content_items")
+      .select("slug,title")
+      .eq("type", "condition")
+      .eq("status", "publish");
+    return (data ?? []).map((c) => ({
+      title: String((c as { title: string }).title).trim(),
+      href: contentPath("condition", (c as { slug: string }).slug),
+    }));
+  } catch {
+    return [];
+  }
 });
 
 export const sampleByType = cache(async (type: string, limit = 6) => {
-  const { data } = await supabase
-    .from("content_items")
-    .select("id,slug,title,excerpt_html,featured_image_url")
-    .eq("type", type)
-    .eq("status", "publish")
-    .order("title")
-    .limit(limit);
-  return (data ?? []) as ListItem[];
+  try {
+    const { data } = await supabase
+      .from("content_items")
+      .select("id,slug,title,excerpt_html,featured_image_url")
+      .eq("type", type)
+      .eq("status", "publish")
+      .order("title")
+      .limit(limit);
+    return (data ?? []) as ListItem[];
+  } catch {
+    return [];
+  }
 });
