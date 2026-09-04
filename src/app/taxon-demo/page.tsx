@@ -17,7 +17,10 @@ import { ShareButton } from "@/components/ShareButton";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import type { Connection } from "@/lib/connections";
 
-export const metadata = { title: "Acinetobacter baumannii taxon page (preview)" };
+export const metadata = {
+  title: "Acinetobacter baumannii taxon page (preview)",
+  robots: { index: false, follow: false },
+};
 
 type Heading = { level: number; text: string; id: string };
 const html = (demo as { content_html: string }).content_html;
@@ -58,9 +61,9 @@ const [beforeCond, afterCond] = html.includes(COND_MARKER) ? html.split(COND_MAR
 const conditionsData = (demo.meta as { conditions?: ComponentProps<typeof ConditionsTable>["data"] }).conditions;
 // Global rule: max 3 right-rail connections.
 const connections: Connection[] = [
-  { label: "Iron", href: "/metals/iron/", type: "metal" },
-  { label: "Zinc", href: "/metals/zinc/", type: "metal" },
-  { label: "Lactoferrin", href: "/interventions/lactoferrin/", type: "intervention" },
+  { label: "Iron", href: "/metals/iron", type: "metal" },
+  { label: "Zinc", href: "/metals/zinc", type: "metal" },
+  { label: "Lactoferrin", href: "/interventions/lactoferrin", type: "intervention" },
 ];
 
 export default function Page() {

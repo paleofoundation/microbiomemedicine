@@ -8,7 +8,7 @@ import { SITE_NAME } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Image License & Usage",
   description: `All images, illustrations, diagrams, and charts on ${SITE_NAME} are original works we created and own. Terms of use and how to license them.`,
-  alternates: { canonical: "/image-license" },
+  alternates: { canonical: "https://microbiomemedicine.com/image-license" },
 };
 
 export default function ImageLicensePage() {
@@ -73,7 +73,7 @@ export default function ImageLicensePage() {
                 <p>
                   We license our images for editorial, academic, and commercial use on a
                   case-by-case basis. To request permission or purchase a license, please{" "}
-                  <Link href="/contact/">contact us</Link> with the specific image, the pages it
+                  <Link href="/contact">contact us</Link> with the specific image, the pages it
                   appears on, and how you intend to use it. We will respond with the applicable
                   terms and attribution requirements.
                 </p>

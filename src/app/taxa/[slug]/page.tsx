@@ -18,8 +18,13 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const t = bySlug(slug);
-  if (!t) return { title: "Taxon" };
-  return { title: `${t.name} — Taxa Index`, description: `${t.name} (${t.domain}) across ${t.nConditions} Microbiome Medicine condition signature(s).` };
+  if (!t) return { title: "Taxon", robots: { index: false, follow: false } };
+  return {
+    title: `${t.name} — Taxa Index`,
+    description: `${t.name} (${t.domain}) across ${t.nConditions} Microbiome Medicine condition signature(s).`,
+    robots: { index: false, follow: false },
+    alternates: { canonical: `/taxa/${t.slug}` },
+  };
 }
 
 const dirLabel = (d: string) => (d === "increased" ? "Increased ↑" : d === "decreased" ? "Decreased ↓" : "Mixed ↕");
@@ -80,7 +85,7 @@ export default async function Page({ params }: Props) {
                     {t.conditions.map((c) => (
                       <tr key={c.slug} style={{ borderBottom: "1px solid #f1f2f4" }}>
                         <td style={{ padding: ".5rem .7rem" }}>
-                          <Link href={`/conditions/${c.slug}/`} style={{ color: "#cc3333", textDecoration: "none" }}>{c.title}</Link>
+                          <Link href={`/conditions/${c.slug}`} style={{ color: "#cc3333", textDecoration: "none" }}>{c.title}</Link>
                         </td>
                         <td style={{ padding: ".5rem .7rem" }}>{dirLabel(c.direction)}</td>
                         <td style={{ padding: ".5rem .7rem" }}>{c.tier || "—"}</td>

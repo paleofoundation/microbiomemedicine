@@ -9,7 +9,10 @@ import { RightRail } from "@/components/RightRail";
 import { Tooltips } from "@/components/Tooltips";
 import type { Connection } from "@/lib/connections";
 
-export const metadata = { title: "Research feed page (preview)" };
+export const metadata = {
+  title: "Research feed page (preview)",
+  robots: { index: false, follow: false },
+};
 
 type Feed = { location?: string[]; sample_site?: string[]; species?: string[]; paper_url?: string };
 type Row = { title: string; slug: string; content_html: string; published_at: string; meta: { feed: Feed; authors: { name: string; orcid?: string; avatar?: string }[] } };

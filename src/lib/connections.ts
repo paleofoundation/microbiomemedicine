@@ -29,7 +29,7 @@ export function autoConnections(html: string, selfPath = "", max = MAX): Connect
     else acc.set(href, { label, type: href.split("/")[1], n: 1 });
   }
   return [...acc.entries()]
-    .map(([href, v]) => ({ href: href + "/", label: v.label, type: v.type, n: v.n }))
+    .map(([href, v]) => ({ href, label: v.label, type: v.type, n: v.n }))
     .sort((a, b) => {
       const ac = a.type === "conditions" ? 0 : 1, bc = b.type === "conditions" ? 0 : 1;
       return ac - bc || b.n - a.n || a.label.localeCompare(b.label);
@@ -46,7 +46,10 @@ export function resolveConnections(override: Override, html: string, selfPath = 
     return override
       .filter((o): o is { label: string; href: string } => !!o && typeof o.label === "string" && typeof o.href === "string")
       .slice(0, max)
-      .map((o) => ({ label: o.label, href: o.href, type: (o.href.split("/")[1] || "") }));
+      .map((o) => {
+        const href = o.href.replace(/\/+$/, "") || "/";
+        return { label: o.label, href, type: href.split("/")[1] || "" };
+      });
   }
   return autoConnections(html, selfPath, max);
 }
