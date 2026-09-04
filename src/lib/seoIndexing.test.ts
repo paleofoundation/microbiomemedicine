@@ -9,6 +9,7 @@ import {
   isNoindexPath,
   isPreviewHost,
   shouldForceApex,
+  unslashInternalHrefs,
 } from "./seoIndexing.ts";
 
 test("canonicalPath strips trailing slashes except root", () => {
@@ -64,6 +65,16 @@ test("bare DOI paths redirect to search", () => {
   const d = decideCanonical(CANONICAL_HOST, "/10.1177/2042018810367984", "", SITE_ORIGIN);
   assert.equal(d.redirect, `${SITE_ORIGIN}/search?q=10.1177%2F2042018810367984`);
   assert.equal(d.status, 301);
+});
+
+test("unslashInternalHrefs strips slash from captured WP links", () => {
+  const html = unslashInternalHrefs(
+    `<a href="/conditions/endometriosis/">endo</a><a href="https://www.microbiomemedicine.com/guide/foo/">g</a><a href="/">home</a>`
+  );
+  assert.equal(html.includes('href="/conditions/endometriosis"'), true);
+  assert.equal(html.includes('href="/guide/foo"'), true);
+  assert.equal(html.includes('href="/"'), true);
+  assert.equal(html.includes("/endometriosis/"), false);
 });
 
 test("noindex paths cover private, search, demo, and leftover WP slugs", () => {

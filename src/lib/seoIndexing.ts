@@ -77,6 +77,25 @@ export function pathHasExtraSlash(pathname: string): boolean {
   return pathname.length > 1 && pathname.endsWith("/");
 }
 
+/** Rewrite captured WP href/action values to the no-slash canonical path. */
+export function unslashInternalHrefs(html: string): string {
+  return html.replace(/\b(href|action)=(["'])([^"']*)\2/gi, (full, attr: string, q: string, url: string) => {
+    if (!url || /^(#|mailto:|javascript:|tel:)/i.test(url)) return full;
+    try {
+      const abs = /^https?:\/\//i.test(url);
+      const base = abs ? url : `${SITE_ORIGIN}${url.startsWith("/") ? url : `/${url}`}`;
+      const u = new URL(base);
+      const host = u.hostname.replace(/^www\./, "");
+      if (host !== CANONICAL_HOST) return full;
+      const path = stripTrailingSlash(u.pathname);
+      const next = `${path}${u.search}${u.hash}`;
+      return `${attr}=${q}${next}${q}`;
+    } catch {
+      return full;
+    }
+  });
+}
+
 export function isNoindexPath(pathname: string): boolean {
   const p = canonicalPath(pathname);
   if (p !== "/" && NOINDEX_PAGE_SLUGS.has(p.slice(1))) return true;
