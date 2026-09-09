@@ -214,3 +214,21 @@ author (default Karen Pendergrass).
 When you build or touch a component not fully specified above, first document it here from the
 canonical source, then build to the spec. This file only grows; it is never deviated from.
 Related: `DESIGN.md`, `docs/CONTENT-RULES.md`, `docs/IMAGE-CONVENTIONS.md`, `docs/EVIDENCE-GRADING.md`.
+
+## Component: Homepage (approved layout, 2026-09-09)
+
+The user's four screenshots of `microbiome-medicine-home.kmfp.chatgpt.site`
+(the prototype at commit `26acaae`) specify the homepage body layout: light-gray
+split hero with the evidence-mapping image and search, three bordered topic cards,
+light-gray validation section with three numbered steps, research rows, and signup.
+The user explicitly requires existing site typography, font sizes, and colors.
+Use the theme's Inter/Lora fonts and 400 weight, its responsive h2/h3 scale, the
+original `.search__title` h1 size, `.search__description` intro size, and
+`.categories__link` / `.categories__more` link sizes. Accents use the shared
+`--color-primary`; the original homepage background is `#f7f8fa`.
+
+Implement only the body in `HomePage.tsx` and its scoped CSS module. The captured
+navbar, megamenu, footer, shared styles, and other page layouts remain intact.
+Use existing internal destinations and shared search / subscription handlers.
+The red hero and endometriosis spotlight from the later prototype are not the
+approved homepage layout.
