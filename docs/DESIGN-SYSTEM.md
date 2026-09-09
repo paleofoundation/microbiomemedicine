@@ -232,3 +232,17 @@ navbar, megamenu, footer, shared styles, and other page layouts remain intact.
 Use existing internal destinations and shared search / subscription handlers.
 The red hero and endometriosis spotlight from the later prototype are not the
 approved homepage layout.
+
+Homepage typography clarification (2026-09-09): match styles by component role.
+Topic-card titles use the original `.categories__group` (Inter 24px/28px), not
+generic Lora h3. Research-row titles use the endometriosis `.research-feed__title`
+(Inter 22px, inheriting 36px line height at 1440px+, 32.4px below). Supporting
+card/method prose uses `.research-content__center`'s 20px/180% scale, 18px below
+1440px. Small overlines/captions use the existing 14px/140% secondary-text scale;
+research metadata and popular links use 16px. No added letter spacing. Signup
+uses the original `.newsletter__title` and `.newsletter__description` sizes,
+breakpoints, and colors. The main hero title and introduction retain their
+original homepage sizes. At wide viewports, section content stays inside the
+original wrapper's 1912px usable width (124rem less two 36px gutters).
+The Explore heading retains the original `.categories__title` 40px size at all
+breakpoints; it does not fall back to the generic 20px mobile h2.
