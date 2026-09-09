@@ -48,7 +48,7 @@
 .home .evidence-note p { font-size: 14px; line-height: 1.4; color: var(--home-muted); }
 .home .evidence-note strong { color: var(--home-ink); }
 .home .evidence-note > a { color: var(--color-primary); font-size: 24px; }
-.home .credibility { display: grid; grid-template-columns: repeat(3,1fr); padding: 0 max(24px,5.5vw); border-block: 1px solid var(--home-line); }
+.home .credibility { display: grid; grid-template-columns: repeat(3,1fr); padding: 0 max(24px,5.5vw,calc((100vw - 1912px) / 2)); border-block: 1px solid var(--home-line); }
 .home .credibility span { display: grid; align-items: center; text-align: center; min-height: 68px; padding: 14px; border-right: 1px solid var(--home-line); font-size: 14px; line-height: 1.4; letter-spacing: normal; color: var(--home-muted); }
 .home .credibility span:last-child { border-right: 0; }
 .home .section { padding: 96px max(24px,5.5vw,calc((100vw - 1912px) / 2)); }
