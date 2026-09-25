@@ -104,7 +104,7 @@ export function HomePage() {
         <span>DESIGNED TO CLOSE THE TRANSLATIONAL GAP</span>
       </section>
 
-      <section className={cx("explore section")}  id="explore">
+      <section className={cx("section")}  id="explore">
         <div className={cx("section-intro centered")} >
           <p className={cx("section-label")} >Explore microbiome signatures</p>
           <h2>One clinical question. <br />A connected evidence map.</h2>
@@ -140,7 +140,7 @@ export function HomePage() {
         </ol>
       </section>
 
-      <section className={cx("research section")}  id="research">
+      <section className={cx("section")}  id="research">
         <div className={cx("research__head")} >
           <div><p className={cx("section-label")} >Latest research</p><h2>Evidence, kept current.</h2></div>
           <a href="/research-feeds?mode=category" className={cx("outline-button")} >View all research <span>→</span></a>
