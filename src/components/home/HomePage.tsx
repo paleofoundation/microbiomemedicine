@@ -118,9 +118,9 @@ export function HomePage() {
               <h3>{collection.title}</h3>
               <p>{collection.copy}</p>
               <ul>
-                {collection.links.map((link) => <li key={link.href}><a href={link.href}><span />{link.title}</a></li>)}
+                {collection.links.map((link) => <li key={link.href}><a className="rgbc-archive__link" href={link.href}>{link.title}</a></li>)}
               </ul>
-              <a href={collection.path} className={cx("card-link")} >See all <span>→</span></a>
+              <a href={collection.path} className={cx("card-link")} >See all</a>
             </article>
           ))}
         </div>
@@ -145,13 +145,13 @@ export function HomePage() {
           <div><h2>Evidence, kept current.</h2></div>
           <a href="/research-feeds?mode=category" className={cx("outline-button")} >View all research <span>→</span></a>
         </div>
-        <div className={cx("research-list")} >
-          {research.map((item, index) => (
+        <div className={cx("research-list") + " rgbc-content__details-content"} >
+          {research.map((item) => (
             <a className={cx("research-row")}  href={item.href} key={item.title}>
-              <span className={cx("research-row__number")} >0{index + 1}</span>
-              <span className={cx("research-row__kind")} >{item.kind}</span>
-              <h3>{item.title}</h3>
-              <span className={cx("research-row__arrow")} >→</span>
+              <p>{item.title}</p>
+              <div className="rgbc-content__details-meta">
+                <small className="rgbc-content__details-date">{item.kind}</small>
+              </div>
             </a>
           ))}
         </div>

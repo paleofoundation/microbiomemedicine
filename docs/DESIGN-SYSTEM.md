@@ -233,19 +233,19 @@ Use existing internal destinations and shared search / subscription handlers.
 The red hero and endometriosis spotlight from the later prototype are not the
 approved homepage layout.
 
-Homepage typography clarification (2026-09-09): match styles by component role.
-Topic-card titles use the original `.categories__group` (Inter 24px/28px), not
-generic Lora h3. Research-row titles use the endometriosis `.research-feed__title`
-(Inter 22px, inheriting 36px line height at 1440px+, 32.4px below). Supporting
-card/method prose uses `.research-content__center`'s 20px/180% scale, 18px below
-1440px. Small overlines/captions use the existing 14px/140% secondary-text scale;
-research metadata and popular links use 16px. No added letter spacing. Signup
-uses the original `.newsletter__title` and `.newsletter__description` sizes,
-breakpoints, and colors. The main hero title and introduction retain their
-original homepage sizes. At wide viewports, section content stays inside the
-original wrapper's 1912px usable width (124rem less two 36px gutters).
-The Explore heading retains the original `.categories__title` 40px size at all
-breakpoints; it does not fall back to the generic 20px mobile h2.
+Homepage link typography (2026-09-25): use the existing listing components
+instead of custom display rows. Topic destinations use `.rgbc-archive__link`
+from the Conditions directory: Inter 16px/1.4, body text color, 8px vertical
+padding, and underline on hover. Do not add circular bullets or row dividers.
+“See all” is a plain 16px brand-red text link.
+
+Research entries use the canonical research directory markup:
+`.rgbc-content__details-content` containing an anchor with its title in a `p`,
+followed by `.rgbc-content__details-meta` and `.rgbc-content__details-date`.
+The shared stylesheet supplies the red 1.2em Inter title (19.2px/24px), with 14px
+muted metadata in normal capitalization. Do not add numbered columns or arrows.
+Retain the homepage section structure, main headings, shared header/footer,
+search, subscription handlers, and destinations.
 
 Homepage correction (2026-09-25, clarified by the user): omit the five decorative
 labels above the hero and section headings: “Microbiome Medicine”, “Explore
@@ -255,7 +255,7 @@ validation, research, and signup, share Lora at clamp(28px, 3.2vw, 40px), line-h
 1.25. This replaces the prior mix of 40px, 20px, and 24px mobile section headings.
 The hero title has a 32px minimum and retains its 60px desktop maximum. Below
 640px, supporting prose and topic links use 16px, topic and method titles 22px,
-and research titles 20px. Remove forced heading line breaks on phones, keep
+while research entries retain the shared directory typography. Remove forced heading line breaks on phones, keep
 20px page gutters, and use 48px section spacing. Signup content aligns left on
 phones. Preserve the approved section order, shared header/footer, links, search,
 and subscription handlers.
