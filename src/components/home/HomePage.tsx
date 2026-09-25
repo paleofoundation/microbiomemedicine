@@ -65,7 +65,7 @@ export function HomePage() {
     <main className={styles.home} id="main-content">
       <section className={cx("hero")}  id="top">
         <div className={cx("hero__copy")} >
-          <p className={cx("overline")} >MICROBIOME MEDICINE</p>
+          <p className={cx("section-label")} >Microbiome Medicine</p>
           <h1>Turning Microbiome Signatures into Validated Interventions.</h1>
           <p className={cx("hero__intro")} >
             We translate microbiome research into condition-specific signatures,
@@ -104,10 +104,10 @@ export function HomePage() {
         <span>DESIGNED TO CLOSE THE TRANSLATIONAL GAP</span>
       </section>
 
-      <section className={cx("explore section")}  id="explore">
+      <section className={cx("section")}  id="explore">
         <div className={cx("section-intro centered")} >
-          <p className={cx("overline")} >EXPLORE MICROBIOME SIGNATURES</p>
-          <h2>One clinical question.<br />A connected evidence map.</h2>
+          <p className={cx("section-label")} >Explore microbiome signatures</p>
+          <h2>One clinical question. <br />A connected evidence map.</h2>
           <p>Move between conditions, mechanisms, and interventions without losing the thread.</p>
         </div>
 
@@ -128,8 +128,8 @@ export function HomePage() {
 
       <section className={cx("method section")}  id="method">
         <div className={cx("method__heading")} >
-          <p className={cx("overline")} >A TRANSPARENT VALIDATION METHOD</p>
-          <h2>From observation<br />to clinical direction.</h2>
+          <p className={cx("section-label")} >A transparent validation method</p>
+          <h2>From observation <br />to clinical direction.</h2>
           <p>Not every association is an intervention. Our dual evidence framework separates what is observed, what is mechanistically plausible, and what is clinically supported.</p>
           <a href="/how-microbiome-signatures-are-derived" className={cx("text-link")} >How signatures are derived <span>→</span></a>
         </div>
@@ -140,9 +140,9 @@ export function HomePage() {
         </ol>
       </section>
 
-      <section className={cx("research section")}  id="research">
+      <section className={cx("section")}  id="research">
         <div className={cx("research__head")} >
-          <div><p className={cx("overline")} >LATEST RESEARCH</p><h2>Evidence, kept current.</h2></div>
+          <div><p className={cx("section-label")} >Latest research</p><h2>Evidence, kept current.</h2></div>
           <a href="/research-feeds?mode=category" className={cx("outline-button")} >View all research <span>→</span></a>
         </div>
         <div className={cx("research-list")} >
@@ -159,8 +159,8 @@ export function HomePage() {
 
       <section className={cx("membership section")}  id="membership">
         <div>
-          <p className={cx("overline")} >MICROBIOME INSIDER</p>
-          <h2>Join the Frontlines of<br />Microbiome Consensus</h2>
+          <p className={cx("section-label")} >Microbiome Insider</p>
+          <h2>Join the Frontlines of <br />Microbiome Consensus</h2>
           <p>Get early access to roundtable invitations, consensus-building updates, and the latest research shaping clinical practice.</p>
           <form className={cx("join")}  action="/api/subscribe" method="post">
             <label className={cx("sr-only")}  htmlFor="join-email">Your email address</label>
@@ -173,3 +173,4 @@ export function HomePage() {
     </main>
   );
 }
+
