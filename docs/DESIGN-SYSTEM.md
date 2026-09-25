@@ -247,9 +247,10 @@ original wrapper's 1912px usable width (124rem less two 36px gutters).
 The Explore heading retains the original `.categories__title` 40px size at all
 breakpoints; it does not fall back to the generic 20px mobile h2.
 
-Homepage mobile correction (2026-09-25, requested by the user): the homepage labels
-use plain, sentence-case Inter at 14px/1.5, weight 400, brand red, with no border,
-text decoration, or extra tracking. All section h2 headings, including Explore,
+Homepage correction (2026-09-25, clarified by the user): omit the five decorative
+labels above the hero and section headings: “Microbiome Medicine”, “Explore
+microbiome signatures”, “A transparent validation method”, “Latest research”, and
+“Microbiome Insider”. Keep the headings, section content, and current layout. All section h2 headings, including Explore,
 validation, research, and signup, share Lora at clamp(28px, 3.2vw, 40px), line-height
 1.25. This replaces the prior mix of 40px, 20px, and 24px mobile section headings.
 The hero title has a 32px minimum and retains its 60px desktop maximum. Below
