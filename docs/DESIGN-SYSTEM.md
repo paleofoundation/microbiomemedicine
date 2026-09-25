@@ -246,3 +246,16 @@ original homepage sizes. At wide viewports, section content stays inside the
 original wrapper's 1912px usable width (124rem less two 36px gutters).
 The Explore heading retains the original `.categories__title` 40px size at all
 breakpoints; it does not fall back to the generic 20px mobile h2.
+
+Homepage mobile correction (2026-09-25, requested by the user): the homepage labels
+use plain, sentence-case Inter at 14px/1.5, weight 400, brand red, with no border,
+text decoration, or extra tracking. All section h2 headings, including Explore,
+validation, research, and signup, share Lora at clamp(28px, 3.2vw, 40px), line-height
+1.25. This replaces the prior mix of 40px, 20px, and 24px mobile section headings.
+The hero title has a 32px minimum and retains its 60px desktop maximum. Below
+640px, supporting prose and topic links use 16px, topic and method titles 22px,
+and research titles 20px. Remove forced heading line breaks on phones, keep
+20px page gutters, and use 48px section spacing. Signup content aligns left on
+phones. Preserve the approved section order, shared header/footer, links, search,
+and subscription handlers.
+
