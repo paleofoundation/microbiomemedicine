@@ -94,6 +94,22 @@ export function MicrobiomeSignature({
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
+  const [mapExpanded, setMapExpanded] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const mapViewport = useRef<HTMLDivElement>(null);
+  const detailHeading = useRef<HTMLHeadingElement>(null);
+  const focusDetails = useRef(false);
+  const drag = useRef<{ x: number; y: number; left: number; top: number; moved: boolean } | null>(null);
+
+  function toggleMap() { setMapExpanded((value) => !value); setZoom(1); }
+
+  useEffect(() => {
+    if (!mapExpanded && focusDetails.current) {
+      detailHeading.current?.focus({ preventScroll: true });
+      focusDetails.current = false;
+    }
+  }, [mapExpanded]);
+
 
   const dialog = useRef<HTMLDialogElement>(null);
   const detailPane = useRef<HTMLDivElement>(null);
@@ -126,6 +142,15 @@ export function MicrobiomeSignature({
   }, [open, mounted]);
 
   useEffect(() => {
+    const viewport = mapViewport.current;
+    if (!viewport || !open) return;
+    viewport.scrollTo(
+      mapExpanded ? (viewport.scrollWidth - viewport.clientWidth) / 2 : 0,
+      mapExpanded ? (viewport.scrollHeight - viewport.clientHeight) / 2 : 0,
+    );
+  }, [zoom, mapExpanded, level, open, mounted]);
+
+  useEffect(() => {
     if (!open) return;
     const items = levels[level] || [];
     setActive((current) => items.some((x) => x.name === current) ? current :
@@ -153,20 +178,51 @@ export function MicrobiomeSignature({
   if (!open || !mounted) return null;
 
   return createPortal(
-    <dialog ref={dialog} className={styles.overlay} aria-label={`Microbiome signature for ${title}`}
+    <dialog ref={dialog} className={`${styles.overlay} ${mapExpanded ? styles.expanded : ""}`} aria-label={`Microbiome signature for ${title}`}
       onCancel={(event) => { event.preventDefault(); setOpen(false); }}
       onClick={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
-      <button className={styles.close} onClick={() => setOpen(false)} aria-label="Close microbiome signature" autoFocus>×</button>
-      <section className={styles.chart} aria-label="Microbiome signature">
-        <header className={styles.chartHeader}>
-          <div><h2>Microbiome signature</h2><p>{title}</p></div>
-          <button className={styles.info} aria-label="What is a microbiome signature?" aria-expanded={showInfo} onClick={() => setShowInfo(!showInfo)}>i</button>
-          {showInfo && <div className={styles.definition}>{SIGNATURE_DEF}</div>}
+      <div className={styles.workspace}>
+        <header className={styles.workspaceHeader}>
+          <div className={styles.heading}><h2>Microbiome signature</h2><p>{title}</p></div>
+          <div className={styles.headerActions}>
+            <button className={styles.expandButton} onClick={toggleMap} aria-label={mapExpanded ? "Show map and details" : "Expand map"} aria-pressed={mapExpanded}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+                {mapExpanded ? <><path d="M4 4h16v16H4zM14 4v16" /></> : <><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" /></>}
+              </svg><span className={styles.desktopAction}>{mapExpanded ? "Show details" : "Expand map"}</span><span className={styles.mobileAction}>{mapExpanded ? "Details" : "Expand"}</span>
+            </button>
+            <button className={styles.close} onClick={() => setOpen(false)} aria-label="Close microbiome signature" autoFocus>×</button>
+          </div>
         </header>
+        <div className={styles.panes}>
+      <section className={styles.chart} aria-label="Microbiome signature map">
+        <div className={styles.mapToolbar}>
         <div className={styles.levels} aria-label="Taxonomic level">
           {available.map((name) => <button key={name} aria-pressed={level === name} onClick={() => { setLevel(name); setHovered(null); }}>{name}</button>)}
         </div>
-        <div className={styles.diagram}>
+          <button className={styles.info} aria-label="What is a microbiome signature?" aria-expanded={showInfo} onClick={() => setShowInfo(!showInfo)}>i</button>
+          {showInfo && <div className={styles.definition}>{SIGNATURE_DEF}</div>}
+        </div>
+        <div ref={mapViewport} className={styles.diagram} data-zoomed={mapExpanded && zoom > 1}
+          onPointerDown={(event) => {
+            drag.current = null;
+            if (!mapExpanded || zoom === 1 || event.pointerType !== "mouse" || event.button !== 0) return;
+            drag.current = { x: event.clientX, y: event.clientY, left: event.currentTarget.scrollLeft, top: event.currentTarget.scrollTop, moved: false };
+          }}
+          onPointerMove={(event) => {
+            const start = drag.current;
+            if (!start || event.buttons !== 1) return;
+            const dx = event.clientX - start.x, dy = event.clientY - start.y;
+            if (Math.abs(dx) + Math.abs(dy) > 4) {
+              start.moved = true;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              event.currentTarget.scrollTo(start.left - dx, start.top - dy);
+            }
+          }}
+          onPointerUp={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+          }}
+          onPointerCancel={() => { drag.current = null; }}
+          onClickCapture={(event) => { if (drag.current?.moved) { event.stopPropagation(); event.preventDefault(); } drag.current = null; }}>
           <div className={styles.compactSignature} aria-label={`${level} signature`}>
             {(levels[level] || []).map((item) => <button key={item.name} aria-pressed={active === item.name}
               className={item.value > 0 ? styles.increased : styles.decreased} onClick={() => setActive(item.name)}>
@@ -174,6 +230,7 @@ export function MicrobiomeSignature({
               <span>{item.name}</span><span>{item.value > 0 ? "+" : ""}{item.value}</span>
             </button>)}
           </div>
+          <div className={styles.mapCanvas} style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%` }}>
           <svg viewBox={vb} aria-label={`Relative abundance at ${level?.toLowerCase()} level`}>
             {list.map((item, index) => {
               const color = colorFor(item.value, true);
@@ -189,19 +246,29 @@ export function MicrobiomeSignature({
               </g>;
             })}
           </svg>
+          </div>
         </div>
+        {mapExpanded && <div className={styles.zoomTools} role="group" aria-label="Map zoom">
+          <button onClick={() => setZoom((value) => Math.max(1, value - .25))} disabled={zoom === 1} aria-label="Zoom out">−</button>
+          <output aria-live="polite" aria-label="Zoom level">{Math.round(zoom * 100)}%</output>
+          <button onClick={() => setZoom((value) => Math.min(3, value + .25))} disabled={zoom === 3} aria-label="Zoom in">+</button>
+          <button onClick={() => setZoom(1)} aria-label="Fit map">Fit</button>
+        </div>}
         <div className={styles.legend}><span className={styles.increased}>↑ Increased</span><span className={styles.decreased}>↓ Decreased</span><span>Solid dots: details available</span></div>
+        <div className={styles.selectionBar}>
         <label className={styles.picker}>Organism
           <select value={active || ""} onChange={(event) => setActive(event.target.value)}>
             {!active && <option value="">Select an organism</option>}
             {(levels[level] || []).map((item) => <option key={item.name} value={item.name}>{item.name} ({item.value > 0 ? "+" : ""}{item.value})</option>)}
           </select>
         </label>
+        {mapExpanded && <button className={styles.viewDetails} onClick={() => { focusDetails.current = true; toggleMap(); }}>View details <span aria-hidden="true">→</span></button>}
+        </div>
       </section>
-      <aside className={styles.sidebar} aria-label="Organism details">
+      <aside className={styles.sidebar} aria-label="Organism details" hidden={mapExpanded}>
         <header className={styles.detailHeader}>
           <p className={styles.eyebrow}>{level} · Relative abundance</p>
-          <h3>{active || "Select an organism"}</h3>
+          <h3 ref={detailHeading} tabIndex={-1}>{active || "Select an organism"}</h3>
           <div className={styles.metadata}>
             {activeItem && <span className={activeItem.value > 0 ? styles.increased : styles.decreased}>{activeItem.value > 0 ? "↑ Increased" : activeItem.value < 0 ? "↓ Decreased" : "Unchanged"}</span>}
             {activeItem?.tier && <span className={styles.certainty}>{activeItem.tier} certainty</span>}
@@ -231,6 +298,8 @@ export function MicrobiomeSignature({
           </details>}
         </div>
       </aside>
+        </div>
+      </div>
     </dialog>, document.body
   );
 }

@@ -264,8 +264,13 @@ and subscription handlers.
 ## Component: Microbiome signature overlay (requested redesign, 2026-10-02)
 
 The user's October 2 request supersedes the captured popup layout only. Keep the
-signature centered in the available desktop space, with a separate, full-height
-right sidebar for organism details. On narrow screens, keep the chart and taxon
+signature map attached to its right detail sidebar inside one right-anchored
+frame with a shared header and a subtle vertical divider. The map and article
+are never separate floating cards. “Expand map” opens a large radial map, with
+zoom/fit controls and mouse-drag or touch scrolling. “Show details” and “View
+details” restore the attached split view without losing the selected taxon.
+This shared viewer applies to generated and migrated pages, including signatures
+whose data is present only in captured HTML. On narrow screens, keep the chart and taxon
 controls above an independently scrolling detail pane. Both remain visible.
 Use a compact labeled taxon grid on phones instead of shrinking the radial
 chart labels; desktop keeps the radial signature.
