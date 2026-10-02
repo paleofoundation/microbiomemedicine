@@ -14,6 +14,7 @@ import { revealResearchFeedWalls } from "@/lib/researchFeedReveal";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
 import { applyTextRules } from "@/lib/textRules";
+import { formatInlineCitations } from "@/lib/inlineCitations";
 import { stripHost, referenceCount, signatureMmaCount, type ContentItem } from "@/lib/content";
 import { ORCID_SVG } from "@/components/OrcidIcon";
 import { normSrc, type ImageMeta } from "@/lib/imageClassify";
@@ -262,6 +263,13 @@ export async function WpRender({
   content = content
     .replace(/Yes,\s*I want to\s*(<a href="\/auth\/signup)/i, "$1")
     .replace(/(<a href="\/auth\/signup\/"[^>]*>)[\s\S]*?(<\/a>)/, "$1Join the Waitlist$2 and help shape the future of microbiome medicine.");
+
+  // Include signed-in Research Feed cards inserted after the initial text rules pass.
+  content = formatInlineCitations(content, {
+    // This imported article uses unlinked numeric superscripts for all citations.
+    // Opt in explicitly so numeric scientific exponents elsewhere stay unchanged.
+    numericSuperscripts: item.slug === "microbial-metallomics-and-parkinsons-disease-a-hypothesis",
+  });
 
   return (
     <>

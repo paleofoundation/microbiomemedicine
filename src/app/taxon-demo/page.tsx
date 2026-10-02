@@ -16,6 +16,7 @@ import { FollowButton } from "@/components/FollowButton";
 import { ShareButton } from "@/components/ShareButton";
 import { OrcidIcon } from "@/components/OrcidIcon";
 import type { Connection } from "@/lib/connections";
+import { formatCitationText, formatInlineCitations } from "@/lib/inlineCitations";
 
 export const metadata = {
   title: "Acinetobacter baumannii taxon page (preview)",
@@ -23,7 +24,7 @@ export const metadata = {
 };
 
 type Heading = { level: number; text: string; id: string };
-const html = (demo as { content_html: string }).content_html;
+const html = formatInlineCitations((demo as { content_html: string }).content_html);
 const meta = demo.meta as { did_you_know?: string; authors?: { name: string; orcid?: string; avatar?: string }[] };
 
 function tableOfContents(h: string): Heading[] {
@@ -76,7 +77,7 @@ export default function Page() {
             <div className="research-hero__left">
               {meta.did_you_know && (
                 <div className="research-hero__left-content">
-                  <p><strong>Did you know?</strong><br />{meta.did_you_know}</p>
+                  <p><strong>Did you know?</strong><br /><span dangerouslySetInnerHTML={{ __html: formatCitationText(meta.did_you_know) }} /></p>
                 </div>
               )}
             </div>
@@ -93,7 +94,7 @@ export default function Page() {
 
               <div className="research-hero__center-content ">
                 <h1 className="research-hero__center-title" style={{ fontStyle: "italic" }}>{demo.title}</h1>
-                <div className="research-hero__center-text" dangerouslySetInnerHTML={{ __html: demo.excerpt_html }} />
+                <div className="research-hero__center-text" dangerouslySetInnerHTML={{ __html: formatInlineCitations(demo.excerpt_html) }} />
               </div>
 
               <div className="research-hero__categories"></div>

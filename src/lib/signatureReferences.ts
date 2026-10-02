@@ -1,4 +1,5 @@
 import verifiedMetadata from "./signatureReferenceMetadata.json" with { type: "json" };
+import { formatInlineCitations } from "./inlineCitations.ts";
 
 type ReferenceMetadata = { doi: string | null; title: string; authors: string[]; journal: string; year: string; volume: string | null; issue: string | null; pages: string | null };
 const metadata: Record<string, ReferenceMetadata> = verifiedMetadata;
@@ -44,7 +45,7 @@ function formatReference(html: string): string {
 export function formatSignatureReferences(html: string, scope: string): string {
   const prefix = `signature-${scope.replace(/[^a-zA-Z0-9_-]/g, "-")}-ref`;
   const targets = new Map<number, string>();
-  let result = html.replace(/<details\b[^>]*>\s*<summary\b[^>]*>\s*References\s*<\/summary>([\s\S]*?)<\/details>/gi,
+  let result = formatInlineCitations(html).replace(/<details\b[^>]*>\s*<summary\b[^>]*>\s*References\s*<\/summary>([\s\S]*?)<\/details>/gi,
     (_section, bibliography: string) => `<section class="signature-references" aria-label="References"><h4>References</h4>${bibliography}</section>`);
   result = result.replace(/<ol\b([^>]*)>([\s\S]*?)<\/ol>/gi, (original, attributes: string, body: string) => {
     if (!/rgbc-references/.test(attributes)) return original;
@@ -59,11 +60,11 @@ export function formatSignatureReferences(html: string, scope: string): string {
     return `<ol class="rgbc-references">${items}</ol>`;
   });
   result = result.replace(/<sup\b[^>]*>([\s\S]*?)<\/sup>/gi, (original, body: string) => {
-    const match = text(body).match(/^\[?(\d+)\]?$/);
+    const match = text(body).match(/^\[(\d+)\]$/);
     if (!match) return original;
     const number = Number(match[1]);
     const id = targets.get(number);
     return id ? `<sup><a data-signature-reference href="#${id}" aria-label="Reference ${number}">[${number}]</a></sup>` : original;
-  });
-  return result;
+});
+  return formatInlineCitations(result);
 }

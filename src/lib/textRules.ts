@@ -9,6 +9,7 @@
 import { ORCID_SVG } from "@/components/OrcidIcon";
 import { normSrc, classify, type ImageMeta } from "@/lib/imageClassify";
 import { unslashInternalHrefs } from "@/lib/seoIndexing";
+import { formatInlineCitations } from "./inlineCitations";
 
 // Inline citation rule (Karen, locked in): every inline citation must render as a
 // superscripted, bracketed, linked number — <sup><a class="rgbc-reference ...">[N]</a></sup>.
@@ -131,7 +132,7 @@ function normalizeImages(html: string, metaMap?: Map<string, ImageMeta>): string
 
 export function applyTextRules(html: string, opts?: { images?: Map<string, ImageMeta> }): string {
   if (!html) return html;
-  const out = normalizeCitations(unslashInternalHrefs(html))
+  const out = formatInlineCitations(normalizeCitations(unslashInternalHrefs(html)))
     // Migration artifact: the first section heading "Overview" was glued onto the start of
     // the auto-generated hero excerpt ("OverviewGraves' Disease ..."). It only ever appears
     // glued directly to a Capital letter — the real <h2>Overview</h2> heading is followed by

@@ -37,7 +37,7 @@ test("legacy DOI and PMC sources get descriptive labels; unresolved citations st
   const result = formatSignatureReferences('<sup>[ref]</sup><sup>[9]</sup>' + wrap('<li>Paper <a href="https://doi.org/10.1000/example">link</a></li><li>Paper <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC123456/">link</a></li>'), "legacy");
   assert.match(result, />10.1000\/example<\/a>/);
   assert.match(result, />PMC123456<\/a>/);
-  assert.match(result, /<sup>\[ref\]<\/sup><sup>\[9\]<\/sup>/);
+  assert.match(result, /<sup>\[ref\]<\/sup><sup class="inline-citation">\[9\]<\/sup>/);
 });
 
 test("explicit bibliography numbering and linked superscripts are preserved", () => {
@@ -50,4 +50,16 @@ test("DOI-linked titles remain in the bibliography when the DOI becomes its own 
   const result = formatSignatureReferences(wrap('<li><a href="https://doi.org/10.1000/example">Full study title</a>. Authors. Journal. 2020.</li>'), "legacy");
   assert.match(result, /Full study title\. Authors\. Journal\. 2020\./);
   assert.match(result, />10.1000\/example<\/a>/);
+});
+
+test("signature citations follow sentence periods and still resolve to scoped references", () => {
+  const result = formatSignatureReferences('Finding <a href="#old"><sup>[3]</sup></a>.' + wrap('<li>One.</li><li>Two.</li><li>Three.</li>'), "ms-Akkermansia");
+  assert.match(result, /Finding\.<sup class="inline-citation"><a data-signature-reference href="#signature-ms-Akkermansia-ref-3" aria-label="Reference 3">\[3\]<\/a><\/sup>/);
+  assert.match(result, /value="3" tabindex="-1">Three\.<\/li>/);
+});
+
+test("signature reference linking does not reinterpret scientific exponents as citations", () => {
+  const result = formatSignatureReferences('10<sup>2</sup> cells.<sup>[1]</sup>' + wrap('<li>One.</li><li>Two.</li>'), "science");
+  assert.match(result, /10<sup>2<\/sup> cells\./);
+  assert.doesNotMatch(result, /href="#signature-science-ref-2"/);
 });

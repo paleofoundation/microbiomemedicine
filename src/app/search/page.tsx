@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 import { contentPath } from "@/lib/content";
 import { NOINDEX_ROBOTS } from "@/lib/seo";
+import { formatCitationText } from "@/lib/inlineCitations";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -135,7 +136,7 @@ export default async function SearchPage({ searchParams }: Props) {
                     <a className="rgbc-searchresult__title" href={pathFor(it.type as string, it.slug)}>{it.title}</a>
                     <span className="rgbc-searchresult__type">{TYPE_LABEL[it.type as string] || it.type}</span>
                   </div>
-                  {plain(it.excerpt_html) && <p className="rgbc-searchresult__excerpt">{plain(it.excerpt_html)}</p>}
+                  {plain(it.excerpt_html) && <p className="rgbc-searchresult__excerpt" dangerouslySetInnerHTML={{ __html: formatCitationText(plain(it.excerpt_html)) }} />}
                 </article>
               ))
             )}
