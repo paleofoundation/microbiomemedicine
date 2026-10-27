@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", images: ["/og-default.webp"] },
   description:
-    "A research-grounded reference on the human microbiome — microbes, conditions, interventions, and the evidence connecting them.",
+    "Microbiome Medicine is a research grounded reference on the human microbiome, covering microbes, conditions, interventions, and the evidence connecting them.",
 };
 
 // Point the header search form at our search route, and the account/membership
