@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 export async function POST(req: Request) {
+  if (!supabaseConfigured) {
+    return NextResponse.json(
+      { error: "Subscriptions are temporarily unavailable." },
+      { status: 503 },
+    );
+  }
+
   const form = await req.formData();
   const email = String(form.get("email") || "").trim();
 
