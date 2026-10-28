@@ -1,8 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { supabaseConfigured, unconfiguredSupabase } from "@/lib/supabase";
 
 // Auth-aware server client. cookies() is async in Next 16.
 export async function createSupabaseServer() {
+  if (!supabaseConfigured) return unconfiguredSupabase<never>();
   const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
