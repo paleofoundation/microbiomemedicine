@@ -175,9 +175,16 @@ author (default Karen Pendergrass).
 
 - **Tables:** `<figure class="wp-block-table"><table class="has-fixed-layout">…</table></figure>`;
   red `thead`; metal names in `<span class="has-inline-color has-vivid-red-color">`.
-- **Citations:** inline `<sup><a class="rgbc-reference rgbc-tooltip js-rgbc-scroll-link" …>[n]</a>`
+- **Citations:** inline `<sup><a class="rgbc-reference rgbc-tooltip js-rgbc-scroll-link" …>[n]</a></sup>`
   (first-appearance numbering, dedupe) + `<ol class="rgbc-references">` list + hidden hover
   cards. External source URLs live ONLY here, never as inline blue links.
+- **Citation punctuation (user requirement, 2026-10-02):** every inline numeric citation is
+  bracketed and superscripted. A sentence's period comes before its entire citation cluster,
+  with no intervening space: `Sentence.<sup>[1]</sup><sup>[2]</sup>`, never
+  `Sentence<sup>[1]</sup><sup>[2]</sup>.`. This applies everywhere, including page bodies,
+  heroes, FAQs, signature panels, excerpts, and study summaries. Preserve every authored
+  source number, marker order, and link destination when formatting; never renumber or infer a
+  missing source. Scientific powers and charges are not citations and remain unchanged.
 - **Citation hover card (exact, from `_migration/endo-live.html` `.rgbc-reference-tooltip`):**
   ```html
   <div class="tooltip rgbc-reference-tooltip wiki-<hash>">
@@ -260,3 +267,28 @@ while research entries retain the shared directory typography. Remove forced hea
 phones. Preserve the approved section order, shared header/footer, links, search,
 and subscription handlers.
 
+
+## Component: Microbiome signature overlay (requested redesign, 2026-10-02)
+
+The user's October 2 request supersedes the captured popup layout only. Keep the
+signature map attached to its right detail sidebar inside one right-anchored
+frame with a shared header and a subtle vertical divider. The map and article
+are never separate floating cards. “Expand map” opens a large radial map, with
+zoom/fit controls and mouse-drag or touch scrolling. “Show details” and “View
+details” restore the attached split view without losing the selected taxon.
+This shared viewer applies to generated and migrated pages, including signatures
+whose data is present only in captured HTML. On narrow screens, keep the chart and taxon
+controls above an independently scrolling detail pane. Both remain visible.
+Use a compact labeled taxon grid on phones instead of shrinking the radial
+chart labels; desktop keeps the radial signature.
+Use Inter/Lora and the existing red/enriched and blue/depleted palette, normal
+weight, and white surfaces. Indicate selection with a soft halo in the taxon's
+own direction color, never a black circle. Provide keyboard/touch selection and
+an accessible modal with Escape, focus containment, and focus restoration.
+
+Prose uses readable line spacing and compact superscript [n] links, with sentence
+periods before the entire citation cluster and no intervening space. References
+are an uncapped numbered bibliography, matched to those inline numbers, with
+hanging indents. Show the DOI itself as the link when verified DOI data exists;
+otherwise retain an explicitly labeled source identifier. Never invent DOI or
+bibliographic metadata. Studies remain separate from the organism bibliography.

@@ -1,3 +1,4 @@
+import { extractCapturedSignature, removeCapturedSignatureModal } from "@/lib/capturedSignature";
 import { MicrobiomeSignature } from "@/components/MicrobiomeSignature";
 import { Tooltips } from "@/components/Tooltips";
 import { JsonLd } from "@/components/JsonLd";
@@ -13,6 +14,7 @@ import { revealResearchFeedWalls } from "@/lib/researchFeedReveal";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { linkifyClassifications } from "@/lib/classifications";
 import { applyTextRules } from "@/lib/textRules";
+import { formatInlineCitations } from "@/lib/inlineCitations";
 import { stripHost, referenceCount, signatureMmaCount, type ContentItem } from "@/lib/content";
 import { ORCID_SVG } from "@/components/OrcidIcon";
 import { normSrc, type ImageMeta } from "@/lib/imageClassify";
@@ -191,7 +193,9 @@ export async function WpRender({
 }) {
   const meta = (item.meta || {}) as Record<string, unknown>;
   const signature = meta.signature as { levels?: Record<string, SigItem[]> } | undefined;
-  const hasSignature = !!signature?.levels;
+  const hasStructuredSignature = !!signature?.levels && Object.values(signature.levels).some((items) => items.length);
+  const signatureLevels = hasStructuredSignature ? signature!.levels! : extractCapturedSignature(html);
+  const hasSignature = !!signatureLevels;
   const authors = Array.isArray(meta.authors) ? (meta.authors as { name: string; orcid?: string | null }[]) : [];
   // STOP pages are their own post-type: they carry hand-authored FAQs baked into the
   // content, so skip the section-scraped auto-FAQ generation for them.
@@ -229,7 +233,10 @@ export async function WpRender({
   if (refCount) content = content.replace(/(<span class="js-count-references">)\s*(<\/span>)/g, `$1${refCount}$2`);
   if (mmaCount) content = content.replace(/(<span class="js-count-mmas">)\s*(<\/span>)/g, `$1${mmaCount}$2`);
   const sigStudies = extractSignatureStudies(content);
-  const studies = sigStudies.length ? sigStudies : extractStudies(content);
+  const studies = sigStudies.length ? sigStudies : hasStructuredSignature ? extractStudies(content) : [];
+  // The shared viewer owns every real signature, including captures without metadata.
+  // Extract data/studies first, then remove the obsolete hidden WordPress modal.
+  if (hasSignature) content = removeCapturedSignatureModal(content);
   const heroSrc = (typeof meta.hero_image === "string" ? meta.hero_image : null) || stripHost(item.featured_image_url);
   const heroMeta = heroSrc && images ? images.get(normSrc(heroSrc)) : undefined;
   const jsonLd = buildJsonLd(item, {
@@ -257,11 +264,18 @@ export async function WpRender({
     .replace(/Yes,\s*I want to\s*(<a href="\/auth\/signup)/i, "$1")
     .replace(/(<a href="\/auth\/signup\/"[^>]*>)[\s\S]*?(<\/a>)/, "$1Join the Waitlist$2 and help shape the future of microbiome medicine.");
 
+  // Include signed-in Research Feed cards inserted after the initial text rules pass.
+  content = formatInlineCitations(content, {
+    // This imported article uses unlinked numeric superscripts for all citations.
+    // Opt in explicitly so numeric scientific exponents elsewhere stay unchanged.
+    numericSuperscripts: item.slug === "microbial-metallomics-and-parkinsons-disease-a-hypothesis",
+  });
+
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: content }} />
       {hasSignature && (
-        <MicrobiomeSignature slug={item.slug} title={item.title} levels={signature!.levels!} studies={studies} />
+        <MicrobiomeSignature slug={item.slug} title={item.title} levels={signatureLevels!} studies={studies} />
       )}
       <Tooltips />
       <WpDiagram />

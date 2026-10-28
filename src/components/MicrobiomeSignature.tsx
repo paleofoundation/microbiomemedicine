@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import styles from "./MicrobiomeSignature.module.css";
 
 type Item = { name: string; value: number; has_info?: boolean; tier?: string; direction?: string; agreementBin?: string; domain?: string };
 type ConditionEvidence = {
@@ -41,7 +43,7 @@ function packed(items: Item[]) {
   const norm = (2 * Math.PI) / sumAng;
   its.forEach((it) => { it.angle *= norm; });
   let angle = -Math.PI / 4; // start at -45deg, clockwise
-  let minX = 0, minY = 0, maxX = W, maxY = W;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   const list = its.map((it) => {
     const t = angle, deg = (180 * t) / Math.PI;
     const dx = cx + Math.cos(t) * ringR, dy = cy + Math.sin(t) * ringR;
@@ -49,15 +51,23 @@ function packed(items: Item[]) {
     const labelR = it.radius + 5;
     const lx = cx + Math.cos(t) * (ringR + labelR), ly = cy + Math.sin(t) * (ringR + labelR);
     const rotDeg = leftSide ? deg + 180 : deg;
-    const txt = `[${it.value}] ${it.name}`;
-    const tw = txt.length * 6, ex = lx + (leftSide ? -tw : tw);
-    minX = Math.min(minX, dx - it.radius, lx, ex); maxX = Math.max(maxX, dx + it.radius, lx, ex);
-    minY = Math.min(minY, dy - it.radius, ly - 7); maxY = Math.max(maxY, dy + it.radius, ly + 7);
+    const txt = `${it.name} (${it.value > 0 ? "+" : ""}${it.value})`;
+    // Include all four corners of the rotated label, not the original 600px canvas.
+    const tw = txt.length * 7.2, rotation = rotDeg * Math.PI / 180;
+    const start = leftSide ? -tw : 0, end = leftSide ? 0 : tw;
+    minX = Math.min(minX, dx - it.radius - 8); maxX = Math.max(maxX, dx + it.radius + 8);
+    minY = Math.min(minY, dy - it.radius - 8); maxY = Math.max(maxY, dy + it.radius + 8);
+    for (const x of [start, end]) for (const y of [-9, 9]) {
+      const px = lx + x * Math.cos(rotation) - y * Math.sin(rotation);
+      const py = ly + x * Math.sin(rotation) + y * Math.cos(rotation);
+      minX = Math.min(minX, px); maxX = Math.max(maxX, px);
+      minY = Math.min(minY, py); maxY = Math.max(maxY, py);
+    }
     angle -= it.angle;
     return { ...it, dx, dy, lx, ly, rotDeg, leftSide, txt };
   });
-  const p = Math.ceil(Math.max(-minX, -minY, maxX - W, maxY - W, 0));
-  return { list, vb: `${-p} ${-p} ${W + 2 * p} ${W + 2 * p}` };
+  const pad = 18;
+  return { list, vb: `${minX - pad} ${minY - pad} ${maxX - minX + 2 * pad} ${maxY - minY + 2 * pad}` };
 }
 
 export function MicrobiomeSignature({
@@ -84,180 +94,212 @@ export function MicrobiomeSignature({
   const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
+  const [mapExpanded, setMapExpanded] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const mapViewport = useRef<HTMLDivElement>(null);
+  const detailHeading = useRef<HTMLHeadingElement>(null);
+  const focusDetails = useRef(false);
+  const drag = useRef<{ x: number; y: number; left: number; top: number; moved: boolean } | null>(null);
 
-  // The hero "Microbiome Signature" button, the inline chart, the Page-Snapshot "Identified
-  // MMAs" row, and the signature nav item all carry data-modal-id="research-diagram-modal".
+  function toggleMap() { setMapExpanded((value) => !value); setZoom(1); }
+
+  useEffect(() => {
+    if (!mapExpanded && focusDetails.current) {
+      detailHeading.current?.focus({ preventScroll: true });
+      focusDetails.current = false;
+    }
+  }, [mapExpanded]);
+
+
+  const dialog = useRef<HTMLDialogElement>(null);
+  const detailPane = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      const t = (e.target as HTMLElement)?.closest?.('[data-modal-id="research-diagram-modal"]');
-      if (t) { e.preventDefault(); setOpen(true); }
+      const target = (e.target as HTMLElement)?.closest?.('[data-modal-id="research-diagram-modal"]');
+      if (target) { e.preventDefault(); setOpen(true); }
     };
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     document.addEventListener("click", onClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("click", onClick);
-      document.removeEventListener("keydown", onKey);
-    };
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
-  async function openOrg(name: string) {
-    setActive(name);
-    setLoading(true);
-    setDetail("");
-    try {
-      const r = await fetch(`/api/organism?slug=${encodeURIComponent(slug)}&name=${encodeURIComponent(name)}`);
-      const j = await r.json();
-      setDetail(j.html || "<p>No details available.</p>");
-    } catch {
-      setDetail("<p>Could not load details.</p>");
-    }
-    setLoading(false);
-  }
-
-  // On open, auto-select the first info-bearing organism (positive first) so the modal
-  // appears with one MMA already showing its sidebar detail (matches the original).
   useEffect(() => {
-    if (!open || active) return;
-    const its = levels[level] || [];
-    const first =
-      its.find((x) => x.has_info && x.value > 0) ||
-      its.find((x) => x.has_info && x.value < 0) ||
-      its.find((x) => x.has_info);
-    if (first) openOrg(first.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+    if (!open || !mounted || !dialog.current) return;
+    const element = dialog.current;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    element.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      element.close();
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus({ preventScroll: true });
+    };
+  }, [open, mounted]);
+
+  useEffect(() => {
+    const viewport = mapViewport.current;
+    if (!viewport || !open) return;
+    viewport.scrollTo(
+      mapExpanded ? (viewport.scrollWidth - viewport.clientWidth) / 2 : 0,
+      mapExpanded ? (viewport.scrollHeight - viewport.clientHeight) / 2 : 0,
+    );
+  }, [zoom, mapExpanded, level, open, mounted]);
+
+  useEffect(() => {
+    if (!open) return;
+    const items = levels[level] || [];
+    setActive((current) => items.some((x) => x.name === current) ? current :
+      (items.find((x) => x.has_info && x.value > 0) || items.find((x) => x.has_info) || items[0])?.name || null);
+  }, [open, level, levels]);
+
+  const activeItem = (levels[level] || []).find((x) => x.name === active);
+  useEffect(() => {
+    if (!open || !active) return;
+    const controller = new AbortController();
+    setDetail("");
+    setFailed(false);
+    detailPane.current?.scrollTo(0, 0);
+    if (!activeItem?.has_info) { setLoading(false); return; }
+    setLoading(true);
+    fetch(`/api/organism?slug=${encodeURIComponent(slug)}&name=${encodeURIComponent(active)}`, { signal: controller.signal })
+      .then((response) => { if (!response.ok) throw new Error("Unavailable"); return response.json(); })
+      .then((result) => { if (!controller.signal.aborted) setDetail(result.html || ""); })
+      .catch(() => { if (!controller.signal.aborted) setFailed(true); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, [active, activeItem?.has_info, open, slug, retry]);
 
   const { list, vb } = useMemo(() => packed(levels[level] || []), [levels, level]);
-  const activeItem = useMemo(() => {
-    if (!active) return null;
-    for (const L of LEVEL_ORDER) { const f = (levels[L] || []).find((x) => x.name === active); if (f) return f; }
-    return null;
-  }, [active, levels]);
+  if (!open || !mounted) return null;
 
-  if (!open) return null;
-
-  return (
-    <div
-      onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
-      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
-    >
-      <div role="dialog" aria-label={`Microbiome signature for ${title}`} style={{ background: "#fff", borderRadius: 12, maxWidth: 1180, width: "100%", maxHeight: "94vh", overflow: "auto", display: "flex", flexWrap: "wrap", position: "relative" }}>
-        <button
-          onClick={() => setOpen(false)}
-          aria-label="Close"
-          style={{ position: "absolute", top: 12, right: 14, border: "none", background: "transparent", fontSize: "1.6rem", lineHeight: 1, cursor: "pointer", color: "#888", zIndex: 2 }}
-        >
-          ✕
-        </button>
-
-        <div style={{ flex: "1 1 620px", minWidth: 0, padding: 0 }}>
-          <div style={{ position: "relative" }}>
-            <div style={{ background: "#cc3333", color: "#fff", padding: ".7rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem", fontFamily: "var(--font-serif)", fontSize: "1.1rem", borderRadius: "12px 0 0 0" }}>
-              <span
-                onMouseEnter={() => setShowInfo(true)}
-                onMouseLeave={() => setShowInfo(false)}
-                aria-label="What is a microbiome signature?"
-                style={{ cursor: "pointer", border: "1.5px solid #fff", borderRadius: "50%", width: 18, height: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: ".72rem", fontStyle: "italic", flexShrink: 0, fontFamily: "var(--font-sans)" }}
-              >i</span>
-              Relative Abundance ({level})
-            </div>
-            {showInfo && (
-              <div style={{ position: "absolute", top: "calc(100% - 4px)", left: 16, zIndex: 5, background: "#fff", color: "#222", padding: "1.1rem 1.35rem", borderRadius: 8, boxShadow: "0 14px 34px rgba(0,0,0,.24)", maxWidth: 400, fontSize: ".88rem", lineHeight: 1.55 }}>
-                {SIGNATURE_DEF}
-              </div>
-            )}
+  return createPortal(
+    <dialog ref={dialog} className={`${styles.overlay} ${mapExpanded ? styles.expanded : ""}`} aria-label={`Microbiome signature for ${title}`}
+      onCancel={(event) => { event.preventDefault(); setOpen(false); }}
+      onClick={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
+      <div className={styles.workspace}>
+        <header className={styles.workspaceHeader}>
+          <div className={styles.heading}><h2>Microbiome signature</h2><p>{title}</p></div>
+          <div className={styles.headerActions}>
+            <button className={styles.expandButton} onClick={toggleMap} aria-label={mapExpanded ? "Show map and details" : "Expand map"} aria-pressed={mapExpanded}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+                {mapExpanded ? <><path d="M4 4h16v16H4zM14 4v16" /></> : <><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" /></>}
+              </svg><span className={styles.desktopAction}>{mapExpanded ? "Show details" : "Expand map"}</span><span className={styles.mobileAction}>{mapExpanded ? "Details" : "Expand"}</span>
+            </button>
+            <button className={styles.close} onClick={() => setOpen(false)} aria-label="Close microbiome signature" autoFocus>×</button>
           </div>
-          <div style={{ padding: "1.25rem 1.5rem" }}>
-            <svg viewBox={vb} style={{ width: "100%", height: "auto", display: "block" }}>
-              {list.map((it, i) => {
-                const col = colorFor(it.value, it.has_info);
-                const lit = active === it.name || hovered === i;
-                return (
-                  <g
-                    key={i}
-                    style={{ cursor: it.has_info ? "pointer" : "default", transition: "opacity .15s" }}
-                    onClick={() => it.has_info && openOrg(it.name)}
-                    onMouseEnter={() => setHovered(i)}
-                    onMouseLeave={() => setHovered(null)}
-                  >
-                    <circle cx={it.dx} cy={it.dy} r={it.radius} fill={col} fillOpacity={lit ? 1 : 0.4} stroke={active === it.name ? "#000" : "none"} strokeWidth={2} />
-                    <text x={it.lx} y={it.ly} fontSize={11} fill={col} fillOpacity={lit ? 1 : 0.7} textAnchor={it.leftSide ? "end" : "start"} dominantBaseline="middle" transform={`rotate(${it.rotDeg} ${it.lx} ${it.ly})`}>{it.txt}</text>
-                  </g>
-                );
-              })}
-            </svg>
-            <div style={{ display: "flex", gap: ".35rem", flexWrap: "wrap", justifyContent: "center", marginTop: ".85rem" }}>
-              {available.map((l) => (
-                <button key={l} onClick={() => setLevel(l)} style={{ padding: ".3rem .7rem", borderRadius: 6, border: "1px solid #e5e7eb", background: l === level ? "#cc3333" : "#fff", color: l === level ? "#fff" : "#333", fontSize: ".78rem", cursor: "pointer" }}>{l}</button>
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", fontSize: ".72rem", marginTop: ".75rem", color: "#444" }}>
-              <span style={{ color: "#f04c4c" }}>● Increased (info)</span>
-              <span style={{ color: "#efbdbd" }}>● Increased</span>
-              <span style={{ color: "#183fab" }}>● Decreased (info)</span>
-              <span style={{ color: "#b5b9d2" }}>● Decreased</span>
-            </div>
+        </header>
+        <div className={styles.panes}>
+      <section className={styles.chart} aria-label="Microbiome signature map">
+        <div className={styles.mapToolbar}>
+        <div className={styles.levels} aria-label="Taxonomic level">
+          {available.map((name) => <button key={name} aria-pressed={level === name} onClick={() => { setLevel(name); setHovered(null); }}>{name}</button>)}
+        </div>
+          <button className={styles.info} aria-label="What is a microbiome signature?" aria-expanded={showInfo} onClick={() => setShowInfo(!showInfo)}>i</button>
+          {showInfo && <div className={styles.definition}>{SIGNATURE_DEF}</div>}
+        </div>
+        <div ref={mapViewport} className={styles.diagram} data-zoomed={mapExpanded && zoom > 1}
+          onPointerDown={(event) => {
+            drag.current = null;
+            if (!mapExpanded || zoom === 1 || event.pointerType !== "mouse" || event.button !== 0) return;
+            drag.current = { x: event.clientX, y: event.clientY, left: event.currentTarget.scrollLeft, top: event.currentTarget.scrollTop, moved: false };
+          }}
+          onPointerMove={(event) => {
+            const start = drag.current;
+            if (!start || event.buttons !== 1) return;
+            const dx = event.clientX - start.x, dy = event.clientY - start.y;
+            if (Math.abs(dx) + Math.abs(dy) > 4) {
+              start.moved = true;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              event.currentTarget.scrollTo(start.left - dx, start.top - dy);
+            }
+          }}
+          onPointerUp={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+          }}
+          onPointerCancel={() => { drag.current = null; }}
+          onClickCapture={(event) => { if (drag.current?.moved) { event.stopPropagation(); event.preventDefault(); } drag.current = null; }}>
+          <div className={styles.compactSignature} aria-label={`${level} signature`}>
+            {(levels[level] || []).map((item) => <button key={item.name} aria-pressed={active === item.name}
+              className={item.value > 0 ? styles.increased : styles.decreased} onClick={() => setActive(item.name)}>
+              <span className={styles.compactDot} style={{ opacity: item.has_info ? 1 : .35 }} aria-hidden="true" />
+              <span>{item.name}</span><span>{item.value > 0 ? "+" : ""}{item.value}</span>
+            </button>)}
+          </div>
+          <div className={styles.mapCanvas} style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%` }}>
+          <svg viewBox={vb} aria-label={`Relative abundance at ${level?.toLowerCase()} level`}>
+            {list.map((item, index) => {
+              const color = colorFor(item.value, true);
+              const selected = active === item.name;
+              return <g key={item.name} className={styles.taxon} role="button" tabIndex={0}
+                aria-label={`${item.name}, ${item.value > 0 ? "increased" : item.value < 0 ? "decreased" : "unchanged"}, ${item.value}${item.has_info ? ", details available" : ""}`}
+                aria-pressed={selected} onClick={() => setActive(item.name)}
+                onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setActive(item.name); } }}
+                onMouseEnter={() => setHovered(index)} onMouseLeave={() => setHovered(null)}>
+                <circle cx={item.dx} cy={item.dy} r={Math.max(item.radius + 7, 17)} fill={color} fillOpacity={selected ? 0.13 : 0} />
+                <circle cx={item.dx} cy={item.dy} r={item.radius} fill={color} fillOpacity={item.has_info ? (selected || hovered === index ? 1 : 0.72) : 0.3} />
+                <text x={item.lx} y={item.ly} fontSize={14} fill={color} textAnchor={item.leftSide ? "end" : "start"} dominantBaseline="middle" transform={`rotate(${item.rotDeg} ${item.lx} ${item.ly})`}>{item.txt}</text>
+              </g>;
+            })}
+          </svg>
           </div>
         </div>
-
-        <div style={{ flex: "1 1 300px", minWidth: 0, borderLeft: "1px solid #eee", padding: "1.5rem", background: "#fafafa" }}>
-          {evidence && (
-            <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, background: "#fff", padding: ".8rem .9rem", marginBottom: "1.1rem", fontSize: ".8rem", lineHeight: 1.5, color: "#374151" }}>
-              <div style={{ fontFamily: "var(--font-serif)", color: "#cc3333", fontSize: ".98rem", marginBottom: ".35rem" }}>Evidence &amp; Coverage</div>
-              {evidence.domainCoverage && (
-                <div style={{ marginBottom: ".3rem" }}>
-                  Detection coverage:{" "}
-                  {Object.entries(evidence.domainCoverage).map(([d, c], i) => (
-                    <span key={d} title={`${(c.frac * 100).toFixed(0)}% capable`} style={{ whiteSpace: "nowrap" }}>
-                      {i ? " · " : ""}{d} <span style={{ color: c.glyph === "●" ? "#166534" : c.glyph === "◐" ? "#b45309" : "#b91c1c" }}>{c.glyph}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
-              {evidence.methodMix && (
-                <div style={{ color: "#6b7280", marginBottom: ".3rem" }}>
-                  Methods: {Object.entries(evidence.methodMix).map(([m, n], i) => `${i ? ", " : ""}${m}×${n}`)}
-                </div>
-              )}
-              <div style={{ color: "#6b7280" }}>
-                {evidence.domainCoverage && evidence.domainCoverage.Fungi && evidence.domainCoverage.Fungi.frac < 0.1
-                  ? "Fungi were barely assayed here — a taxon's absence means “not measured,” not “not present.” "
-                  : ""}
-                Certainty reflects observational association, not causation.
-              </div>
-            </div>
-          )}
-          {active ? (
-            <>
-              <h4 style={{ fontFamily: "var(--font-serif)", fontSize: "1.15rem", marginBottom: ".3rem", color: "#cc3333" }}>{active}</h4>
-              {activeItem?.tier && (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: ".35rem", alignItems: "center", marginBottom: ".6rem", fontSize: ".74rem" }}>
-                  <span style={{ background: "#eef1f4", border: "1px solid #e5e7eb", borderRadius: 999, padding: ".08rem .5rem", color: activeItem.tier === "High" || activeItem.tier === "Moderate" ? "#111827" : "#6b7280" }}>{activeItem.tier} certainty</span>
-                  {activeItem.direction && <span style={{ color: "#4b5563" }}>{activeItem.direction === "increased" ? "↑ increased" : activeItem.direction === "decreased" ? "↓ decreased" : "↕ mixed"}</span>}
-                  {activeItem.agreementBin && <span style={{ color: "#6b7280" }}>· {activeItem.agreementBin} agreement</span>}
-                  {activeItem.domain && activeItem.domain !== "Unknown" && <span style={{ color: "#6b7280" }}>· {activeItem.domain}</span>}
-                </div>
-              )}
-              {loading ? <p>Loading…</p> : <div className="organism-detail" dangerouslySetInnerHTML={{ __html: detail }} />}
-            </>
-          ) : (
-            <p style={{ color: "#6b7280" }}>Select a highlighted organism (solid dot) to see its detail panel.</p>
-          )}
-          {studies.length > 0 && (
-            <details open style={{ marginTop: "1.25rem", borderTop: "1px solid #e5e7eb", paddingTop: "1rem" }}>
-              <summary style={{ color: "#cc3333", fontFamily: "var(--font-serif)", fontSize: "1.05rem", cursor: "pointer" }}>Studies</summary>
-              <ul style={{ margin: ".6rem 0 0", paddingLeft: "1.1rem", maxHeight: 260, overflowY: "auto", fontSize: ".82rem", lineHeight: 1.5 }}>
-                {studies.map((s, i) => (
-                  <li key={i} style={{ marginBottom: ".45rem" }}>
-                    <a href={s.url} target="_blank" rel="noreferrer" style={{ color: "#cc3333", textDecoration: "none" }}>{s.title}</a>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
+        {mapExpanded && <div className={styles.zoomTools} role="group" aria-label="Map zoom">
+          <button onClick={() => setZoom((value) => Math.max(1, value - .25))} disabled={zoom === 1} aria-label="Zoom out">−</button>
+          <output aria-live="polite" aria-label="Zoom level">{Math.round(zoom * 100)}%</output>
+          <button onClick={() => setZoom((value) => Math.min(3, value + .25))} disabled={zoom === 3} aria-label="Zoom in">+</button>
+          <button onClick={() => setZoom(1)} aria-label="Fit map">Fit</button>
+        </div>}
+        <div className={styles.legend}><span className={styles.increased}>↑ Increased</span><span className={styles.decreased}>↓ Decreased</span><span>Solid dots: details available</span></div>
+        <div className={styles.selectionBar}>
+        <label className={styles.picker}>Organism
+          <select value={active || ""} onChange={(event) => setActive(event.target.value)}>
+            {!active && <option value="">Select an organism</option>}
+            {(levels[level] || []).map((item) => <option key={item.name} value={item.name}>{item.name} ({item.value > 0 ? "+" : ""}{item.value})</option>)}
+          </select>
+        </label>
+        {mapExpanded && <button className={styles.viewDetails} onClick={() => { focusDetails.current = true; toggleMap(); }}>View details <span aria-hidden="true">→</span></button>}
+        </div>
+      </section>
+      <aside className={styles.sidebar} aria-label="Organism details" hidden={mapExpanded}>
+        <header className={styles.detailHeader}>
+          <p className={styles.eyebrow}>{level} · Relative abundance</p>
+          <h3 ref={detailHeading} tabIndex={-1}>{active || "Select an organism"}</h3>
+          <div className={styles.metadata}>
+            {activeItem && <span className={activeItem.value > 0 ? styles.increased : styles.decreased}>{activeItem.value > 0 ? "↑ Increased" : activeItem.value < 0 ? "↓ Decreased" : "Unchanged"}</span>}
+            {activeItem?.tier && <span className={styles.certainty}>{activeItem.tier} certainty</span>}
+            {activeItem?.agreementBin && <span>{activeItem.agreementBin} agreement</span>}
+            {activeItem?.domain && activeItem.domain !== "Unknown" && <span>{activeItem.domain}</span>}
+          </div>
+        </header>
+        <div ref={detailPane} className={styles.detailScroll}>
+          <div aria-live="polite" aria-busy={loading}>
+            {loading ? <p className={styles.status}>Loading details…</p> : failed ? <p className={styles.status}>Could not load details. <button onClick={() => setRetry(retry + 1)}>Try again</button></p> : detail ?
+              <div className={styles.prose} dangerouslySetInnerHTML={{ __html: detail }} onClick={(event) => {
+                const anchor = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[data-signature-reference]");
+                if (!anchor) return;
+                const target = dialog.current?.querySelector<HTMLElement>(anchor.getAttribute("href") || "");
+                if (target) { event.preventDefault(); target.closest("details")?.setAttribute("open", ""); target.focus({ preventScroll: true }); target.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+              }} /> : <p className={styles.status}>No organism commentary is available at this taxonomic level.</p>}
+          </div>
+          {evidence && <details className={styles.supplement}>
+            <summary>Evidence &amp; coverage</summary>
+            {evidence.domainCoverage && <p>Detection coverage: {Object.entries(evidence.domainCoverage).map(([domain, coverage]) => `${domain} ${(coverage.frac * 100).toFixed(0)}%`).join(" · ")}</p>}
+            {evidence.methodMix && <p>Methods: {Object.entries(evidence.methodMix).map(([method, count]) => `${method} × ${count}`).join(", ")}</p>}
+            <p>Certainty reflects observational association, not causation.</p>
+          </details>}
+          {studies.length > 0 && <details className={styles.supplement}>
+            <summary>Signature studies ({studies.length})</summary>
+            <div className={styles.studies}>{studies.map((study, index) => <p key={index}><a href={study.url} target="_blank" rel="noreferrer">{study.title}</a></p>)}</div>
+          </details>}
+        </div>
+      </aside>
         </div>
       </div>
-    </div>
+    </dialog>, document.body
   );
 }

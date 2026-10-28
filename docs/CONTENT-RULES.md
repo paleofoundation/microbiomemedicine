@@ -55,6 +55,13 @@ so a retrieval chunk captures the whole answer together with the heading.
 - Hard data over fluff: lead with verifiable numbers, names, and mechanisms. Avoid filler
   ("As we all know…", "In today's landscape…").
 - Put each citation `[n]` directly in the text block that makes the claim.
+- **Inline citation format (user requirement, 2026-10-02):** always use bracketed,
+  superscripted numbers. If the sentence has a period, put it before the entire citation
+  cluster with no intervening space: `Sentence.<sup>[1]</sup><sup>[2]</sup>`, never
+  `Sentence<sup>[1]</sup><sup>[2]</sup>.`. Apply this to all page content, FAQs, excerpts,
+  study summaries, and signature panels. Keep existing source numbers, citation order,
+  and link destinations intact; do not renumber or invent missing links. Scientific
+  exponents and ionic charges are not citation markers.
 
 ## 4. Prose + tables only; no lists; no bold
 

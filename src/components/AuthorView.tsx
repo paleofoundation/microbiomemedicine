@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { contentPath } from "@/lib/content";
 import { AUTHOR_BIOS } from "@/theme/authorsBios";
 import { AuthorSocials } from "@/components/AuthorSocials";
+import { formatCitationText } from "@/lib/inlineCitations";
 
 // Author archive page: who the author is + everything they've worked on. Mirrors the
 // original /author/<slug> page — hero (avatar + "Name, Role"), About (bio), then
@@ -121,7 +122,7 @@ export async function AuthorView({ slug, page = 1 }: { slug: string; page?: numb
                   <Link href={hrefFor(p.type, p.slug)} className="mbio-card__title">{p.title}</Link>
                   {p.excerpt_html && (
                     <div className="mbio-card__content">
-                      <p>{p.excerpt_html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}</p>
+                      <p dangerouslySetInnerHTML={{ __html: formatCitationText(p.excerpt_html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()) }} />
                     </div>
                   )}
                 </article>

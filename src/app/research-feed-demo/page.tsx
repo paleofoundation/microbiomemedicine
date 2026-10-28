@@ -8,6 +8,7 @@ import { OrcidIcon } from "@/components/OrcidIcon";
 import { RightRail } from "@/components/RightRail";
 import { Tooltips } from "@/components/Tooltips";
 import type { Connection } from "@/lib/connections";
+import { formatInlineCitations } from "@/lib/inlineCitations";
 
 export const metadata = {
   title: "Research feed page (preview)",
@@ -31,7 +32,7 @@ function graphsHtml(f: Feed): string {
   if (!present.length) return "";
   return `<div class="research-feed__graphs">` + present.map(([t, items]) => `<div class="research-feed__graph"><div class="research-feed__graph-title">${t}</div><div class="research-feed__graph-items">${items.map((i) => `<div class="research-feed__graph-item">${i}</div>`).join("")}</div></div>`).join("") + `</div>`;
 }
-const contentHtml = graphsHtml(feed) + item.content_html;
+const contentHtml = formatInlineCitations(graphsHtml(feed) + item.content_html);
 
 export default function Page() {
   const updated = (item.published_at || "").slice(0, 10);

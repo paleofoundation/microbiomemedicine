@@ -135,6 +135,9 @@
    default ordered-list rendering — the original had no custom badge/counter CSS,
    so we do NOT override it here. */
 
+/* Citation markers keep the same superscript treatment in prose, heroes and snippets. */
+sup.inline-citation { font-size: .72em; line-height: 0; vertical-align: super; }
+
 /* Research-feed card action buttons: the theme's base .btn is a filled red button;
    inside the feed footer they should read as quiet text+icon actions on the grey
    pill (red only on hover), matching the gold-standard cards. */

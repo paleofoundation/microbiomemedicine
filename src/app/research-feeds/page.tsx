@@ -3,6 +3,7 @@ import { listAllResearchFeeds, type FeedItem } from "@/lib/content";
 import { asciiSlug } from "@/lib/slugs";
 import { RF_CATEGORY_ORDER, RF_CATEGORIES } from "@/theme/researchFeedCategories";
 import { ArchiveView } from "@/components/ArchiveView";
+import { formatCitationText } from "@/lib/inlineCitations";
 
 export const revalidate = 3600;
 export const metadata: Metadata = {
@@ -78,7 +79,7 @@ export default async function Page({ searchParams }: Props) {
                           <div className="rgbc-content__details-meta">
                             <small className="rgbc-content__details-date">{fmtDate(f.modified_at)}</small>
                           </div>
-                          <div className="rgbc-content__details-excerpt">{excerptText(f.excerpt_html)}</div>
+                          <div className="rgbc-content__details-excerpt" dangerouslySetInnerHTML={{ __html: formatCitationText(excerptText(f.excerpt_html)) }} />
                         </a>
                       ))}
                     </div>
