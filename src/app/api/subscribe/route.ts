@@ -1,7 +1,29 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
+// Created lazily at request time so a missing env var (e.g. in Preview)
+// returns 503 instead of failing `next build` during page-data collection.
+let client: SupabaseClient | null = null;
+function getSupabase(): SupabaseClient | null {
+  if (client) return client;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  client = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  return client;
+}
 
 export async function POST(req: Request) {
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Subscriptions are temporarily unavailable." },
+      { status: 503 },
+    );
+  }
+
   const form = await req.formData();
   const email = String(form.get("email") || "").trim();
 
